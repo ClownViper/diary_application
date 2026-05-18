@@ -1,0 +1,142 @@
+<div class="max-w-4xl mx-auto py-8 mb-10">
+
+  <!-- 月切り替え -->
+  <div class="flex justify-between items-center mb-2 bg-blue-700 text-white p-2.5 rounded-lg">
+
+    <!-- 左：前月 -->
+    <%= link_to "◀︎", calendar_path(date: @date.prev_month),
+          class: "text-lg font-bold px-3 py-1 hover:text-gray-200" %>
+
+    <!-- 中央：年月 + 今月へ -->
+    <div class="flex items-center space-x-3">
+      <h2 class="text-xl font-semibold"><%= @date.strftime("%Y年%m月") %></h2>
+
+      <% unless @date.month == Date.today.month && @date.year == Date.today.year %>
+        <%= link_to "今月へ", calendar_path(date: Date.today),
+              class: "text-sm underline hover:text-gray-200" %>
+      <% end %>
+    </div>
+
+    <!-- 右：翌月 -->
+    <%= link_to "▶︎", calendar_path(date: @date.next_month),
+          class: "text-lg font-bold px-3 py-1 hover:text-gray-200" %>
+
+  </div>
+
+  <!-- PC専用（従来の7カラム） -->
+  <div class="hidden md:block">
+
+    <!-- 曜日ヘッダー -->
+    <div class="grid grid-cols-7 text-center font-semibold mb-1">
+      <div class="text-red-500">日</div>
+      <div>月</div>
+      <div>火</div>
+      <div>水</div>
+      <div>木</div>
+      <div>金</div>
+      <div class="text-blue-500">土</div>
+    </div>
+
+    <!-- カレンダー本体 -->
+    <div class="grid grid-cols-7 gap-1">
+
+      <%# ★ 1日の曜日に応じて空白セルを追加（日曜=0, 月曜=1 ...） %>
+      <% first_wday = @start_date.wday %>
+      <% first_wday.times do %>
+        <div class="bg-transparent"></div>
+      <% end %>
+
+      <% @start_date.upto(@end_date) do |day| %>
+        <% diary = @diaries_by_date[day] %>
+        <% expenses = @expenses_by_date[day] %>
+
+        <div
+          class="bg-white border rounded-lg p-2 h-24 cursor-pointer hover:shadow-md transition flex flex-col"
+          onclick="openCalendarLayer('<%= day %>')"
+        >
+          <div class="text-sm font-semibold <%= 'text-blue-600' if day == Date.today %>">
+            <%= day.day %>
+          </div>
+
+          <div class="mt-1 text-left space-y-1 text-xs">
+            <% if diary.present? %>
+              <div class="flex items-center gap-1 text-blue-700 font-medium bg-blue-100 rounded-lg">
+                <span class="text-blue-500">●</span>
+                <span>日記</span>
+              </div>
+            <% end %>
+
+            <% if expenses.present? %>
+              <div class="flex items-center gap-1 text-orange-700 font-medium bg-orange-100 rounded-lg">
+                <span class="text-orange-500">●</span>
+                <span><%= number_with_delimiter(expenses.sum(&:amount)) %> 円</span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+  <!-- スマホ専用（縦リスト） -->
+  <div class="md:hidden space-y-2">
+
+    <% @start_date.upto(@end_date) do |day| %>
+      <% diary = @diaries_by_date[day] %>
+      <% expenses = @expenses_by_date[day] %>
+
+      <div
+        class="bg-white border rounded-lg p-3 grid grid-cols-4 gap-2 hover:shadow transition"
+        onclick="openCalendarLayer('<%= day %>')"
+      >
+
+        <!-- 左：日付＋曜日（1/4） -->
+        <div class="col-span-1 flex items-center gap-2">
+
+          <%# 曜日カラー %>
+          <% wday_color =
+              case day.wday
+              when 0 then "text-red-500"   # 日曜
+              when 6 then "text-blue-500"  # 土曜
+              else "text-gray-500"         # 平日
+              end
+          %>
+
+          <!-- 曜日 -->
+          <div class="text-sm <%= wday_color %>">
+            <%= %w(日 月 火 水 木 金 土)[day.wday] %>
+          </div>
+
+          <!-- 日付 -->
+          <div class="text-lg font-bold <%= 'text-blue-600' if day == Date.today %>">
+            <%= day.day %>
+          </div>
+
+        </div>
+
+        <!-- 右：日記タイトル＋出費合計（3/4） -->
+        <div class="col-span-3 text-left text-sm space-y-1">
+
+          <% if diary.present? %>
+            <div class="flex items-center gap-1 text-blue-700 font-medium truncate bg-blue-100 rounded-lg">
+              <span class="text-blue-500">●</span>
+              <span>日記</span>
+            </div>
+          <% end %>
+
+          <% if expenses.present? %>
+            <div class="flex items-center gap-1 text-orange-700 font-medium truncate bg-orange-100 rounded-lg">
+              <span class="text-orange-500">●</span>
+              <span><%= number_with_delimiter(expenses.sum(&:amount)) %> 円</span>
+            </div>
+          <% end %>
+
+        </div>
+
+      </div>
+    <% end %>
+
+  </div>
+
+</div>

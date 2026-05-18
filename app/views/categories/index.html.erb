@@ -1,0 +1,91 @@
+<div class="max-w-4xl mx-auto py-8 mb-10">
+
+  <%= render "shared/page_header", title: "カテゴリ管理", button_label: "新規追加", button_path: new_category_path %>
+
+  <div class="bg-white rounded-xl shadow overflow-hidden">
+
+    <!-- PC用ヘッダー（スマホでは非表示） -->
+    <div class="hidden md:grid grid-cols-4 bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700">
+      <div>カテゴリ名</div>
+      <div>カラー</div>
+      <div>使用回数</div>
+      <div class="text-center">操作</div>
+    </div>
+
+    <% @categories.each do |category| %>
+
+      <!-- PC: 4カラム / スマホ: カード風 -->
+      <div class="px-4 py-4 border-b hover:bg-gray-50 transition">
+
+        <!-- スマホ：カテゴリ名・カラー・件数を横並び -->
+        <div class="flex md:hidden items-center justify-between mb-3">
+
+          <!-- 左：カテゴリ名 -->
+          <div class="font-medium text-gray-900">
+            <%= category.name %>
+          </div>
+
+          <!-- 中央：カラー -->
+          <div class="flex items-center">
+            <div class="w-5 h-5 rounded-full"
+                 style="background-color: <%= category.color %>;">
+            </div>
+          </div>
+
+          <!-- 右：件数 -->
+          <div class="text-gray-700 text-sm">
+            <%= category.expenses.count %>件
+          </div>
+
+        </div>
+
+        <!-- PC：従来の4カラム -->
+        <div class="hidden md:grid grid-cols-4 items-center">
+          <div class="font-medium text-gray-900"><%= category.name %></div>
+
+          <div>
+            <div class="w-5 h-5 rounded-full"
+                 style="background-color: <%= category.color %>;">
+            </div>
+          </div>
+
+          <div class="text-gray-700">
+            <%= category.expenses.count %>件
+          </div>
+
+          <!-- PCボタン -->
+          <div class="text-right space-x-2 text-sm">
+            <%= ui_link_button "編集", edit_category_path(category), variant: :secondary, size: :md %>
+
+            <%= button_to "削除",
+                  category_path(category),
+                  method: :delete,
+                  data: { confirm: "削除しますか？" },
+                  class: ui_button_classes(variant: :danger, size: :md),
+                  form: { class: "inline" } %>
+          </div>
+        </div>
+
+        <!-- スマホ：ボタンを横並び -->
+        <div class="flex md:hidden gap-2 mt-2">
+
+          <%= link_to "編集", edit_category_path(category),
+                class: [ui_button_classes(variant: :secondary, size: :sm), "block w-full text-center flex-1"].join(" ") %>
+
+          <%= button_to "削除",
+                category_path(category),
+                method: :delete,
+                form: { class: "flex-1" },
+                data: { confirm: "削除しますか？" },
+                class: [ui_button_classes(variant: :danger, size: :sm), "block w-full text-center"].join(" ") %>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <p class="text-sm text-gray-500 mt-4">
+    カテゴリは出費管理で使用できます。使用中のカテゴリを削除すると、紐づく出費のカテゴリが未設定になります。
+  </p>
+
+</div>

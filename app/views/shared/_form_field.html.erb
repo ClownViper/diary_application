@@ -1,0 +1,18 @@
+<%# locals: (form:, attr:, field_label: nil, field_type: :text_field, field_options: {}, hide_label: false) %>
+<%
+  field_type = local_assigns.fetch(:field_type, :text_field)
+  field_options = local_assigns.fetch(:field_options, {})
+  error = form.object.errors[attr]&.first
+  input_class = [ApplicationHelper::INPUT_CLASS, error.present? ? "border-red-500" : nil].compact.join(" ")
+%>
+<div>
+  <% unless hide_label %>
+    <%= form.label attr,
+          (field_label || form.object.class.human_attribute_name(attr)),
+          class: ApplicationHelper::LABEL_CLASS %>
+  <% end %>
+  <%= form.public_send(field_type, attr, **{ class: input_class }.merge(field_options)) %>
+  <% if error.present? %>
+    <p class="mt-1 text-sm text-red-600"><%= error %></p>
+  <% end %>
+</div>

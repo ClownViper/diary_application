@@ -1,0 +1,81 @@
+<div class="max-w-4xl mx-auto py-8 mb-10">
+
+  <%= render "shared/page_header", title: "出費一覧", button_label: "新規作成", button_path: new_expense_path %>
+
+  <!-- 検索フォーム -->
+  <div class="mb-6 bg-white p-4 rounded-xl shadow">
+    <%= form_with url: expenses_path, method: :get, local: true, class: "grid grid-cols-1 md:grid-cols-4 gap-4" do |f| %>
+
+      <div>
+        <label class="<%= ApplicationHelper::SEARCH_LABEL_CLASS %>">キーワード</label>
+        <%= f.text_field :q, value: params[:q],
+              placeholder: "名称・メモを検索",
+              class: ApplicationHelper::INPUT_CLASS %>
+      </div>
+
+      <div>
+        <label class="<%= ApplicationHelper::SEARCH_LABEL_CLASS %>">日付</label>
+        <%= f.date_field :date,
+              placeholder: " ",
+              class: [ApplicationHelper::INPUT_CLASS, "h-[42px] bg-white text-gray-800 appearance-none"].join(" ") %>
+      </div>
+
+      <div>
+        <label class="<%= ApplicationHelper::SEARCH_LABEL_CLASS %>">カテゴリ</label>
+        <%= f.select :category_id,
+              options_from_collection_for_select(@categories, :id, :name, params[:category_id]),
+              { include_blank: "すべて" },
+              class: [ApplicationHelper::INPUT_CLASS, "bg-white text-gray-700 appearance-none"].join(" ") %>
+      </div>
+
+      <div class="flex items-end">
+        <%= f.submit "検索", class: [ui_button_classes(variant: :primary, size: :md), "w-full"].join(" ") %>
+      </div>
+
+    <% end %>
+  </div>
+
+  <!-- テーブル風一覧 -->
+  <div class="bg-white rounded-xl shadow overflow-hidden">
+
+    <div class="hidden md:grid grid-cols-4 bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700">
+      <div>タイトル</div>
+      <div>カテゴリ</div>
+      <div>日付</div>
+      <div class="text-right">金額</div>
+    </div>
+
+    <% @expenses.each do |expense| %>
+      <%= link_to expense_path(expense),
+            class: "grid grid-cols-1 md:grid-cols-4 gap-1 px-4 py-3 border-b hover:bg-gray-50 transition" do %>
+
+        <div class="font-medium text-gray-900">
+          <%= expense.name %>
+        </div>
+
+        <div>
+          <% if expense.category&.color.present? %>
+            <span class="px-2 py-1 rounded-full text-white text-xs font-semibold"
+                  style="background-color: <%= expense.category.color %>;">
+              <%= expense.category.name %>
+            </span>
+          <% else %>
+            <span class="px-2 py-1 rounded-full bg-gray-200 text-gray-700 text-xs font-semibold">
+              <%= expense.category&.name.presence || "未分類" %>
+            </span>
+          <% end %>
+        </div>
+
+        <div class="text-gray-600">
+          <%= expense.date.strftime("%Y/%m/%d") %>
+        </div>
+
+        <div class="text-right font-bold text-gray-800">
+          ¥<%= number_with_delimiter(expense.amount) %>
+        </div>
+
+      <% end %>
+    <% end %>
+
+  </div>
+</div>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= content_for(:title) || "MyDiary" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Minimal Kakeibo Diary">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1d4ed8">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100" data-turbo="false">
+
+    <% if user_signed_in? %>
+      <!-- PC Sidebar -->
+      <aside class="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 
+                    bg-blue-700 text-white p-6 shadow-lg">
+
+        <h1 class="text-2xl font-bold text-white mb-6">MyDiary</h1>
+
+        <nav>
+          <%= sidebar_link_to "ダッシュボード", root_path %>
+
+          <%= sidebar_link_to "日記一覧", diaries_path %>
+
+          <%= sidebar_link_to "出費一覧", expenses_path %>
+
+          <%= sidebar_link_to "カテゴリ", categories_path %>
+
+          <%= sidebar_link_to "カレンダー", calendar_path %>
+        </nav>
+
+        <div class="mt-auto border-t border-blue-500 pt-4">
+          <p class="text-sm text-white px-3 mb-1">
+            <%= current_user.name %>
+          </p>
+
+          <%= button_to "ログアウト",
+                destroy_user_session_path,
+                method: :delete,
+                form: { class: "inline" },
+                class: "block w-full text-left px-3 py-2 text-sm rounded transition
+                  hover:bg-blue-300 hover:text-white text-white" %>
+        </div>
+      </aside>
+
+      <!-- Mobile Header -->
+      <header class="md:hidden fixed top-0 left-0 right-0 bg-blue-700 text-white shadow p-4 flex justify-between items-center z-50">
+        <h1 class="text-xl font-bold">MyDiary</h1>
+        <button id="menuButton" class="text-3xl">☰</button>
+      </header>
+
+      <!-- Mobile Slide Menu -->
+      <div id="mobileMenu"
+          class="md:hidden fixed top-0 left-0 w-64 h-full bg-blue-700 text-white shadow-lg p-6 
+                  transform -translate-x-full transition-transform z-40">
+
+        <nav class="space-y-2 mt-10 mb-10">
+          <%= sidebar_link_to "ダッシュボード", root_path %>
+
+          <%= sidebar_link_to "日記一覧", diaries_path %>
+
+          <%= sidebar_link_to "出費一覧", expenses_path %>
+
+          <%= sidebar_link_to "カテゴリ", categories_path %>
+
+          <%= sidebar_link_to "カレンダー", calendar_path %>
+        </nav>
+
+        <div class="mt-auto border-t border-blue-500 pt-4">
+          <p class="text-sm text-white px-3 mb-1">
+            <%= current_user.email %>
+          </p>
+
+          <%= button_to "ログアウト",
+              destroy_user_session_path,
+              method: :delete,
+              form: { class: "w-full" },
+              class: "block w-full text-left px-3 py-2 text-sm rounded transition
+                hover:bg-blue-300 hover:text-white text-white" %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Main Content -->
+    <main class="
+      mx-auto
+      <%= user_signed_in? ? 'pt-20 max-w-screen-xl px-5 md:ml-64 md:pt-10' : 'md:ml-0 md:pt-0' %>
+    ">
+      <div class="<%= user_signed_in? ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto px-4' %>">
+        <%= render "shared/flash" %>
+      </div>
+      <%= yield %>
+    </main>
+
+    <!-- Mobile Menu Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.getElementById("menuButton");
+        const menu = document.getElementById("mobileMenu");
+
+        if (btn) {
+          btn.onclick = () => {
+            menu.classList.toggle("-translate-x-full");
+          };
+        }
+      });
+    </script>
+
+    <!-- Calendar Layer -->
+    <div id="calendarLayer"
+         class="fixed top-0 left-0 w-screen h-screen bg-black/50 hidden items-center justify-center z-[99999]">
+      <div id="calendarLayerContent"
+           class="bg-white w-[90%] max-w-[600px] p-6 rounded-xl relative">
+        <button onclick="closeCalendarLayer()"
+                class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center
+                    text-2xl font-bold text-gray-600 hover:text-black
+                    rounded-full hover:bg-gray-200 transition">×</button>
+        <div id="calendarLayerBody"></div>
+      </div>
+    </div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/service_worker.js");
+      }
+    </script>
+  </body>
+</html>

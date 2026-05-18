@@ -1,0 +1,15 @@
+<%# locals: resource (ActiveRecord) %>
+<% return unless resource.errors.any? %>
+<div id="error_explanation"
+     class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800"
+     role="alert">
+  <p class="font-semibold mb-2">
+    <%= t("errors.form_header", count: resource.errors.count,
+          model: resource.model_name.human) %>
+  </p>
+  <ul class="list-disc list-inside space-y-1 text-sm">
+    <% resource.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>

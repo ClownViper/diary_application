@@ -1,0 +1,34 @@
+<%= render layout: "shared/form_card" do %>
+  <%= form_with model: diary, local: true, class: "space-y-6" do |f| %>
+    <%= render "shared/form_errors", resource: diary %>
+
+    <div class="!mt-2">
+      <%= render "shared/form_field", form: f, attr: :title, field_label: "タイトル" %>
+    </div>
+
+    <%= render "shared/form_field", form: f, attr: :date, field_label: "日付", field_type: :date_field,
+          field_options: { placeholder: " ", class: "w-full md:max-w-[33%] h-[42px] bg-white appearance-none" } %>
+
+    <%= render "shared/form_field", form: f, attr: :body, field_label: "本文", field_type: :text_area,
+          field_options: { rows: 8 } %>
+
+    <% if diary.image.attached? %>
+      <div class="mb-4">
+        <p class="text-sm text-gray-600 mb-1">現在の画像</p>
+        <%= image_tag diary.image, class: "w-40 h-40 object-cover rounded-lg shadow" %>
+      </div>
+    <% end %>
+
+    <div>
+      <%= f.label :image, "画像", class: ApplicationHelper::LABEL_CLASS %>
+      <%= f.file_field :image, class: "w-full", accept: "image/jpeg,image/png,image/webp" %>
+      <% if diary.errors[:image].any? %>
+        <p class="mt-1 text-sm text-red-600"><%= diary.errors[:image].first %></p>
+      <% end %>
+    </div>
+
+    <div>
+      <%= f.submit "保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+    </div>
+  <% end %>
+<% end %>

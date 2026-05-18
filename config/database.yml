@@ -1,0 +1,41 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "password") %>
+
+development:
+  <<: *default
+  host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+  database: diary_app_development
+
+test:
+  <<: *default
+  host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+  database: diary_app_test
+
+production:
+  primary:
+    <<: *default
+    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+    database: <%= ENV.fetch("POSTGRES_DB", "diary_app_production") %>
+    url: <%= ENV["DATABASE_URL"] %>
+
+  cable:
+    <<: *default
+    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+    database: <%= ENV.fetch("POSTGRES_CABLE_DB", "diary_app_cable_production") %>
+    url: <%= ENV["DATABASE_URL"] %>
+
+  queue:
+    <<: *default
+    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+    database: <%= ENV.fetch("POSTGRES_QUEUE_DB", "diary_app_queue_production") %>
+    url: <%= ENV["DATABASE_URL"] %>
+
+  cache:
+    <<: *default
+    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+    database: <%= ENV.fetch("POSTGRES_CACHE_DB", "diary_app_cache_production") %>
+    url: <%= ENV["DATABASE_URL"] %>

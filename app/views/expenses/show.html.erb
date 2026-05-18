@@ -1,0 +1,38 @@
+<%= render "shared/back_link", back_path: expenses_path %>
+
+<div class="max-w-4xl mx-auto py-10 mb-10">
+
+  <div class="bg-white p-6 rounded-xl shadow leading-relaxed text-gray-800 mb-8">
+
+    <p class="text-gray-500 text-sm">
+      <%= @expense.date.strftime("%Y/%m/%d") %>
+    </p>
+
+    <h1 class="text-2xl font-bold text-gray-800">
+      <%= @expense.name %>
+    </h1>
+
+    <p class="text-gray-700 mb-2">
+      カテゴリ：
+      <span class="px-2 py-1 bg-gray-100 rounded text-gray-800">
+        <%= @expense.category&.name.presence || "未分類" %>
+      </span>
+    </p>
+
+    <p class="text-3xl font-bold text-gray-900 mb-4">
+      ¥<%= number_with_delimiter(@expense.amount) %>
+    </p>
+
+    <div class="bg-gray-50 px-3 pt-5 pb-10 rounded-lg leading-tight text-gray-800">
+      <%= @expense.memo.presence || "メモはありません" %>
+    </div>
+
+    <div class="flex gap-4 pt-4">
+      <%= render "shared/record_actions",
+            edit_path: edit_expense_path(@expense),
+            destroy_path: expense_path(@expense) %>
+    </div>
+
+  </div>
+
+</div>

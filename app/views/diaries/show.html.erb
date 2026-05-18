@@ -1,0 +1,37 @@
+<%= render "shared/back_link", back_path: diaries_path %>
+
+<div class="max-w-4xl mx-auto py-4 mb-10">
+
+  <% if @diary.image.attached? %>
+    <div class="mb-3">
+      <%= image_tag @diary.image,
+            class: "w-full max-h-[400px] object-cover rounded-xl shadow" %>
+    </div>
+  <% end %>
+
+  <div class="bg-white p-6 rounded-xl shadow leading-relaxed text-gray-800 mb-8">
+
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+
+      <div class="flex-1">
+        <p class="text-gray-500 text-sm">
+          <%= @diary.date.strftime("%Y/%m/%d") %>
+        </p>
+
+        <h1 class="text-3xl font-bold text-gray-800 break-words">
+          <%= @diary.title %>
+        </h1>
+      </div>
+
+      <%= render "shared/record_actions",
+            edit_path: edit_diary_path(@diary),
+            destroy_path: diary_path(@diary) %>
+
+    </div>
+
+    <hr class="border-t border-gray-300 my-4 md:my-6">
+
+    <%= simple_format(@diary.body) %>
+  </div>
+
+</div>

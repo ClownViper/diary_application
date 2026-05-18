@@ -1,0 +1,14 @@
+services:
+  - type: web_service
+    name: diary-app
+    env: docker
+    branch: main
+    dockerfilePath: diary_app/Dockerfile
+    instanceType: starter
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+    releaseCommand: bundle exec rails db:migrate
+    healthCheckPath: "/"
