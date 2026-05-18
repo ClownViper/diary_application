@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  color: transparent;
+}
+
+input[type="date"]:focus::-webkit-date-and-time-value {
+  color: inherit;
+}

@@ -1,0 +1,7 @@
+<%# locals: title, button_label: nil, button_path: nil %>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold"><%= title %></h1>
+  <% if button_label.present? && button_path.present? %>
+    <%= ui_link_button button_label, button_path, variant: :primary, size: :md %>
+  <% end %>
+</div>

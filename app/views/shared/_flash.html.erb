@@ -1,0 +1,11 @@
+<% flash_types = { notice: "bg-green-50 border-green-200 text-green-800",
+                   alert:  "bg-red-50 border-red-200 text-red-800" } %>
+<% flash_types.each do |type, classes| %>
+  <% message = flash[type] %>
+  <% next if message.blank? %>
+  <div class="mb-4 px-4 py-3 rounded-lg border <%= classes %>"
+       role="alert"
+       data-flash-type="<%= type %>">
+    <%= message %>
+  </div>
+<% end %>

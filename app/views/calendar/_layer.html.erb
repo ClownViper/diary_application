@@ -1,0 +1,143 @@
+<div class="mb-4">
+  <h2 class="text-xl font-bold"><%= @date.strftime("%Y年%m月%d日") %></h2>
+</div>
+
+<div class="space-y-4">
+
+  <!-- 日記エリア -->
+  <div>
+
+    <!-- 見出し -->
+    <div class="flex items-center justify-between bg-blue-600 text-white px-3 py-2 rounded-t-lg">
+      <div class="flex items-center gap-2">
+        <span class="text-blue-200">●</span>
+        <span class="font-semibold">日記</span>
+      </div>
+
+      <% unless @diary.present? %>
+        <%= link_to "+追加", new_diary_path(date: @date),
+              class: "text-white text-sm" %>
+      <% end %>
+    </div>
+
+    <!-- 内容 -->
+    <div class="bg-white border border-blue-200 rounded-b-lg p-0">
+
+      <% if @diary.present? %>
+
+        <!-- ★ カード全体をリンク化 -->
+        <%= link_to diary_path(@diary), class: "block p-4 hover:bg-blue-50 transition rounded-b-lg" do %>
+
+          <div class="flex gap-4">
+
+            <% if @diary.image.attached? %>
+              <%= image_tag @diary.image,
+                    class: "w-24 h-24 object-cover rounded-lg flex-shrink-0" %>
+            <% else %>
+              <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+                No Image
+              </div>
+            <% end %>
+
+            <div class="flex flex-col min-w-0">
+
+              <p class="font-semibold text-gray-800 text-lg truncate">
+                <%= @diary.title %>
+              </p>
+
+              <p class="text-sm text-gray-500">
+                <%= @diary.date.strftime("%Y/%m/%d") %>
+              </p>
+
+              <p class="text-gray-700 text-sm mt-1 line-clamp-3">
+                <%= @diary.body %>
+              </p>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      <% else %>
+
+        <div class="p-4">
+          <p class="text-gray-600 text-sm">この日の日記はありません</p>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+
+  <!-- 区切り線 -->
+  <hr>
+
+  <!-- 出費エリア -->
+  <div>
+
+    <!-- 見出し -->
+    <div class="flex items-center justify-between bg-orange-500 text-white px-3 py-2 rounded-t-lg">
+      <div class="flex items-center gap-2">
+        <span class="text-orange-200">●</span>
+        <span class="font-semibold">出費</span>
+      </div>
+
+      <!-- 追加リンク -->
+      <%= link_to "+追加", new_expense_path(date: @date),
+            class: "text-white text-sm" %>
+    </div>
+
+    <!-- 内容 -->
+    <div class="bg-white border border-orange-300 rounded-b-lg p-4 space-y-3">
+
+      <% if @expenses.any? %>
+
+        <% latest_expenses = @expenses.first(3) %>
+
+        <% latest_expenses.each do |exp| %>
+
+          <!-- ★ 出費カード全体をリンク化 -->
+          <%= link_to expense_path(exp),
+                class: "block border rounded-lg p-3 shadow-sm bg-yellow-50 hover:bg-yellow-100 transition" do %>
+
+            <div class="flex justify-between text-sm font-semibold">
+              <span><%= exp.name.presence || "（タイトルなし）" %></span>
+              <span><%= number_to_currency(exp.amount, unit: "¥") %></span>
+            </div>
+
+            <div class="text-xs text-gray-600 mt-1">
+              <%= exp.category&.name.presence || "未分類" %>
+            </div>
+
+          <% end %>
+
+        <% end %>
+
+        <!-- 合計 + すべて表示 -->
+        <div class="flex justify-between items-center mt-4">
+
+          <% if @expenses.size > 3 %>
+            <%= link_to "すべて表示",
+                  expenses_path(date: @date),
+                  class: "text-orange-600 underline text-sm" %>
+          <% else %>
+            <span></span>
+          <% end %>
+
+          <div class="text-right font-bold text-lg">
+            合計: <%= number_to_currency(@expenses.sum(&:amount), unit: "¥") %>
+          </div>
+
+        </div>
+
+      <% else %>
+
+        <p class="text-gray-600 text-sm">この日の出費はありません</p>
+
+      <% end %>
+
+    </div>
+  </div>
+
+</div>

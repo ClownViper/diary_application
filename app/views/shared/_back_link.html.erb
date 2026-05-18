@@ -1,0 +1,7 @@
+<%# locals: (back_path:, back_label: nil) %>
+<%
+  back_label = local_assigns.fetch(:back_label) { t("shared.back_to_index") }
+%>
+<div class="mt-6">
+  <%= ui_back_link back_label, back_path %>
+</div>

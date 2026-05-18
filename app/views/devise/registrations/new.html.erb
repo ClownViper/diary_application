@@ -1,0 +1,66 @@
+<div class="min-h-screen flex flex-col items-center justify-center 
+            bg-gradient-to-br from-blue-400 to-blue-600 px-4">
+
+  <!-- アプリヘッダー -->
+  <div class="text-center mb-6">
+    <h1 class="text-3xl font-bold text-white/90">MyDiary</h1>
+    <p class="text-white/90 mt-1">出費・日記管理アプリ</p>
+  </div>
+
+  <!-- 新規登録カード -->
+  <div class="w-full max-w-md bg-white p-6 rounded-2xl shadow-xl">
+
+    <h2 class="text-2xl font-bold text-center mb-2">新規ユーザー登録</h2>
+
+    <%= form_with model: resource,
+                  as: resource_name,
+                  url: registration_path(resource_name) do |f| %>
+
+      <!-- 名前 -->
+      <div class="mb-4">
+        <%= f.label :name, "名前", class: "block font-semibold mb-1" %>
+        <%= f.text_field :name,
+              autofocus: true,
+              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+      </div>
+
+      <!-- メールアドレス -->
+      <div class="mb-4">
+        <%= f.label :email, "メールアドレス", class: "block font-semibold mb-1" %>
+        <%= f.email_field :email,
+              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+      </div>
+
+      <!-- パスワード -->
+      <div class="mb-4">
+        <%= f.label :password, "パスワード", class: "block font-semibold mb-1" %>
+        <%= f.password_field :password,
+              autocomplete: "new-password",
+              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+      </div>
+
+      <!-- パスワード確認 -->
+      <div class="mb-4">
+        <%= f.label :password_confirmation, "パスワード（確認）", class: "block font-semibold mb-1" %>
+        <%= f.password_field :password_confirmation,
+              autocomplete: "new-password",
+              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+      </div>
+
+      <!-- 登録ボタン -->
+      <%= f.submit "登録する",
+            class: "w-full bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition mt-4 p-3" %>
+
+    <% end %>
+
+    <!-- ログインリンク -->
+    <div class="mt-4 text-center">
+      <p class="text-gray-600">
+        すでにアカウントをお持ちの方は
+        <%= link_to "ログイン", new_user_session_path,
+              class: "text-blue-600 font-semibold hover:underline" %>
+      </p>
+    </div>
+
+  </div>
+</div>
