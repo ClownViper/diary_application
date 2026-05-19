@@ -17,4 +17,6 @@ test:
 
 production:
   <<: *default
+  host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+  database: <%= ENV.fetch("POSTGRES_DB", "diary_app_production") %>
   url: <%= ENV["DATABASE_URL"] %>
