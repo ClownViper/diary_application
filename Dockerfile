@@ -32,14 +32,32 @@ FROM base AS build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips libyaml-dev pkg-config libpq-dev postgresql-client nodejs npm && \
+    apt-get install --no-install-recommends -y \
+      build-essential \
+      git \
+      libvips \
+      libvips-dev \
+      libyaml-dev \
+      pkg-config \
+      libpq-dev \
+      postgresql-client \
+      nodejs \
+      npm \
+      libxml2-dev \
+      libxslt1-dev \
+      zlib1g-dev \
+      libjpeg-dev \
+      libpng-dev \
+      imagemagick \
+      libmagickwand-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
 COPY vendor/* ./vendor/
 COPY Gemfile Gemfile.lock ./
 
-RUN bundle install && \
+RUN bundle lock --add-platform x86_64-linux && \
+    bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
     bundle exec bootsnap precompile -j 1 --gemfile
@@ -52,8 +70,11 @@ COPY . .
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# Install Node packages and build CSS
+RUN npm install --no-audit --no-fund && \
+    npm run build:css
 
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 
 
