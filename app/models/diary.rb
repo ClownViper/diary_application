@@ -6,9 +6,24 @@ class Diary < ApplicationRecord
   validates :date, uniqueness: { scope: :user_id, message: :taken }
 
   has_one_attached :image
-  validates :image, content_type: ["image/png", "image/jpg", "image/jpeg", "image/webp"], size: { less_than: 10.megabytes, message: "10MBまでです" }, allow_blank: true
+  validate :validate_image_attachment
 
   after_initialize do
     self.date ||= Date.current
+  end
+
+  private
+
+  def validate_image_attachment
+    return unless image.attached?
+
+    allowed_types = ["image/png", "image/jpg", "image/jpeg", "image/webp"]
+    unless allowed_types.include?(image.content_type)
+      errors.add(:image, "はPNG、JPG、JPEG、WEBPのみ対応しています")
+    end
+
+    if image.blob.byte_size > 10.megabytes
+      errors.add(:image, "は10MBまでです")
+    end
   end
 end
