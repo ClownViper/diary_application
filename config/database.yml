@@ -4,14 +4,15 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD", "password") %>
-  host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
 
 development:
   <<: *default
+  host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
   database: diary_app_development
 
 test:
   <<: *default
+  host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
   database: diary_app_test
 
 production:
