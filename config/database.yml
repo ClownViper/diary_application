@@ -33,3 +33,9 @@ production:
     host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
     database: <%= ENV.fetch("POSTGRES_QUEUE_DB", "diary_app_queue_production") %>
     url: <%= ENV["DATABASE_URL"] %>
+
+  cache:
+    <<: *default
+    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+    database: <%= ENV.fetch("POSTGRES_CACHE_DB", "diary_app_cache_production") %>
+    url: <%= ENV["DATABASE_URL"] %>
