@@ -10,5 +10,15 @@ services:
         value: production
       - key: RAILS_SERVE_STATIC_FILES
         value: "true"
-    releaseCommand: bundle exec rails db:prepare
+    releaseCommand: bundle exec rails db:migrate
     healthCheckPath: "/"
+  - type: worker
+    name: diary-app-worker
+    env: docker
+    branch: main
+    dockerfilePath: diary_app/Dockerfile
+    instanceType: starter
+    envVars:
+      - key: RAILS_ENV
+        value: production
+    startCommand: bundle exec rails solid_queue:start
