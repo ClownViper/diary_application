@@ -10,7 +10,7 @@ services:
         value: production
       - key: RAILS_SERVE_STATIC_FILES
         value: "true"
-    releaseCommand: bundle exec rails db:migrate
+    releaseCommand: bundle exec rails db:prepare
     healthCheckPath: "/"
   - type: worker
     name: diary-app-worker
