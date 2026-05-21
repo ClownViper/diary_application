@@ -32,17 +32,25 @@ class NotificationJob < ApplicationJob
 
   private
 
+  # 機能ごとの通知カラム定義
+  NOTIFICATION_COLUMNS = {
+    diary:  { flag: :notify_diary,  time: :notify_diary_time },
+    entry:  { flag: :notify_entry,  time: :notify_entry_time },
+    health: { flag: :notify_health, time: :notify_health_time },
+    books:  { flag: :notify_books,  time: :notify_books_time }
+  }.freeze
+
   # 指定された機能の通知対象ユーザーに通知を送信
   def notify_users(feature, current_time)
-    notify_flag = "notify_#{feature}"
-    time_column = "notify_#{feature}_time"
+    columns = NOTIFICATION_COLUMNS[feature]
+    return unless columns
 
-    users = User.where(notify_flag => true)
-                .where.not(time_column => nil)
+    users = User.where(columns[:flag] => true)
+                .where.not(columns[:time] => nil)
 
     users.find_each do |user|
       # 通知時刻を比較（時:分のみ）
-      notify_time = user.send(time_column).strftime("%H:%M")
+      notify_time = user.public_send(columns[:time]).strftime("%H:%M")
       next unless notify_time == current_time
 
       # 追加条件がある場合はチェック
