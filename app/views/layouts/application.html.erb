@@ -13,6 +13,10 @@
 
     <%= yield :head %>
 
+    <% if user_signed_in? && Rails.application.credentials.dig(:webpush, :public_key).present? %>
+      <meta name="vapid-public-key" content="<%= Rails.application.credentials.dig(:webpush, :public_key) %>">
+    <% end %>
+
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">

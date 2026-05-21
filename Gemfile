@@ -21,6 +21,7 @@ gem "propshaft"
 gem "cssbundling-rails"
 gem "pg"
 gem "cloudinary"
+gem "web-push"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
