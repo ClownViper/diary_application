@@ -104,6 +104,63 @@
       </div>
     </div>
 
+    <!-- 今日の健康記録 -->
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-700">今日の健康記録</h2>
+
+        <% if @today_health_record %>
+          <%= ui_link_button "編集", edit_health_record_path(@today_health_record), variant: :compact %>
+        <% else %>
+          <%= ui_link_button "追加", new_health_record_path(date: @today), variant: :compact %>
+        <% end %>
+      </div>
+
+      <% if @today_health_record %>
+        <div class="space-y-2">
+          <% if @today_health_record.weight.present? %>
+            <p class="text-gray-700">体重：<span class="font-bold text-lg"><%= @today_health_record.weight %></span> kg</p>
+          <% end %>
+          <% if @today_health_record.body_temperature.present? %>
+            <p class="text-gray-700">体温：<span class="font-bold text-lg"><%= @today_health_record.body_temperature %></span> ℃</p>
+          <% end %>
+          <% if @today_health_record.systolic_pressure.present? && @today_health_record.diastolic_pressure.present? %>
+            <p class="text-gray-700">血圧：<span class="font-bold text-lg"><%= @today_health_record.systolic_pressure %>/<%= @today_health_record.diastolic_pressure %></span> mmHg</p>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500">記録はありません</p>
+      <% end %>
+    </div>
+
+    <!-- 最近の健康記録 -->
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-700">最近の健康記録</h2>
+        <%= ui_link_button "健康記録一覧", health_records_path, variant: :compact %>
+      </div>
+
+      <div class="space-y-3">
+        <% if @recent_health_records.any? %>
+          <% @recent_health_records.each do |r| %>
+            <div class="border-b py-2 flex justify-between">
+              <span class="text-gray-600"><%= r.date.strftime("%m/%d") %></span>
+              <span>
+                <% if r.weight.present? %>
+                  <%= r.weight %> kg
+                <% end %>
+                <% if r.body_temperature.present? %>
+                  / <%= r.body_temperature %> ℃
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-gray-500 text-sm">最近の健康記録はありません</p>
+        <% end %>
+      </div>
+    </div>
+
     <!-- 最近の出費 -->
     <div class="bg-white rounded-xl shadow-sm border p-6">
       <div class="flex items-center justify-between mb-4">

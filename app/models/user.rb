@@ -7,4 +7,5 @@ class User < ApplicationRecord
   has_many :diaries, dependent: :destroy
   has_many :expenses, dependent: :destroy
   has_many :categories, dependent: :destroy
+  has_many :health_records, dependent: :destroy
 end

@@ -1,0 +1,61 @@
+<%= render "shared/back_link", back_path: health_records_path %>
+
+<div class="max-w-4xl mx-auto py-10 mb-10">
+
+  <div class="bg-white p-6 rounded-xl shadow leading-relaxed text-gray-800 mb-8">
+
+    <p class="text-gray-500 text-sm">
+      <%= @health_record.date.strftime("%Y/%m/%d") %>
+    </p>
+
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">
+      健康記録
+    </h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-500 mb-1">体重</p>
+        <p class="text-2xl font-bold text-gray-900">
+          <%= @health_record.weight.present? ? "#{@health_record.weight} kg" : "—" %>
+        </p>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-500 mb-1">身長</p>
+        <p class="text-2xl font-bold text-gray-900">
+          <%= @health_record.height.present? ? "#{@health_record.height} cm" : "—" %>
+        </p>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-500 mb-1">体温</p>
+        <p class="text-2xl font-bold text-gray-900">
+          <%= @health_record.body_temperature.present? ? "#{@health_record.body_temperature} ℃" : "—" %>
+        </p>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-500 mb-1">血圧</p>
+        <p class="text-2xl font-bold text-gray-900">
+          <% if @health_record.systolic_pressure.present? && @health_record.diastolic_pressure.present? %>
+            <%= @health_record.systolic_pressure %>/<%= @health_record.diastolic_pressure %> mmHg
+          <% else %>
+            —
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 px-3 pt-5 pb-10 rounded-lg leading-tight text-gray-800">
+      <%= @health_record.memo.presence || "メモはありません" %>
+    </div>
+
+    <div class="flex gap-4 pt-4">
+      <%= render "shared/record_actions",
+            edit_path: edit_health_record_path(@health_record),
+            destroy_path: health_record_path(@health_record) %>
+    </div>
+
+  </div>
+
+</div>

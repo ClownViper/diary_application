@@ -1,0 +1,34 @@
+<%= render layout: "shared/form_card" do %>
+  <%= form_with model: health_record, data: { turbo: false }, class: "space-y-6" do |f| %>
+    <%= render "shared/form_errors", resource: health_record %>
+
+    <div class="!mt-2">
+      <%= render "shared/form_field", form: f, attr: :date, field_label: "日付", field_type: :date_field,
+            field_options: { placeholder: " ", class: "w-full md:max-w-[33%] h-[42px] bg-white appearance-none" } %>
+    </div>
+
+    <%= render "shared/form_field", form: f, attr: :weight, field_label: "体重 (kg)", field_type: :number_field,
+          field_options: { step: 0.1, min: 0, placeholder: "例: 65.5" } %>
+
+    <%= render "shared/form_field", form: f, attr: :height, field_label: "身長 (cm)", field_type: :number_field,
+          field_options: { step: 0.1, min: 0, placeholder: "例: 170.0" } %>
+
+    <%= render "shared/form_field", form: f, attr: :body_temperature, field_label: "体温 (℃)", field_type: :number_field,
+          field_options: { step: 0.1, min: 0, placeholder: "例: 36.5" } %>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <%= render "shared/form_field", form: f, attr: :systolic_pressure, field_label: "最高血圧 (mmHg)", field_type: :number_field,
+            field_options: { min: 0, step: 1, placeholder: "例: 120" } %>
+
+      <%= render "shared/form_field", form: f, attr: :diastolic_pressure, field_label: "最低血圧 (mmHg)", field_type: :number_field,
+            field_options: { min: 0, step: 1, placeholder: "例: 80" } %>
+    </div>
+
+    <%= render "shared/form_field", form: f, attr: :memo, field_label: "メモ", field_type: :text_area,
+          field_options: { rows: 5 } %>
+
+    <div>
+      <%= f.submit "保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+    </div>
+  <% end %>
+<% end %>

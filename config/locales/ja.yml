@@ -9,6 +9,7 @@ ja:
       expense: 出費
       category: カテゴリ
       user: ユーザー
+      health_record: 健康記録
     attributes:
       diary:
         title: タイトル
@@ -25,9 +26,21 @@ ja:
       category:
         name: カテゴリ名
         color: 表示カラー
+      health_record:
+        date: 日付
+        weight: 体重
+        height: 身長
+        body_temperature: 体温
+        systolic_pressure: 最高血圧
+        diastolic_pressure: 最低血圧
+        memo: メモ
     errors:
       models:
         diary:
+          attributes:
+            date:
+              taken: はすでに登録されています
+        health_record:
           attributes:
             date:
               taken: はすでに登録されています

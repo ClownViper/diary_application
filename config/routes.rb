@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :diaries
   resources :expenses
   resources :categories
+  resources :health_records
 
   root "dashboard#index"
 end

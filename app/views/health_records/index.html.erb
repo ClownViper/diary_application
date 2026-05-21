@@ -1,0 +1,79 @@
+<div class="max-w-4xl mx-auto py-8 mb-10">
+
+  <%= render "shared/page_header", title: "健康記録一覧", button_label: "新規作成", button_path: new_health_record_path %>
+
+  <!-- 検索フォーム -->
+  <div class="mb-6 bg-white p-4 rounded-xl shadow">
+    <%= form_with url: health_records_path, method: :get, local: true, class: "grid grid-cols-1 md:grid-cols-3 gap-4" do |f| %>
+
+      <div>
+        <label class="<%= ApplicationHelper::SEARCH_LABEL_CLASS %>">キーワード</label>
+        <%= f.text_field :q, value: params[:q],
+              placeholder: "メモを検索",
+              class: ApplicationHelper::INPUT_CLASS %>
+      </div>
+
+      <div>
+        <label class="<%= ApplicationHelper::SEARCH_LABEL_CLASS %>">日付</label>
+        <%= f.date_field :date, value: params[:date],
+              placeholder: " ",
+              class: [ApplicationHelper::INPUT_CLASS, "h-[42px] bg-white text-gray-800 appearance-none"].join(" ") %>
+      </div>
+
+      <div class="flex items-end">
+        <%= f.submit "検索", class: [ui_button_classes(variant: :primary, size: :md), "w-full"].join(" ") %>
+      </div>
+
+    <% end %>
+  </div>
+
+  <!-- テーブル風一覧 -->
+  <div class="bg-white rounded-xl shadow overflow-hidden">
+
+    <div class="hidden md:grid grid-cols-5 bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700">
+      <div>日付</div>
+      <div>体重</div>
+      <div>体温</div>
+      <div>血圧</div>
+      <div class="text-right">メモ</div>
+    </div>
+
+    <% @health_records.each do |record| %>
+      <%= link_to health_record_path(record),
+            class: "grid grid-cols-1 md:grid-cols-5 gap-1 px-4 py-3 border-b hover:bg-gray-50 transition" do %>
+
+        <div class="text-gray-600">
+          <%= record.date.strftime("%Y/%m/%d") %>
+        </div>
+
+        <div class="font-medium text-gray-900">
+          <%= record.weight.present? ? "#{record.weight} kg" : "—" %>
+        </div>
+
+        <div class="text-gray-700">
+          <%= record.body_temperature.present? ? "#{record.body_temperature} ℃" : "—" %>
+        </div>
+
+        <div class="text-gray-700">
+          <% if record.systolic_pressure.present? && record.diastolic_pressure.present? %>
+            <%= record.systolic_pressure %>/<%= record.diastolic_pressure %> mmHg
+          <% else %>
+            —
+          <% end %>
+        </div>
+
+        <div class="text-right text-gray-500 truncate">
+          <%= record.memo.present? ? record.memo.truncate(20) : "—" %>
+        </div>
+
+      <% end %>
+    <% end %>
+
+    <% if @health_records.empty? %>
+      <div class="px-4 py-6 text-center text-gray-500">
+        健康記録はありません
+      </div>
+    <% end %>
+
+  </div>
+</div>

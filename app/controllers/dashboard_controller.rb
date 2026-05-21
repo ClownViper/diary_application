@@ -15,6 +15,8 @@ class DashboardController < ApplicationController
     # 最近のデータ（ユーザー限定）
     @recent_diaries = current_user.diaries.order(date: :desc).limit(3)
     @recent_expenses = current_user.expenses.order(date: :desc).limit(3)
+    @recent_health_records = current_user.health_records.order(date: :desc).limit(3)
+    @today_health_record = current_user.health_records.find_by(date: @today)
 
     # ミニカレンダー用
     @first_day = @today.beginning_of_month
