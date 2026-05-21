@@ -1,0 +1,75 @@
+<div class="max-w-4xl mx-auto py-8 mb-10">
+
+  <%= render "shared/page_header", title: "読書ログ一覧", button_label: "新規作成", button_path: new_book_path %>
+
+  <!-- 検索フォーム -->
+  <div class="mb-6 bg-white p-4 rounded-xl shadow">
+    <%= form_with url: books_path, method: :get, local: true, class: "grid grid-cols-1 md:grid-cols-3 gap-4" do |f| %>
+
+      <div>
+        <label class="<%= ApplicationHelper::SEARCH_LABEL_CLASS %>">キーワード</label>
+        <%= f.text_field :q, value: params[:q],
+              placeholder: "タイトル・著者・メモを検索",
+              class: ApplicationHelper::INPUT_CLASS %>
+      </div>
+
+      <div>
+        <label class="<%= ApplicationHelper::SEARCH_LABEL_CLASS %>">ステータス</label>
+        <%= f.select :status,
+              Book::STATUS_LABELS.map { |k, v| [v, k] },
+              { include_blank: "すべて" },
+              class: [ApplicationHelper::INPUT_CLASS, "bg-white text-gray-700 appearance-none"].join(" ") %>
+      </div>
+
+      <div class="flex items-end">
+        <%= f.submit "検索", class: [ui_button_classes(variant: :primary, size: :md), "w-full"].join(" ") %>
+      </div>
+
+    <% end %>
+  </div>
+
+  <!-- カード一覧 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <% @books.each do |book| %>
+      <%= link_to book_path(book),
+            class: "bg-white rounded-xl shadow hover:shadow-md transition p-4 flex gap-4" do %>
+
+        <!-- 表紙画像 -->
+        <% if book.cover.attached? %>
+          <%= image_tag book.cover, class: "w-20 h-28 object-cover rounded-lg flex-shrink-0" %>
+        <% else %>
+          <div class="w-20 h-28 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-xs flex-shrink-0">
+            No Image
+          </div>
+        <% end %>
+
+        <!-- 情報 -->
+        <div class="flex flex-col min-w-0">
+          <p class="font-bold text-gray-800 truncate"><%= book.title %></p>
+          <p class="text-sm text-gray-500"><%= book.author.presence || "著者不明" %></p>
+
+          <span class="mt-1 inline-block px-2 py-0.5 rounded-full text-xs font-semibold w-fit
+            <%= case book.status
+                when 'unread' then 'bg-gray-100 text-gray-600'
+                when 'reading' then 'bg-blue-100 text-blue-700'
+                when 'finished' then 'bg-green-100 text-green-700'
+                end %>">
+            <%= book.status_label %>
+          </span>
+
+          <% if book.memo.present? %>
+            <p class="text-xs text-gray-500 mt-1 truncate"><%= book.memo.truncate(30) %></p>
+          <% end %>
+        </div>
+
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @books.empty? %>
+    <div class="bg-white rounded-xl shadow p-6 text-center text-gray-500">
+      読書ログはありません
+    </div>
+  <% end %>
+
+</div>
