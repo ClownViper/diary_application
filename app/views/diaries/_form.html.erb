@@ -11,16 +11,16 @@
     <%= render "shared/form_field", form: f, attr: :body, field_label: "本文", field_type: :text_area,
           field_options: { rows: 8 } %>
 
-    <% if diary.image.attached? %>
-      <div class="mb-4">
-        <p class="text-sm text-gray-600 mb-1">現在の画像</p>
-        <%= image_tag diary.image, class: "w-40 h-40 object-cover rounded-lg shadow" %>
-      </div>
-    <% end %>
-
+    <%# ファイル選択UI（読書ログと統一） %>
     <div>
       <%= f.label :image, "画像", class: ApplicationHelper::LABEL_CLASS %>
-      <%= f.file_field :image, class: "w-full", accept: "image/jpeg,image/png,image/webp" %>
+      <%= f.file_field :image, accept: "image/png,image/jpeg,image/webp",
+            class: ApplicationHelper::FILE_INPUT_CLASS %>
+      <% if diary.image.attached? %>
+        <div class="mt-2">
+          <%= image_tag diary.image, class: "w-20 h-28 object-cover rounded" %>
+        </div>
+      <% end %>
       <% if diary.errors[:image].any? %>
         <p class="mt-1 text-sm text-red-600"><%= diary.errors[:image].first %></p>
       <% end %>
