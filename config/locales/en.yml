@@ -1,31 +1,86 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
+# 英語翻訳ファイル
+# アプリ全体の英語ロケール対応
 
 en:
-  hello: "Hello world"
+  shared:
+    back_to_index: "← Back to list"
+    delete_confirm: "Are you sure you want to delete?"
+
+  activerecord:
+    models:
+      diary: Diary
+      expense: Expense
+      category: Category
+      user: User
+      health_log: Health Log
+      book: Book
+      schedule: Schedule
+      push_subscription: Push Subscription
+    attributes:
+      diary:
+        title: Title
+        body: Body
+        date: Date
+        image: Image
+      expense:
+        name: Name
+        amount: Amount
+        date: Date
+        memo: Memo
+        category: Category
+        category_id: Category
+      category:
+        name: Category Name
+        color: Display Color
+      health_log:
+        date: Date
+        weight: Weight
+        condition: Condition
+        memo: Memo
+      book:
+        title: Book Title
+        author: Author
+        status: Status
+        started_on: Started On
+        finished_on: Finished On
+        memo: Review
+        cover: Cover Image
+      schedule:
+        title: Title
+        date: Date
+        start_time: Start Time
+        end_time: End Time
+        memo: Memo
+    errors:
+      models:
+        diary:
+          attributes:
+            date:
+              taken: has already been registered
+        health_log:
+          attributes:
+            date:
+              taken: has already been registered
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        blank: can't be blank
+        taken: has already been taken
+        not_a_number: is not a number
+        greater_than: must be greater than %{count}
+        invalid_hex: must be in #RRGGBB format
+
+  errors:
+    form_header:
+      one: "Could not save %{model} (1 error)"
+      other: "Could not save %{model} (%{count} errors)"
+    messages:
+      not_saved:
+        one: "1 error prevented this %{resource} from being saved"
+        other: "%{count} errors prevented this %{resource} from being saved"
+
+  notifications:
+    diary: "How about writing today's diary?"
+    entry: "Let's record today's expenses"
+    health: "Let's record today's weight and condition"
+    books: "How about continuing your reading?"
+    schedule: "You have an upcoming event: '%{title}'"
