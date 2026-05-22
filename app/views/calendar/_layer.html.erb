@@ -4,166 +4,174 @@
 
 <div class="space-y-4">
 
-  <!-- 日記エリア -->
-  <div>
-    <div class="flex items-center justify-between bg-indigo-600 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-indigo-200">●</span>
-        <span class="font-semibold">日記</span>
+  <%# 日記エリア（コンテンツ設定で制御） %>
+  <% if current_user.feature_diary %>
+    <div>
+      <div class="flex items-center justify-between bg-indigo-600 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-indigo-200">●</span>
+          <span class="font-semibold">日記</span>
+        </div>
+        <% unless @diary.present? %>
+          <%= link_to "+追加", new_diary_path(date: @date), class: "text-white text-sm" %>
+        <% end %>
       </div>
-      <% unless @diary.present? %>
-        <%= link_to "+追加", new_diary_path(date: @date), class: "text-white text-sm" %>
-      <% end %>
+
+      <div class="bg-white border border-indigo-200 rounded-b-lg p-0">
+        <% if @diary.present? %>
+          <%= link_to diary_path(@diary), class: "block p-4 hover:bg-indigo-50 transition rounded-b-lg" do %>
+            <div class="flex gap-4">
+              <% if @diary.image.attached? %>
+                <%= image_tag @diary.image, class: "w-24 h-24 object-cover rounded-lg flex-shrink-0" %>
+              <% else %>
+                <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+                  No Image
+                </div>
+              <% end %>
+              <div class="flex flex-col min-w-0">
+                <p class="font-semibold text-gray-800 text-lg truncate"><%= @diary.title %></p>
+                <p class="text-sm text-gray-500"><%= @diary.date.strftime("%Y/%m/%d") %></p>
+                <p class="text-gray-700 text-sm mt-1 line-clamp-3"><%= @diary.body %></p>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="p-4">
+            <p class="text-gray-600 text-sm">この日の日記はありません。</p>
+          </div>
+        <% end %>
+      </div>
     </div>
 
-    <div class="bg-white border border-indigo-200 rounded-b-lg p-0">
-      <% if @diary.present? %>
-        <%= link_to diary_path(@diary), class: "block p-4 hover:bg-indigo-50 transition rounded-b-lg" do %>
-          <div class="flex gap-4">
-            <% if @diary.image.attached? %>
-              <%= image_tag @diary.image, class: "w-24 h-24 object-cover rounded-lg flex-shrink-0" %>
+    <hr>
+  <% end %>
+
+  <%# 出費エリア（コンテンツ設定で制御） %>
+  <% if current_user.feature_expense %>
+    <div>
+      <div class="flex items-center justify-between bg-emerald-600 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-emerald-200">▲</span>
+          <span class="font-semibold">家計簿</span>
+        </div>
+        <%= link_to "+追加", new_expense_path(date: @date), class: "text-white text-sm" %>
+      </div>
+
+      <%# 最大1件表示、複数時は「すべて表示」リンク %>
+      <div class="bg-white border border-emerald-300 rounded-b-lg p-4 space-y-3">
+        <% if @expenses.any? %>
+          <% first_expense = @expenses.first %>
+          <%= link_to expense_path(first_expense),
+                class: "block border rounded-lg p-3 shadow-sm bg-emerald-50 hover:bg-emerald-100 transition" do %>
+            <div class="flex justify-between text-sm font-semibold">
+              <span><%= first_expense.name.presence || "（タイトルなし）" %></span>
+              <span><%= number_to_currency(first_expense.amount, unit: "¥") %></span>
+            </div>
+            <div class="text-xs text-gray-600 mt-1">
+              <%= first_expense.category&.name.presence || "未分類" %>
+            </div>
+          <% end %>
+
+          <div class="flex justify-between items-center mt-2">
+            <% if @expenses.size > 1 %>
+              <%= link_to "すべて表示（#{@expenses.size}件）", expenses_path(date: @date), class: "text-emerald-600 underline text-sm" %>
             <% else %>
-              <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-                No Image
-              </div>
+              <span></span>
             <% end %>
-            <div class="flex flex-col min-w-0">
-              <p class="font-semibold text-gray-800 text-lg truncate"><%= @diary.title %></p>
-              <p class="text-sm text-gray-500"><%= @diary.date.strftime("%Y/%m/%d") %></p>
-              <p class="text-gray-700 text-sm mt-1 line-clamp-3"><%= @diary.body %></p>
+            <div class="text-right font-bold text-lg">
+              合計: <%= number_to_currency(@expenses.sum(&:amount), unit: "¥") %>
             </div>
           </div>
+        <% else %>
+          <p class="text-gray-600 text-sm">この日の出費はありません。</p>
         <% end %>
-      <% else %>
-        <div class="p-4">
-          <p class="text-gray-600 text-sm">この日の日記はありません。</p>
+      </div>
+    </div>
+
+    <hr>
+  <% end %>
+
+  <%# 体調ログエリア（コンテンツ設定で制御） %>
+  <% if current_user.feature_health_log %>
+    <div>
+      <div class="flex items-center justify-between bg-rose-600 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-rose-200">◆</span>
+          <span class="font-semibold">体調ログ</span>
         </div>
-      <% end %>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- 出費エリア -->
-  <div>
-    <div class="flex items-center justify-between bg-emerald-600 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-emerald-200">▲</span>
-        <span class="font-semibold">家計簿</span>
-      </div>
-      <%= link_to "+追加", new_expense_path(date: @date), class: "text-white text-sm" %>
-    </div>
-
-    <%# 最大1件表示、複数時は「すべて表示」リンク %>
-    <div class="bg-white border border-emerald-300 rounded-b-lg p-4 space-y-3">
-      <% if @expenses.any? %>
-        <% first_expense = @expenses.first %>
-        <%= link_to expense_path(first_expense),
-              class: "block border rounded-lg p-3 shadow-sm bg-emerald-50 hover:bg-emerald-100 transition" do %>
-          <div class="flex justify-between text-sm font-semibold">
-            <span><%= first_expense.name.presence || "（タイトルなし）" %></span>
-            <span><%= number_to_currency(first_expense.amount, unit: "¥") %></span>
-          </div>
-          <div class="text-xs text-gray-600 mt-1">
-            <%= first_expense.category&.name.presence || "未分類" %>
-          </div>
+        <% unless @health_log.present? %>
+          <%= link_to "+追加", new_health_log_path(date: @date), class: "text-white text-sm" %>
         <% end %>
+      </div>
 
-        <div class="flex justify-between items-center mt-2">
-          <% if @expenses.size > 1 %>
-            <%= link_to "すべて表示（#{@expenses.size}件）", expenses_path(date: @date), class: "text-emerald-600 underline text-sm" %>
-          <% else %>
-            <span></span>
+      <div class="bg-white border border-rose-200 rounded-b-lg p-4">
+        <% if @health_log.present? %>
+          <%= link_to health_log_path(@health_log), class: "block hover:bg-rose-50 transition rounded-lg p-2" do %>
+            <div class="flex gap-6 text-sm">
+              <% if @health_log.weight.present? %>
+                <div>
+                  <span class="text-gray-500">体重:</span>
+                  <span class="font-semibold"><%= @health_log.weight %> kg</span>
+                </div>
+              <% end %>
+              <% if @health_log.condition.present? %>
+                <div>
+                  <span class="text-gray-500">体調:</span>
+                  <span class="font-semibold"><%= @health_log.condition_label %></span>
+                </div>
+              <% end %>
+            </div>
+            <% if @health_log.memo.present? %>
+              <p class="text-xs text-gray-500 mt-1"><%= @health_log.memo.truncate(30) %></p>
+            <% end %>
           <% end %>
-          <div class="text-right font-bold text-lg">
-            合計: <%= number_to_currency(@expenses.sum(&:amount), unit: "¥") %>
-          </div>
+        <% else %>
+          <p class="text-gray-600 text-sm">この日の体調ログはありません。</p>
+        <% end %>
+      </div>
+    </div>
+
+    <hr>
+  <% end %>
+
+  <%# スケジュールエリア（コンテンツ設定で制御） %>
+  <% if current_user.feature_schedule %>
+    <div>
+      <div class="flex items-center justify-between bg-amber-500 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-amber-200">★</span>
+          <span class="font-semibold">スケジュール</span>
         </div>
-      <% else %>
-        <p class="text-gray-600 text-sm">この日の出費はありません。</p>
-      <% end %>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- 体調ログエリア -->
-  <div>
-    <div class="flex items-center justify-between bg-rose-600 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-rose-200">◆</span>
-        <span class="font-semibold">体調ログ</span>
+        <%= link_to "+追加", new_schedule_path(date: @date), class: "text-white text-sm" %>
       </div>
-      <% unless @health_log.present? %>
-        <%= link_to "+追加", new_health_log_path(date: @date), class: "text-white text-sm" %>
-      <% end %>
-    </div>
 
-    <div class="bg-white border border-rose-200 rounded-b-lg p-4">
-      <% if @health_log.present? %>
-        <%= link_to health_log_path(@health_log), class: "block hover:bg-rose-50 transition rounded-lg p-2" do %>
-          <div class="flex gap-6 text-sm">
-            <% if @health_log.weight.present? %>
-              <div>
-                <span class="text-gray-500">体重:</span>
-                <span class="font-semibold"><%= @health_log.weight %> kg</span>
-              </div>
-            <% end %>
-            <% if @health_log.condition.present? %>
-              <div>
-                <span class="text-gray-500">体調:</span>
-                <span class="font-semibold"><%= @health_log.condition_label %></span>
-              </div>
-            <% end %>
-          </div>
-          <% if @health_log.memo.present? %>
-            <p class="text-xs text-gray-500 mt-1"><%= @health_log.memo.truncate(30) %></p>
+      <%# 最大1件表示、複数時は「すべて表示」リンク %>
+      <div class="bg-white border border-amber-200 rounded-b-lg p-4 space-y-2">
+        <% if @schedules.any? %>
+          <% first_schedule = @schedules.first %>
+          <%= link_to schedule_path(first_schedule),
+                class: "block border rounded-lg p-3 shadow-sm bg-amber-50 hover:bg-amber-100 transition" do %>
+            <div class="flex justify-between text-sm">
+              <span class="font-semibold"><%= first_schedule.title %></span>
+              <% if first_schedule.start_time.present? %>
+                <span class="text-gray-600">
+                  <%= first_schedule.start_time.strftime("%H:%M") %>
+                  <% if first_schedule.end_time.present? %>
+                    〜 <%= first_schedule.end_time.strftime("%H:%M") %>
+                  <% end %>
+                </span>
+              <% end %>
+            </div>
           <% end %>
+
+          <% if @schedules.size > 1 %>
+            <%= link_to "すべて表示（#{@schedules.size}件）", schedules_path(date: @date), class: "text-amber-600 underline text-sm" %>
+          <% end %>
+        <% else %>
+          <p class="text-gray-600 text-sm">この日の予定はありません。</p>
         <% end %>
-      <% else %>
-        <p class="text-gray-600 text-sm">この日の体調ログはありません。</p>
-      <% end %>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- スケジュールエリア -->
-  <div>
-    <div class="flex items-center justify-between bg-amber-500 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-amber-200">★</span>
-        <span class="font-semibold">スケジュール</span>
       </div>
-      <%= link_to "+追加", new_schedule_path(date: @date), class: "text-white text-sm" %>
     </div>
-
-    <%# 最大1件表示、複数時は「すべて表示」リンク %>
-    <div class="bg-white border border-amber-200 rounded-b-lg p-4 space-y-2">
-      <% if @schedules.any? %>
-        <% first_schedule = @schedules.first %>
-        <%= link_to schedule_path(first_schedule),
-              class: "block border rounded-lg p-3 shadow-sm bg-amber-50 hover:bg-amber-100 transition" do %>
-          <div class="flex justify-between text-sm">
-            <span class="font-semibold"><%= first_schedule.title %></span>
-            <% if first_schedule.start_time.present? %>
-              <span class="text-gray-600">
-                <%= first_schedule.start_time.strftime("%H:%M") %>
-                <% if first_schedule.end_time.present? %>
-                  〜 <%= first_schedule.end_time.strftime("%H:%M") %>
-                <% end %>
-              </span>
-            <% end %>
-          </div>
-        <% end %>
-
-        <% if @schedules.size > 1 %>
-          <%= link_to "すべて表示（#{@schedules.size}件）", schedules_path(date: @date), class: "text-amber-600 underline text-sm" %>
-        <% end %>
-      <% else %>
-        <p class="text-gray-600 text-sm">この日の予定はありません。</p>
-      <% end %>
-    </div>
-  </div>
+  <% end %>
 
 </div>
