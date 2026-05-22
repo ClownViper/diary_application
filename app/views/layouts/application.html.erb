@@ -37,23 +37,7 @@
         <h1 class="text-2xl font-bold text-white mb-6">MyDiary</h1>
 
         <nav>
-          <%= sidebar_link_to "ダッシュボード", root_path %>
-
-          <%= sidebar_link_to "日記一覧", diaries_path %>
-
-          <%= sidebar_link_to "出費一覧", expenses_path %>
-
-          <%= sidebar_link_to "カテゴリ", categories_path %>
-
-          <%= sidebar_link_to "カレンダー", calendar_path %>
-
-          <%= sidebar_link_to "体調ログ", health_logs_path %>
-
-          <%= sidebar_link_to "読書ログ", books_path %>
-
-          <%= sidebar_link_to "スケジュール", schedules_path %>
-
-          <%= sidebar_link_to "通知設定", settings_path %>
+          <%= render "shared/sidebar_nav" %>
         </nav>
 
         <div class="mt-auto border-t border-blue-500 pt-4">
@@ -82,23 +66,7 @@
                   transform -translate-x-full transition-transform z-40">
 
         <nav class="space-y-2 mt-10 mb-10">
-          <%= sidebar_link_to "ダッシュボード", root_path %>
-
-          <%= sidebar_link_to "日記一覧", diaries_path %>
-
-          <%= sidebar_link_to "出費一覧", expenses_path %>
-
-          <%= sidebar_link_to "カテゴリ", categories_path %>
-
-          <%= sidebar_link_to "カレンダー", calendar_path %>
-
-          <%= sidebar_link_to "体調ログ", health_logs_path %>
-
-          <%= sidebar_link_to "読書ログ", books_path %>
-
-          <%= sidebar_link_to "スケジュール", schedules_path %>
-
-          <%= sidebar_link_to "通知設定", settings_path %>
+          <%= render "shared/sidebar_nav" %>
         </nav>
 
         <div class="mt-auto border-t border-blue-500 pt-4">
@@ -142,6 +110,14 @@
           };
         }
       });
+
+      // 設定サブメニューの開閉
+      function toggleSettingsMenu(button) {
+        const submenu = button.nextElementSibling;
+        const arrow = button.querySelector(".settings-arrow");
+        submenu.classList.toggle("hidden");
+        arrow.style.transform = submenu.classList.contains("hidden") ? "" : "rotate(180deg)";
+      }
     </script>
 
     <!-- Calendar Layer -->
