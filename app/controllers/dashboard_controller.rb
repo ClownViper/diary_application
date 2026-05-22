@@ -12,6 +12,9 @@ class DashboardController < ApplicationController
     @monthly_expenses = current_user.expenses.where(date: @today.all_month)
     @monthly_total = @monthly_expenses.sum(:amount)
 
+    # 出費目安金額（コンテンツ設定から取得）
+    @expense_target = current_user.expense_target
+
     # 最近のデータ（ユーザー限定）
     @recent_diaries = current_user.diaries.order(date: :desc).limit(3)
     @recent_expenses = current_user.expenses.order(date: :desc).limit(3)

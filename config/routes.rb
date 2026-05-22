@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :books
   resources :schedules
   resource :settings, only: [ :show, :update ]
+  resource :content_settings, only: [ :show, :update ]
 
   # Web Push通知サブスクリプション登録
   resources :push_subscriptions, only: [ :create ]

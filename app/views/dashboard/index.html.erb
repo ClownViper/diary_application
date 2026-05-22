@@ -32,12 +32,13 @@
         <%= number_with_delimiter(@monthly_total) %> 円
       </p>
 
+      <%# 出費目安金額に基づく進捗バー（コンテンツ設定で変更可能） %>
       <div class="w-full bg-gray-200 rounded-full h-3 mt-4">
         <div class="bg-red-400 h-3 rounded-full"
-            style="width: <%= [(@monthly_total / 150000.0 * 100).round, 100].min %>%"></div>
+            style="width: <%= @expense_target > 0 ? [(@monthly_total / @expense_target.to_f * 100).round, 100].min : 0 %>%"></div>
       </div>
 
-      <p class="text-sm text-gray-500 mt-1">※ 目安：15万円/月</p>
+      <p class="text-sm text-gray-500 mt-1">※ 目安：<%= number_with_delimiter(@expense_target) %>円/月</p>
     </div>
 
     <!-- 今日の日記 -->
