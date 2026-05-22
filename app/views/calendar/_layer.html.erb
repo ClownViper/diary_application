@@ -54,25 +54,24 @@
       <%= link_to "+追加", new_expense_path(date: @date), class: "text-white text-sm" %>
     </div>
 
+    <%# 最大1件表示、複数時は「すべて表示」リンク %>
     <div class="bg-white border border-emerald-300 rounded-b-lg p-4 space-y-3">
       <% if @expenses.any? %>
-        <% latest_expenses = @expenses.first(3) %>
-        <% latest_expenses.each do |exp| %>
-          <%= link_to expense_path(exp),
-                class: "block border rounded-lg p-3 shadow-sm bg-emerald-50 hover:bg-emerald-100 transition" do %>
-            <div class="flex justify-between text-sm font-semibold">
-              <span><%= exp.name.presence || "（タイトルなし）" %></span>
-              <span><%= number_to_currency(exp.amount, unit: "¥") %></span>
-            </div>
-            <div class="text-xs text-gray-600 mt-1">
-              <%= exp.category&.name.presence || "未分類" %>
-            </div>
-          <% end %>
+        <% first_expense = @expenses.first %>
+        <%= link_to expense_path(first_expense),
+              class: "block border rounded-lg p-3 shadow-sm bg-emerald-50 hover:bg-emerald-100 transition" do %>
+          <div class="flex justify-between text-sm font-semibold">
+            <span><%= first_expense.name.presence || "（タイトルなし）" %></span>
+            <span><%= number_to_currency(first_expense.amount, unit: "¥") %></span>
+          </div>
+          <div class="text-xs text-gray-600 mt-1">
+            <%= first_expense.category&.name.presence || "未分類" %>
+          </div>
         <% end %>
 
-        <div class="flex justify-between items-center mt-4">
-          <% if @expenses.size > 3 %>
-            <%= link_to "すべて表示", expenses_path(date: @date), class: "text-emerald-600 underline text-sm" %>
+        <div class="flex justify-between items-center mt-2">
+          <% if @expenses.size > 1 %>
+            <%= link_to "すべて表示（#{@expenses.size}件）", expenses_path(date: @date), class: "text-emerald-600 underline text-sm" %>
           <% else %>
             <span></span>
           <% end %>
@@ -81,7 +80,7 @@
           </div>
         </div>
       <% else %>
-        <p class="text-gray-600 text-sm">この日の出費はありません</p>
+        <p class="text-gray-600 text-sm">この日の出費はありません。</p>
       <% end %>
     </div>
   </div>
@@ -139,26 +138,30 @@
       <%= link_to "+追加", new_schedule_path(date: @date), class: "text-white text-sm" %>
     </div>
 
+    <%# 最大1件表示、複数時は「すべて表示」リンク %>
     <div class="bg-white border border-amber-200 rounded-b-lg p-4 space-y-2">
       <% if @schedules.any? %>
-        <% @schedules.each do |schedule| %>
-          <%= link_to schedule_path(schedule),
-                class: "block border rounded-lg p-3 shadow-sm bg-amber-50 hover:bg-amber-100 transition" do %>
-            <div class="flex justify-between text-sm">
-              <span class="font-semibold"><%= schedule.title %></span>
-              <% if schedule.start_time.present? %>
-                <span class="text-gray-600">
-                  <%= schedule.start_time.strftime("%H:%M") %>
-                  <% if schedule.end_time.present? %>
-                    〜 <%= schedule.end_time.strftime("%H:%M") %>
-                  <% end %>
-                </span>
-              <% end %>
-            </div>
-          <% end %>
+        <% first_schedule = @schedules.first %>
+        <%= link_to schedule_path(first_schedule),
+              class: "block border rounded-lg p-3 shadow-sm bg-amber-50 hover:bg-amber-100 transition" do %>
+          <div class="flex justify-between text-sm">
+            <span class="font-semibold"><%= first_schedule.title %></span>
+            <% if first_schedule.start_time.present? %>
+              <span class="text-gray-600">
+                <%= first_schedule.start_time.strftime("%H:%M") %>
+                <% if first_schedule.end_time.present? %>
+                  〜 <%= first_schedule.end_time.strftime("%H:%M") %>
+                <% end %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if @schedules.size > 1 %>
+          <%= link_to "すべて表示（#{@schedules.size}件）", schedules_path(date: @date), class: "text-amber-600 underline text-sm" %>
         <% end %>
       <% else %>
-        <p class="text-gray-600 text-sm">この日の予定はありません</p>
+        <p class="text-gray-600 text-sm">この日の予定はありません。</p>
       <% end %>
     </div>
   </div>

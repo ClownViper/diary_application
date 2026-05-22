@@ -144,8 +144,9 @@
     <!-- Calendar Layer -->
     <div id="calendarLayer"
          class="fixed top-0 left-0 w-screen h-screen bg-black/50 hidden items-center justify-center z-[99999]">
+      <%# レイヤーの高さ制限：画面の80%まで、スクロール対応 %>
       <div id="calendarLayerContent"
-           class="bg-white w-[90%] max-w-[600px] p-6 rounded-xl relative">
+           class="bg-white w-[90%] max-w-[600px] max-h-[80vh] overflow-y-auto p-6 rounded-xl relative">
         <button onclick="closeCalendarLayer()"
                 class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center
                     text-2xl font-bold text-gray-600 hover:text-black
