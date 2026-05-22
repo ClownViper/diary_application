@@ -18,6 +18,9 @@ module DiaryApp
     config.autoload_lib(ignore: %w[assets tasks])
     config.assets.initialize_on_precompile = false
 
+    # タイムゾーンを日本時間に設定
+    config.time_zone = "Asia/Tokyo"
+
     config.i18n.default_locale = :ja
     config.i18n.available_locales = [:ja, :en]
   end
