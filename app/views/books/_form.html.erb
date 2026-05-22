@@ -18,11 +18,9 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <%= render "shared/form_field", form: f, attr: :started_on, field_label: "読み始め日", field_type: :date_field,
-            field_options: { placeholder: " ", class: "w-full h-[42px] bg-white appearance-none" } %>
+      <%= render "shared/form_field", form: f, attr: :started_on, field_label: "読み始め日", field_type: :date_field %>
 
-      <%= render "shared/form_field", form: f, attr: :finished_on, field_label: "読了日", field_type: :date_field,
-            field_options: { placeholder: " ", class: "w-full h-[42px] bg-white appearance-none" } %>
+      <%= render "shared/form_field", form: f, attr: :finished_on, field_label: "読了日", field_type: :date_field %>
     </div>
 
     <%= render "shared/form_field", form: f, attr: :memo, field_label: "感想", field_type: :text_area,

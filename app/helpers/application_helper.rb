@@ -31,7 +31,11 @@ module ApplicationHelper
     md: "px-4 py-2",
     lg: "px-6 py-2"
   }.freeze
-  INPUT_CLASS = "w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200".freeze
+  INPUT_CLASS = "w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400".freeze
+  # 日付・時刻入力の共通スタイル（iPhoneのブレ対策：高さ固定・appearance-none）
+  DATE_INPUT_CLASS = "w-full md:max-w-[33%] h-[42px] bg-white appearance-none".freeze
+  # ファイル選択UIの共通スタイル（読書ログのUIを基準）
+  FILE_INPUT_CLASS = "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100".freeze
   LABEL_CLASS = "block text-lg font-semibold mb-1".freeze
 	SEARCH_LABEL_CLASS = "block text-sm font-semibold mb-1".freeze
   def ui_button_classes(variant: :primary, size: :md)
