@@ -34,14 +34,17 @@
       <%= link_to diary_path(diary),
             class: "block bg-white rounded-xl border shadow-sm hover:shadow-md transition p-4 flex gap-4" do %>
 
-        <% if diary.image.attached? %>
-          <%= image_tag diary.image,
-                class: "w-24 h-24 object-cover rounded-lg flex-shrink-0" %>
-        <% else %>
-          <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-            No Image
-          </div>
-        <% end %>
+        <%# 画像エリアのサイズを統一（noimage/写真で同じサイズ） %>
+        <div class="w-24 h-24 flex-shrink-0">
+          <% if diary.image.attached? %>
+            <%= image_tag diary.image,
+                  class: "w-full h-full object-cover rounded-lg" %>
+          <% else %>
+            <div class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+              No Image
+            </div>
+          <% end %>
+        </div>
 
         <div class="flex flex-col min-w-0">
           <p class="font-semibold text-gray-800 text-lg truncate">
