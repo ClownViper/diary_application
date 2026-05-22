@@ -1,4 +1,5 @@
 <div class="max-w-4xl mx-auto py-8 mb-10">
+  <%= render "shared/flash" %>
 
   <!-- 月切り替え -->
   <div class="flex justify-between items-center mb-2 bg-blue-700 text-white p-2.5 rounded-lg">
@@ -68,33 +69,19 @@
             <%= day.day %>
           </div>
 
-          <div class="mt-1 text-left space-y-0.5 text-xs">
+          <%# PC版：記号のみ表示（テキストなし） %>
+          <div class="mt-1 flex flex-wrap gap-1 text-sm">
             <% if diary.present? %>
-              <div class="flex items-center gap-1 text-indigo-700 font-medium bg-indigo-100 rounded-lg px-1">
-                <span class="text-indigo-500">●</span>
-                <span>日記</span>
-              </div>
+              <span class="text-indigo-500" title="日記">●</span>
             <% end %>
-
             <% if expenses.present? %>
-              <div class="flex items-center gap-1 text-emerald-700 font-medium bg-emerald-100 rounded-lg px-1">
-                <span class="text-emerald-500">▲</span>
-                <span><%= number_with_delimiter(expenses.sum(&:amount)) %>円</span>
-              </div>
+              <span class="text-emerald-500" title="家計簿">▲</span>
             <% end %>
-
             <% if health_log.present? %>
-              <div class="flex items-center gap-1 text-rose-700 font-medium bg-rose-100 rounded-lg px-1">
-                <span class="text-rose-500">◆</span>
-                <span>体調</span>
-              </div>
+              <span class="text-rose-500" title="体調">◆</span>
             <% end %>
-
             <% if schedules.present? %>
-              <div class="flex items-center gap-1 text-amber-700 font-medium bg-amber-100 rounded-lg px-1">
-                <span class="text-amber-500">★</span>
-                <span><%= schedules.size %>件</span>
-              </div>
+              <span class="text-amber-500" title="予定">★</span>
             <% end %>
           </div>
         </div>
@@ -141,37 +128,20 @@
 
         </div>
 
-        <!-- 右：各種アイコン（3/4） -->
-        <div class="col-span-3 text-left text-sm space-y-1">
-
+        <%# スマホ版：記号のみ横並び表示 %>
+        <div class="col-span-3 flex items-center gap-2 text-lg">
           <% if diary.present? %>
-            <div class="flex items-center gap-1 text-indigo-700 font-medium truncate bg-indigo-100 rounded-lg px-1">
-              <span class="text-indigo-500">●</span>
-              <span>日記</span>
-            </div>
+            <span class="text-indigo-500">●</span>
           <% end %>
-
           <% if expenses.present? %>
-            <div class="flex items-center gap-1 text-emerald-700 font-medium truncate bg-emerald-100 rounded-lg px-1">
-              <span class="text-emerald-500">▲</span>
-              <span><%= number_with_delimiter(expenses.sum(&:amount)) %> 円</span>
-            </div>
+            <span class="text-emerald-500">▲</span>
           <% end %>
-
           <% if health_log.present? %>
-            <div class="flex items-center gap-1 text-rose-700 font-medium truncate bg-rose-100 rounded-lg px-1">
-              <span class="text-rose-500">◆</span>
-              <span>体調</span>
-            </div>
+            <span class="text-rose-500">◆</span>
           <% end %>
-
           <% if schedules.present? %>
-            <div class="flex items-center gap-1 text-amber-700 font-medium truncate bg-amber-100 rounded-lg px-1">
-              <span class="text-amber-500">★</span>
-              <span><%= schedules.size %>件の予定</span>
-            </div>
+            <span class="text-amber-500">★</span>
           <% end %>
-
         </div>
 
       </div>

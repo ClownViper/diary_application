@@ -1,0 +1,54 @@
+<div class="max-w-4xl mx-auto py-8 mb-10">
+
+  <h1 class="text-2xl font-bold mb-6">コンテンツ設定</h1>
+  <%= render "shared/flash" %>
+
+  <%= form_with model: @user, url: content_settings_path, method: :patch, data: { turbo: false }, class: "space-y-6" do |f| %>
+
+    <%# 機能ON/OFF設定 %>
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-lg font-bold text-gray-700 mb-4">機能の表示切替</h2>
+      <p class="text-sm text-gray-500 mb-4">使わない機能はOFFにするとサイドバーやダッシュボードから非表示になります。</p>
+
+      <div class="space-y-4">
+        <%# 各機能のトグルスイッチ %>
+        <% [
+          [:feature_diary, "📘 日記", "日記の作成・管理"],
+          [:feature_expense, "💴 家計簿", "出費の記録・カテゴリ管理"],
+          [:feature_health_log, "⚖️ 体調ログ", "体重・体調の記録"],
+          [:feature_book, "📚 読書ログ", "読書記録の管理"],
+          [:feature_schedule, "🗓 スケジュール", "予定の管理"]
+        ].each do |attr, label, description| %>
+          <div class="flex items-center justify-between py-2 border-b last:border-b-0">
+            <div>
+              <p class="font-semibold text-gray-700"><%= label %></p>
+              <p class="text-xs text-gray-500"><%= description %></p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box attr, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# 出費目安金額設定 %>
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-lg font-bold text-gray-700 mb-4">出費目安金額</h2>
+      <p class="text-sm text-gray-500 mb-4">ダッシュボードの進捗バーで使用する月間の目安金額です。</p>
+
+      <div class="flex items-center gap-2">
+        <%= f.number_field :expense_target, min: 0, step: 1000,
+              class: "border rounded-lg px-3 py-2 w-40 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-400",
+              placeholder: "150000" %>
+        <span class="text-gray-600">円 / 月</span>
+      </div>
+    </div>
+
+    <div>
+      <%= f.submit "設定を保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+    </div>
+
+  <% end %>
+</div>

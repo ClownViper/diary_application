@@ -1,5 +1,6 @@
 <div class="max-w-4xl mx-auto py-8 mb-10">
   <h1 class="text-2xl font-bold mb-6">ダッシュボード</h1>
+  <%= render "shared/flash" %>
 
   <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
 
@@ -31,12 +32,13 @@
         <%= number_with_delimiter(@monthly_total) %> 円
       </p>
 
+      <%# 出費目安金額に基づく進捗バー（コンテンツ設定で変更可能） %>
       <div class="w-full bg-gray-200 rounded-full h-3 mt-4">
         <div class="bg-red-400 h-3 rounded-full"
-            style="width: <%= [(@monthly_total / 150000.0 * 100).round, 100].min %>%"></div>
+            style="width: <%= @expense_target > 0 ? [(@monthly_total / @expense_target.to_f * 100).round, 100].min : 0 %>%"></div>
       </div>
 
-      <p class="text-sm text-gray-500 mt-1">※ 目安：15万円/月</p>
+      <p class="text-sm text-gray-500 mt-1">※ 目安：<%= number_with_delimiter(@expense_target) %>円/月</p>
     </div>
 
     <!-- 今日の日記 -->
@@ -56,7 +58,7 @@
         <p class="text-sm text-gray-500"><%= @today_diary.date.strftime("%Y/%m/%d") %></p>
         <p class="mt-2 text-gray-700 whitespace-pre-line"><%= @today_diary.body.truncate(80) %></p>
       <% else %>
-        <p class="text-gray-500">日記はありません</p>
+        <p class="text-gray-500">日記はありません。</p>
       <% end %>
     </div>
 
@@ -82,7 +84,7 @@
           <% end %>
         </div>
       <% else %>
-        <p class="text-gray-500">体調ログはありません</p>
+        <p class="text-gray-500">体調ログはありません。</p>
       <% end %>
     </div>
 
@@ -104,7 +106,7 @@
             </div>
           <% end %>
         <% else %>
-          <p class="text-gray-500 text-sm">今日の予定はありません</p>
+          <p class="text-gray-500 text-sm">今日の予定はありません。</p>
         <% end %>
       </div>
     </div>
@@ -125,7 +127,7 @@
             </div>
           <% end %>
         <% else %>
-          <p class="text-gray-500 text-sm">読書中の本はありません</p>
+          <p class="text-gray-500 text-sm">読書中の本はありません。</p>
         <% end %>
       </div>
     </div>
@@ -190,7 +192,7 @@
             </div>
           <% end %>
         <% else %>
-          <p class="text-gray-500 text-sm">最近の出費はありません</p>
+          <p class="text-gray-500 text-sm">最近の出費はありません。</p>
         <% end %>
       </div>
     </div>
@@ -211,7 +213,7 @@
             </div>
           <% end %>
         <% else %>
-          <p class="text-gray-500 text-sm">最近の日記はありません</p>
+          <p class="text-gray-500 text-sm">最近の日記はありません。</p>
         <% end %>
       </div>
     </div>

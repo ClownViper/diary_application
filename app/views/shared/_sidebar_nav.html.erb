@@ -1,0 +1,43 @@
+<%# サイドバーナビゲーション（PC・モバイル共通） %>
+<%# コンテンツ設定のフラグに応じて各機能リンクの表示を制御 %>
+
+<%= sidebar_link_to "ダッシュボード", root_path %>
+
+<% if current_user.feature_diary %>
+  <%= sidebar_link_to "日記一覧", diaries_path %>
+<% end %>
+
+<% if current_user.feature_expense %>
+  <%= sidebar_link_to "出費一覧", expenses_path %>
+<% end %>
+
+<%= sidebar_link_to "カレンダー", calendar_path %>
+
+<% if current_user.feature_health_log %>
+  <%= sidebar_link_to "体調ログ", health_logs_path %>
+<% end %>
+
+<% if current_user.feature_book %>
+  <%= sidebar_link_to "読書ログ", books_path %>
+<% end %>
+
+<% if current_user.feature_schedule %>
+  <%= sidebar_link_to "スケジュール", schedules_path %>
+<% end %>
+
+<%# 設定メニュー（カテゴリ・通知設定・コンテンツ設定を内包） %>
+<div class="mt-2">
+  <button onclick="toggleSettingsMenu(this)"
+          class="w-full text-left text-lg px-3 py-2 rounded transition text-white hover:bg-blue-300 flex items-center justify-between">
+    <span>設定</span>
+    <span class="settings-arrow text-sm transition-transform">▼</span>
+  </button>
+
+  <div class="settings-submenu hidden ml-3 space-y-1 mt-1">
+    <% if current_user.feature_expense %>
+      <%= sidebar_link_to "カテゴリ", categories_path, class: "text-base" %>
+    <% end %>
+    <%= sidebar_link_to "通知設定", settings_path, class: "text-base" %>
+    <%= sidebar_link_to "コンテンツ設定", content_settings_path, class: "text-base" %>
+  </div>
+</div>

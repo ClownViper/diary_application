@@ -61,4 +61,10 @@
     <% end %>
 
   </div>
+
+  <% if @diaries.empty? %>
+    <div class="bg-white rounded-xl shadow p-6 text-center text-gray-500 mt-4">
+      日記はありません。
+    </div>
+  <% end %>
 </div>
