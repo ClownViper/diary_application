@@ -60,6 +60,76 @@
       <% end %>
     </div>
 
+    <!-- 今日の体調ログ -->
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-700">今日の体調</h2>
+
+        <% if @today_health_log %>
+          <%= ui_link_button "編集", edit_health_log_path(@today_health_log), variant: :compact %>
+        <% else %>
+          <%= ui_link_button "追加", new_health_log_path(date: @today), variant: :compact %>
+        <% end %>
+      </div>
+
+      <% if @today_health_log %>
+        <div class="space-y-1">
+          <% if @today_health_log.weight.present? %>
+            <p class="text-gray-700">体重: <span class="font-bold text-lg"><%= @today_health_log.weight %></span> kg</p>
+          <% end %>
+          <% if @today_health_log.condition.present? %>
+            <p class="text-gray-700">体調: <span class="font-bold"><%= @today_health_log.condition_label %></span></p>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500">体調ログはありません</p>
+      <% end %>
+    </div>
+
+    <!-- 今日のスケジュール -->
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-700">今日の予定</h2>
+        <%= ui_link_button "追加", new_schedule_path(date: @today), variant: :compact %>
+      </div>
+
+      <div class="space-y-2">
+        <% if @today_schedules.any? %>
+          <% @today_schedules.each do |schedule| %>
+            <div class="border-b py-2 flex justify-between items-center">
+              <span class="font-semibold text-gray-800"><%= schedule.title %></span>
+              <% if schedule.start_time.present? %>
+                <span class="text-sm text-gray-500"><%= schedule.start_time.strftime("%H:%M") %></span>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-gray-500 text-sm">今日の予定はありません</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- 読書中の本 -->
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-700">読書中</h2>
+        <%= ui_link_button "一覧", books_path, variant: :compact %>
+      </div>
+
+      <div class="space-y-2">
+        <% if @reading_books.any? %>
+          <% @reading_books.each do |book| %>
+            <div class="border-b py-2">
+              <p class="font-semibold text-gray-800"><%= book.title %></p>
+              <p class="text-sm text-gray-500"><%= book.author.presence || "著者不明" %></p>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-gray-500 text-sm">読書中の本はありません</p>
+        <% end %>
+      </div>
+    </div>
+
     <!-- ミニカレンダー -->
     <div class="bg-white rounded-xl shadow-sm border p-6">
       <div class="flex items-center justify-between mb-4">

@@ -9,6 +9,10 @@ ja:
       expense: 出費
       category: カテゴリ
       user: ユーザー
+      health_log: 体調ログ
+      book: 読書ログ
+      schedule: スケジュール
+      push_subscription: プッシュ通知
     attributes:
       diary:
         title: タイトル
@@ -25,9 +29,32 @@ ja:
       category:
         name: カテゴリ名
         color: 表示カラー
+      health_log:
+        date: 記録日
+        weight: 体重
+        condition: 体調
+        memo: メモ
+      book:
+        title: 書籍タイトル
+        author: 著者
+        status: ステータス
+        started_on: 読み始め日
+        finished_on: 読了日
+        memo: 感想
+        cover: 表紙画像
+      schedule:
+        title: 予定タイトル
+        date: 日付
+        start_time: 開始時刻
+        end_time: 終了時刻
+        memo: メモ
     errors:
       models:
         diary:
+          attributes:
+            date:
+              taken: はすでに登録されています
+        health_log:
           attributes:
             date:
               taken: はすでに登録されています
@@ -47,3 +74,10 @@ ja:
       not_saved:
         one: "1件のエラーがあるため、%{resource}を保存できませんでした"
         other: "%{count}件のエラーがあるため、%{resource}を保存できませんでした"
+
+  notifications:
+    diary: "今日の日記を書きませんか？"
+    entry: "今日の支出を入力しましょう"
+    health: "今日の体重と体調を記録しましょう"
+    books: "読書を続けませんか？"
+    schedule: "まもなく「%{title}」の予定があります"

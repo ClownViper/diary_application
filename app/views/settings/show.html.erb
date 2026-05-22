@@ -1,0 +1,94 @@
+<div class="max-w-4xl mx-auto py-8 mb-10">
+
+  <h1 class="text-2xl font-bold mb-6">通知設定</h1>
+
+  <%= form_with model: @user, url: settings_path, method: :patch, data: { turbo: false }, class: "space-y-6" do |f| %>
+
+    <!-- 日記通知 -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-700">📘 日記</h2>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <%= f.check_box :notify_diary, class: "sr-only peer" %>
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+        </label>
+      </div>
+      <p class="text-sm text-gray-500 mb-2">書き忘れ防止のリマインド通知</p>
+      <div>
+        <label class="block text-sm font-semibold mb-1">通知時刻</label>
+        <%= f.time_field :notify_diary_time, class: "border rounded-lg px-3 py-2 h-[42px] bg-white" %>
+      </div>
+    </div>
+
+    <!-- 家計簿通知 -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-700">💴 家計簿</h2>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <%= f.check_box :notify_entry, class: "sr-only peer" %>
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+        </label>
+      </div>
+      <p class="text-sm text-gray-500 mb-2">入力リマインド通知</p>
+      <div>
+        <label class="block text-sm font-semibold mb-1">通知時刻</label>
+        <%= f.time_field :notify_entry_time, class: "border rounded-lg px-3 py-2 h-[42px] bg-white" %>
+      </div>
+    </div>
+
+    <!-- 体調ログ通知 -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-700">⚖️ 体調ログ</h2>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <%= f.check_box :notify_health, class: "sr-only peer" %>
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+        </label>
+      </div>
+      <p class="text-sm text-gray-500 mb-2">毎日の体重・体調記録のリマインド</p>
+      <div>
+        <label class="block text-sm font-semibold mb-1">通知時刻</label>
+        <%= f.time_field :notify_health_time, class: "border rounded-lg px-3 py-2 h-[42px] bg-white" %>
+      </div>
+    </div>
+
+    <!-- 読書ログ通知 -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-700">📚 読書ログ</h2>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <%= f.check_box :notify_books, class: "sr-only peer" %>
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+        </label>
+      </div>
+      <p class="text-sm text-gray-500 mb-2">読書中の本がある場合のみ通知</p>
+      <div>
+        <label class="block text-sm font-semibold mb-1">通知時刻</label>
+        <%= f.time_field :notify_books_time, class: "border rounded-lg px-3 py-2 h-[42px] bg-white" %>
+      </div>
+    </div>
+
+    <!-- スケジュール通知 -->
+    <div class="bg-white rounded-xl shadow p-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-bold text-gray-700">🗓 スケジュール</h2>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <%= f.check_box :notify_schedule, class: "sr-only peer" %>
+          <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+        </label>
+      </div>
+      <p class="text-sm text-gray-500 mb-2">予定の開始前に通知</p>
+      <div>
+        <label class="block text-sm font-semibold mb-1">何分前に通知</label>
+        <%= f.number_field :notify_schedule_before, min: 1, max: 120,
+              class: "border rounded-lg px-3 py-2 w-24 bg-white", placeholder: "10" %>
+        <span class="text-sm text-gray-500">分前</span>
+      </div>
+    </div>
+
+    <div>
+      <%= f.submit "設定を保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+    </div>
+
+  <% end %>
+</div>
