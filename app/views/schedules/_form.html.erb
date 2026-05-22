@@ -1,27 +1,23 @@
 <%= render layout: "shared/form_card" do %>
   <%= form_with model: schedule, data: { turbo: false }, class: "space-y-6" do |f| %>
-    <%= render "shared/form_errors", resource: schedule %>
 
     <div class="!mt-2">
-      <%= render "shared/form_field", form: f, attr: :title, field_label: "タイトル" %>
+      <%= render "shared/form_field", form: f, attr: :title %>
     </div>
 
-    <%= render "shared/form_field", form: f, attr: :date, field_label: "日付", field_type: :date_field,
-          field_options: { placeholder: " ", class: "w-full md:max-w-[33%] h-[42px] bg-white appearance-none" } %>
+    <%= render "shared/form_field", form: f, attr: :date, field_type: :date_field %>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <%= render "shared/form_field", form: f, attr: :start_time, field_label: "開始時刻", field_type: :time_field,
-            field_options: { class: "w-full h-[42px] bg-white appearance-none" } %>
+      <%= render "shared/form_field", form: f, attr: :start_time, field_type: :time_field %>
 
-      <%= render "shared/form_field", form: f, attr: :end_time, field_label: "終了時刻", field_type: :time_field,
-            field_options: { class: "w-full h-[42px] bg-white appearance-none" } %>
+      <%= render "shared/form_field", form: f, attr: :end_time, field_type: :time_field %>
     </div>
 
-    <%= render "shared/form_field", form: f, attr: :memo, field_label: "メモ", field_type: :text_area,
-          field_options: { rows: 3, maxlength: 200, placeholder: "200文字以内" } %>
+    <%= render "shared/form_field", form: f, attr: :memo, field_type: :text_area,
+          field_options: { rows: 3, maxlength: 200, placeholder: t("schedules.form.memo_placeholder") } %>
 
     <div>
-      <%= f.submit "保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+      <%= f.submit t("shared.save"), class: ui_button_classes(variant: :primary, size: :lg) %>
     </div>
   <% end %>
 <% end %>

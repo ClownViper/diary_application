@@ -1,13 +1,13 @@
-# Web Push通知の初期設定
-# VAPID鍵はcredentialsまたは環境変数で管理する
+# Web Push notification initializer
+# VAPID keys are stored in Rails credentials
 #
-# 鍵の生成方法:
+# How to generate keys:
 #   require 'web-push'
 #   vapid_key = WebPush.generate_key
 #   puts vapid_key.public_key
 #   puts vapid_key.private_key
 #
-# credentials.yml.enc に以下を追加:
+# Add the following to credentials.yml.enc:
 #   webpush:
 #     public_key: "..."
 #     private_key: "..."

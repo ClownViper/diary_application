@@ -1,20 +1,22 @@
+# CRUD controller for diary entries
 class DiariesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_diary, only: [:show, :edit, :update, :destroy]
 
   def index
     @diaries = current_user.diaries.order(date: :desc)
 
-    # キーワード検索
+    # Keyword search (title, body)
     if params[:q].present?
       keyword = "%#{params[:q]}%"
       @diaries = @diaries.where("title LIKE ? OR body LIKE ?", keyword, keyword)
     end
 
-    # 日付検索
+    # Date filter
     if params[:date].present?
       @diaries = @diaries.where(date: params[:date])
     end
+
+    @diaries = @diaries.page(params[:page]).per(10)
   end
 
   def show
@@ -22,12 +24,7 @@ class DiariesController < ApplicationController
 
   def new
     date = params[:date].presence || Date.today
-
-    # 既にその日の日記があるなら編集へ
-    if (existing = current_user.diaries.find_by(date: date))
-      redirect_to edit_diary_path(existing) and return
-    end
-
+    @existing_diary = current_user.diaries.find_by(date: date)
     @diary = current_user.diaries.new(date: date)
   end
 
@@ -36,26 +33,22 @@ class DiariesController < ApplicationController
 
   def create
     date = diary_params[:date]
-
-    # 既にその日の日記があるなら編集へ
-    if (existing = current_user.diaries.find_by(date: date))
-      redirect_to edit_diary_path(existing), alert: "この日はすでに日記があります" and return
-    end
+    return if redirect_to_existing_diary(date, alert: t("diaries.flash.existing_date"))
 
     @diary = current_user.diaries.new(diary_params)
 
     if @diary.save
-      redirect_to @diary, notice: "日記を作成しました"
+      redirect_to @diary, notice: t("diaries.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
   rescue ActiveRecord::RecordNotUnique
-    redirect_to diaries_path, alert: "この日はすでに日記があります"
+    redirect_to diaries_path, alert: t("diaries.flash.existing_date")
   end
 
   def update
     if @diary.update(diary_params)
-      redirect_to @diary, notice: "日記を更新しました"
+      redirect_to @diary, notice: t("diaries.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -63,7 +56,7 @@ class DiariesController < ApplicationController
 
   def destroy
     @diary.destroy
-    redirect_to diaries_path, notice: "日記を削除しました"
+    redirect_to diaries_path, notice: t("diaries.flash.deleted")
   end
 
   private
@@ -74,5 +67,14 @@ class DiariesController < ApplicationController
 
   def diary_params
     params.require(:diary).permit(:title, :body, :date, :image)
+  end
+
+  # Redirects to the edit page if a diary already exists for the given date; returns true
+  def redirect_to_existing_diary(date, alert: nil)
+    existing = current_user.diaries.find_by(date: date)
+    return false unless existing
+
+    redirect_to edit_diary_path(existing), alert: alert
+    true
   end
 end

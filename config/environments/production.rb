@@ -53,10 +53,10 @@ Rails.application.configure do
   # config.active_job.queue_adapter = :solid_queue
   # config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  # SolidQueue を使わない
+  # Disable SolidQueue; use inline adapter instead
   config.active_job.queue_adapter = :inline
 
-  # ActiveStorage の解析を無効化
+  # Disable Active Storage analyzers
   config.active_storage.analyzers = []
 
   # Ignore bad email addresses and do not raise email delivery errors.

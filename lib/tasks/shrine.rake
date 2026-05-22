@@ -1,5 +1,5 @@
 namespace :shrine do
-  desc "日記の画像設定を確認（ID=4 なら ID=4 bin/rails shrine:diary）"
+  desc "Inspect diary image attachment (usage: ID=1 bin/rails shrine:diary)"
   task diary: :environment do
     diary = Diary.find(ENV.fetch("ID", 1))
     puts "Diary ##{diary.id} #{diary.title}"

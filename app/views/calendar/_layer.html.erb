@@ -1,166 +1,171 @@
 <div class="mb-4">
-  <h2 class="text-xl font-bold"><%= @date.strftime("%Y年%m月%d日") %></h2>
+  <h2 class="text-xl font-bold"><%= l(@date, format: :full_date) %></h2>
 </div>
 
 <div class="space-y-4">
 
-  <!-- 日記エリア -->
-  <div>
-    <div class="flex items-center justify-between bg-indigo-600 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-indigo-200">●</span>
-        <span class="font-semibold">日記</span>
+  <%# Diary section (controlled by content settings) %>
+  <% if current_user.feature_diary %>
+    <div>
+      <div class="flex items-center justify-between bg-indigo-600 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-indigo-200">●</span>
+          <span class="font-semibold"><%= t("calendar.layer.diary.title") %></span>
+        </div>
+        <% unless @diary.present? %>
+          <%= link_to t("calendar.layer.diary.add"), new_diary_path(date: @date), class: "text-white text-sm" %>
+        <% end %>
       </div>
-      <% unless @diary.present? %>
-        <%= link_to "+追加", new_diary_path(date: @date), class: "text-white text-sm" %>
-      <% end %>
-    </div>
 
-    <div class="bg-white border border-indigo-200 rounded-b-lg p-0">
-      <% if @diary.present? %>
-        <%= link_to diary_path(@diary), class: "block p-4 hover:bg-indigo-50 transition rounded-b-lg" do %>
-          <div class="flex gap-4">
-            <% if @diary.image.attached? %>
-              <%= image_tag @diary.image, class: "w-24 h-24 object-cover rounded-lg flex-shrink-0" %>
-            <% else %>
-              <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-                No Image
+      <div class="bg-white border border-indigo-200 rounded-b-lg p-0">
+        <% if @diary.present? %>
+          <%= link_to diary_path(@diary), class: "block p-4 hover:bg-indigo-50 transition rounded-b-lg" do %>
+            <div class="flex gap-4">
+              <%= render "shared/thumbnail", attachment: @diary.image %>
+              <div class="flex flex-col min-w-0">
+                <p class="font-semibold text-gray-800 text-lg truncate"><%= @diary.title %></p>
+                <p class="text-sm text-gray-500"><%= format_date(@diary.date) %></p>
+                <p class="text-gray-700 text-sm mt-1 line-clamp-3"><%= @diary.body %></p>
               </div>
-            <% end %>
-            <div class="flex flex-col min-w-0">
-              <p class="font-semibold text-gray-800 text-lg truncate"><%= @diary.title %></p>
-              <p class="text-sm text-gray-500"><%= @diary.date.strftime("%Y/%m/%d") %></p>
-              <p class="text-gray-700 text-sm mt-1 line-clamp-3"><%= @diary.body %></p>
             </div>
+          <% end %>
+        <% else %>
+          <div class="p-4">
+            <p class="text-gray-600 text-sm"><%= t("calendar.layer.diary.empty") %></p>
           </div>
         <% end %>
-      <% else %>
-        <div class="p-4">
-          <p class="text-gray-600 text-sm">この日の日記はありません</p>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- 出費エリア -->
-  <div>
-    <div class="flex items-center justify-between bg-emerald-600 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-emerald-200">▲</span>
-        <span class="font-semibold">家計簿</span>
       </div>
-      <%= link_to "+追加", new_expense_path(date: @date), class: "text-white text-sm" %>
     </div>
 
-    <div class="bg-white border border-emerald-300 rounded-b-lg p-4 space-y-3">
-      <% if @expenses.any? %>
-        <% latest_expenses = @expenses.first(3) %>
-        <% latest_expenses.each do |exp| %>
-          <%= link_to expense_path(exp),
+    <hr>
+  <% end %>
+
+  <%# Expenses section (controlled by content settings) %>
+  <% if current_user.feature_expense %>
+    <div>
+      <div class="flex items-center justify-between bg-emerald-600 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-emerald-200">▲</span>
+          <span class="font-semibold"><%= t("calendar.layer.expense.title") %></span>
+        </div>
+        <%= link_to t("calendar.layer.expense.add"), new_expense_path(date: @date), class: "text-white text-sm" %>
+      </div>
+
+      <%# Shows first item; displays "see all" link when there are multiple %>
+      <div class="bg-white border border-emerald-300 rounded-b-lg p-4 space-y-3">
+        <% if @expenses.any? %>
+          <% first_expense = @expenses.first %>
+          <%= link_to expense_path(first_expense),
                 class: "block border rounded-lg p-3 shadow-sm bg-emerald-50 hover:bg-emerald-100 transition" do %>
             <div class="flex justify-between text-sm font-semibold">
-              <span><%= exp.name.presence || "（タイトルなし）" %></span>
-              <span><%= number_to_currency(exp.amount, unit: "¥") %></span>
+              <span><%= first_expense.name.presence || t("calendar.layer.expense.no_title") %></span>
+              <span><%= number_to_currency(first_expense.amount, unit: "¥") %></span>
             </div>
             <div class="text-xs text-gray-600 mt-1">
-              <%= exp.category&.name.presence || "未分類" %>
+              <%= first_expense.category&.name.presence || t("shared.uncategorized") %>
             </div>
           <% end %>
-        <% end %>
 
-        <div class="flex justify-between items-center mt-4">
-          <% if @expenses.size > 3 %>
-            <%= link_to "すべて表示", expenses_path(date: @date), class: "text-emerald-600 underline text-sm" %>
-          <% else %>
-            <span></span>
-          <% end %>
-          <div class="text-right font-bold text-lg">
-            合計: <%= number_to_currency(@expenses.sum(&:amount), unit: "¥") %>
+          <div class="flex justify-between items-center mt-2">
+            <% if @expenses.size > 1 %>
+              <%= link_to t("calendar.layer.expense.all_items", count: @expenses.size), expenses_path(date: @date), class: "text-emerald-600 underline text-sm" %>
+            <% else %>
+              <span></span>
+            <% end %>
+            <div class="text-right font-bold text-lg">
+              <%= t("calendar.layer.expense.total", amount: number_to_currency(@expenses.sum(&:amount), unit: "¥")) %>
+            </div>
           </div>
+        <% else %>
+          <p class="text-gray-600 text-sm"><%= t("calendar.layer.expense.empty") %></p>
+        <% end %>
+      </div>
+    </div>
+
+    <hr>
+  <% end %>
+
+  <%# Health log section (controlled by content settings) %>
+  <% if current_user.feature_health_log %>
+    <div>
+      <div class="flex items-center justify-between bg-rose-600 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-rose-200">◆</span>
+          <span class="font-semibold"><%= t("calendar.layer.health_log.title") %></span>
         </div>
-      <% else %>
-        <p class="text-gray-600 text-sm">この日の出費はありません</p>
-      <% end %>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- 体調ログエリア -->
-  <div>
-    <div class="flex items-center justify-between bg-rose-600 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-rose-200">◆</span>
-        <span class="font-semibold">体調ログ</span>
-      </div>
-      <% unless @health_log.present? %>
-        <%= link_to "+追加", new_health_log_path(date: @date), class: "text-white text-sm" %>
-      <% end %>
-    </div>
-
-    <div class="bg-white border border-rose-200 rounded-b-lg p-4">
-      <% if @health_log.present? %>
-        <%= link_to health_log_path(@health_log), class: "block hover:bg-rose-50 transition rounded-lg p-2" do %>
-          <div class="flex gap-6 text-sm">
-            <% if @health_log.weight.present? %>
-              <div>
-                <span class="text-gray-500">体重:</span>
-                <span class="font-semibold"><%= @health_log.weight %> kg</span>
-              </div>
-            <% end %>
-            <% if @health_log.condition.present? %>
-              <div>
-                <span class="text-gray-500">体調:</span>
-                <span class="font-semibold"><%= @health_log.condition_label %></span>
-              </div>
-            <% end %>
-          </div>
-          <% if @health_log.memo.present? %>
-            <p class="text-xs text-gray-500 mt-1"><%= @health_log.memo.truncate(30) %></p>
-          <% end %>
+        <% unless @health_log.present? %>
+          <%= link_to t("calendar.layer.health_log.add"), new_health_log_path(date: @date), class: "text-white text-sm" %>
         <% end %>
-      <% else %>
-        <p class="text-gray-600 text-sm">この日の体調ログはありません</p>
-      <% end %>
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- スケジュールエリア -->
-  <div>
-    <div class="flex items-center justify-between bg-amber-500 text-white px-3 py-2 rounded-t-lg">
-      <div class="flex items-center gap-2">
-        <span class="text-amber-200">★</span>
-        <span class="font-semibold">スケジュール</span>
       </div>
-      <%= link_to "+追加", new_schedule_path(date: @date), class: "text-white text-sm" %>
+
+      <div class="bg-white border border-rose-200 rounded-b-lg p-4">
+        <% if @health_log.present? %>
+          <%= link_to health_log_path(@health_log), class: "block hover:bg-rose-50 transition rounded-lg p-2" do %>
+            <div class="flex gap-6 text-sm">
+              <% if @health_log.weight.present? %>
+                <div>
+                  <span class="text-gray-500"><%= t("calendar.layer.health_log.weight") %></span>
+                  <span class="font-semibold"><%= @health_log.weight %> kg</span>
+                </div>
+              <% end %>
+              <% if @health_log.condition.present? %>
+                <div>
+                  <span class="text-gray-500"><%= t("calendar.layer.health_log.condition") %></span>
+                  <span class="font-semibold"><%= @health_log.condition_label %></span>
+                </div>
+              <% end %>
+            </div>
+            <% if @health_log.memo.present? %>
+              <p class="text-xs text-gray-500 mt-1"><%= @health_log.memo.truncate(30) %></p>
+            <% end %>
+          <% end %>
+        <% else %>
+          <p class="text-gray-600 text-sm"><%= t("calendar.layer.health_log.empty") %></p>
+        <% end %>
+      </div>
     </div>
 
-    <div class="bg-white border border-amber-200 rounded-b-lg p-4 space-y-2">
-      <% if @schedules.any? %>
-        <% @schedules.each do |schedule| %>
-          <%= link_to schedule_path(schedule),
+    <hr>
+  <% end %>
+
+  <%# Schedule section (controlled by content settings) %>
+  <% if current_user.feature_schedule %>
+    <div>
+      <div class="flex items-center justify-between bg-amber-500 text-white px-3 py-2 rounded-t-lg">
+        <div class="flex items-center gap-2">
+          <span class="text-amber-200">★</span>
+          <span class="font-semibold"><%= t("calendar.layer.schedule.title") %></span>
+        </div>
+        <%= link_to t("calendar.layer.schedule.add"), new_schedule_path(date: @date), class: "text-white text-sm" %>
+      </div>
+
+      <%# Shows first item; displays "see all" link when there are multiple %>
+      <div class="bg-white border border-amber-200 rounded-b-lg p-4 space-y-2">
+        <% if @schedules.any? %>
+          <% first_schedule = @schedules.first %>
+          <%= link_to schedule_path(first_schedule),
                 class: "block border rounded-lg p-3 shadow-sm bg-amber-50 hover:bg-amber-100 transition" do %>
             <div class="flex justify-between text-sm">
-              <span class="font-semibold"><%= schedule.title %></span>
-              <% if schedule.start_time.present? %>
+              <span class="font-semibold"><%= first_schedule.title %></span>
+              <% if first_schedule.start_time.present? %>
                 <span class="text-gray-600">
-                  <%= schedule.start_time.strftime("%H:%M") %>
-                  <% if schedule.end_time.present? %>
-                    〜 <%= schedule.end_time.strftime("%H:%M") %>
+                  <%= first_schedule.start_time.strftime("%H:%M") %>
+                  <% if first_schedule.end_time.present? %>
+                    〜 <%= first_schedule.end_time.strftime("%H:%M") %>
                   <% end %>
                 </span>
               <% end %>
             </div>
           <% end %>
+
+          <% if @schedules.size > 1 %>
+            <%= link_to t("calendar.layer.schedule.all_items", count: @schedules.size), schedules_path(date: @date), class: "text-amber-600 underline text-sm" %>
+          <% end %>
+        <% else %>
+          <p class="text-gray-600 text-sm"><%= t("calendar.layer.schedule.empty") %></p>
         <% end %>
-      <% else %>
-        <p class="text-gray-600 text-sm">この日の予定はありません</p>
-      <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
 </div>

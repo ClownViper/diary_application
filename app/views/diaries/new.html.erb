@@ -1,5 +1,27 @@
-<%= render "shared/back_link", back_path: diaries_path %>
-<div class="p-4 max-w-4xl mx-auto">
-  <h1 class="text-2xl font-bold">日記を作成</h1>
-</div>
+<%= render "shared/form_page", title: t("diaries.new.title"), back_path: diaries_path %>
+
+<% if @existing_diary %>
+  <div id="existing-diary-notice" class="max-w-4xl mx-auto px-4 mb-4">
+    <div class="flex items-center gap-2 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg px-4 py-3 text-sm">
+      <span>⚠️</span>
+      <span><%= t("diaries.new.existing_notice") %></span>
+      <%= link_to t("diaries.new.edit_existing"), edit_diary_path(@existing_diary),
+            class: "ml-auto font-semibold underline hover:text-yellow-900 whitespace-nowrap" %>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dateInput = document.getElementById("diary_date");
+      const notice    = document.getElementById("existing-diary-notice");
+      const originalDate = "<%= @existing_diary.date %>";
+
+      if (dateInput && notice) {
+        dateInput.addEventListener("change", function () {
+          notice.style.display = this.value === originalDate ? "" : "none";
+        });
+      }
+    });
+  </script>
+<% end %>
+
 <%= render "form", diary: @diary %>

@@ -1,43 +1,52 @@
 <%= render "shared/back_link", back_path: health_logs_path %>
 
-<div class="max-w-4xl mx-auto py-10 mb-10">
+<div class="max-w-4xl mx-auto pb-10 mb-10">
 
   <div class="bg-white p-6 rounded-xl shadow leading-relaxed text-gray-800 mb-8">
 
     <p class="text-gray-500 text-sm">
-      <%= @health_log.date.strftime("%Y/%m/%d") %>
+      <%= format_date(@health_log.date) %>
     </p>
 
     <h1 class="text-2xl font-bold text-gray-800 mb-4">
-      体調ログ
+      <%= t("health_logs.show.title") %>
     </h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <!-- 体重 -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
       <div class="bg-gray-50 p-4 rounded-lg">
-        <p class="text-sm text-gray-500 mb-1">体重</p>
+        <p class="text-sm text-gray-500 mb-1"><%= t("health_logs.show.weight_label") %></p>
         <p class="text-2xl font-bold text-gray-900">
           <%= @health_log.weight.present? ? "#{@health_log.weight} kg" : "—" %>
         </p>
       </div>
 
-      <!-- 体調 -->
       <div class="bg-gray-50 p-4 rounded-lg">
-        <p class="text-sm text-gray-500 mb-1">体調</p>
+        <p class="text-sm text-gray-500 mb-1"><%= t("health_logs.show.condition_label") %></p>
         <p class="text-2xl font-bold text-gray-900">
           <% if @health_log.condition.present? %>
-            <%= @health_log.condition_label %>（<%= @health_log.condition %>/5）
+            <%= t("health_logs.show.condition_display", label: @health_log.condition_label, value: @health_log.condition) %>
           <% else %>
             —
           <% end %>
         </p>
       </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-500 mb-1"><%= t("health_logs.show.sleep_hours_label") %></p>
+        <p class="text-2xl font-bold text-gray-900">
+          <%= @health_log.sleep_hours.present? ? "#{@health_log.sleep_hours} h" : "—" %>
+        </p>
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <p class="text-sm text-gray-500 mb-1"><%= t("health_logs.show.temperature_label") %></p>
+        <p class="text-2xl font-bold text-gray-900">
+          <%= @health_log.temperature.present? ? "#{@health_log.temperature} ℃" : "—" %>
+        </p>
+      </div>
     </div>
 
-    <!-- メモ -->
-    <div class="bg-gray-50 px-3 pt-5 pb-10 rounded-lg leading-tight text-gray-800">
-      <%= @health_log.memo.presence || "メモはありません" %>
-    </div>
+    <%= render "shared/memo_block", content: @health_log.memo %>
 
     <div class="flex gap-4 pt-4">
       <%= render "shared/record_actions",

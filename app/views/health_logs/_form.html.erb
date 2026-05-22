@@ -1,20 +1,18 @@
 <%= render layout: "shared/form_card" do %>
   <%= form_with model: health_log, data: { turbo: false }, class: "space-y-6" do |f| %>
-    <%= render "shared/form_errors", resource: health_log %>
 
     <div class="!mt-2">
-      <%= render "shared/form_field", form: f, attr: :date, field_label: "日付", field_type: :date_field,
-            field_options: { placeholder: " ", class: "w-full md:max-w-[33%] h-[42px] bg-white appearance-none" } %>
+      <%= render "shared/form_field", form: f, attr: :date, field_type: :date_field %>
     </div>
 
-    <%= render "shared/form_field", form: f, attr: :weight, field_label: "体重 (kg)", field_type: :number_field,
-          field_options: { step: 0.1, min: 0, placeholder: "例: 65.5" } %>
+    <%= render "shared/form_field", form: f, attr: :weight, field_label: t("health_logs.form.weight_with_unit"), field_type: :number_field,
+          field_options: { step: 0.1, min: 0, placeholder: t("health_logs.form.weight_placeholder") } %>
 
-    <!-- 体調（1〜5のラジオボタン） -->
+    <!-- Condition (radio buttons 1-5) -->
     <div>
-      <%= f.label :condition, "体調", class: ApplicationHelper::LABEL_CLASS %>
-      <div class="flex gap-3 mt-1">
-        <% HealthLog::CONDITION_LABELS.each do |value, label| %>
+      <%= f.label :condition, t("activerecord.attributes.health_log.condition"), class: ApplicationHelper::LABEL_CLASS %>
+      <div class="flex flex-col gap-2 sm:flex-row sm:gap-3 mt-1">
+        <% HealthLog.condition_labels.each do |value, label| %>
           <label class="flex items-center gap-1 cursor-pointer">
             <%= f.radio_button :condition, value, class: "accent-blue-600" %>
             <span class="text-sm text-gray-700"><%= label %></span>
@@ -26,11 +24,17 @@
       <% end %>
     </div>
 
-    <%= render "shared/form_field", form: f, attr: :memo, field_label: "メモ", field_type: :text_area,
-          field_options: { rows: 3, maxlength: 100, placeholder: "100文字以内" } %>
+    <%= render "shared/form_field", form: f, attr: :sleep_hours, field_label: t("health_logs.form.sleep_hours_with_unit"), field_type: :number_field,
+          field_options: { step: 0.5, min: 0, placeholder: t("health_logs.form.sleep_hours_placeholder") } %>
+
+    <%= render "shared/form_field", form: f, attr: :temperature, field_label: t("health_logs.form.temperature_with_unit"), field_type: :number_field,
+          field_options: { step: 0.1, min: 0, placeholder: t("health_logs.form.temperature_placeholder") } %>
+
+    <%= render "shared/form_field", form: f, attr: :memo, field_type: :text_area,
+          field_options: { rows: 3, maxlength: 100, placeholder: t("health_logs.form.memo_placeholder") } %>
 
     <div>
-      <%= f.submit "保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+      <%= f.submit t("shared.save"), class: ui_button_classes(variant: :primary, size: :lg) %>
     </div>
   <% end %>
 <% end %>

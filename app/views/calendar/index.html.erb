@@ -1,54 +1,59 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
+  <%= render "shared/flash" %>
 
-  <!-- 月切り替え -->
-  <div class="flex justify-between items-center mb-2 bg-blue-700 text-white p-2.5 rounded-lg">
+  <!-- Month navigation -->
+  <div class="flex justify-between items-center mb-2 bg-slate-700 text-white p-2.5 rounded-lg">
 
-    <!-- 左：前月 -->
+    <!-- Left: previous month -->
     <%= link_to "◀︎", calendar_path(date: @date.prev_month),
           class: "text-lg font-bold px-3 py-1 hover:text-gray-200" %>
 
-    <!-- 中央：年月 + 今月へ -->
+    <!-- Center: year/month + back to today -->
     <div class="flex items-center space-x-3">
-      <h2 class="text-xl font-semibold"><%= @date.strftime("%Y年%m月") %></h2>
+      <h2 class="text-xl font-semibold"><%= l(@date, format: :year_month) %></h2>
 
       <% unless @date.month == Date.today.month && @date.year == Date.today.year %>
-        <%= link_to "今月へ", calendar_path(date: Date.today),
+        <%= link_to t("shared.today_link"), calendar_path(date: Date.today),
               class: "text-sm underline hover:text-gray-200" %>
       <% end %>
     </div>
 
-    <!-- 右：翌月 -->
+    <!-- Right: next month -->
     <%= link_to "▶︎", calendar_path(date: @date.next_month),
           class: "text-lg font-bold px-3 py-1 hover:text-gray-200" %>
 
   </div>
 
-  <!-- 凡例 -->
+  <%# Legend (only features enabled in content settings) %>
   <div class="flex gap-4 mb-2 text-xs text-gray-600">
-    <span><span class="text-indigo-500">●</span> 日記</span>
-    <span><span class="text-emerald-500">▲</span> 家計簿</span>
-    <span><span class="text-rose-500">◆</span> 体調</span>
-    <span><span class="text-amber-500">★</span> 予定</span>
+    <% if current_user.feature_diary %>
+      <span><span class="text-indigo-500">●</span> <%= t("calendar.index.legend.diary") %></span>
+    <% end %>
+    <% if current_user.feature_expense %>
+      <span><span class="text-emerald-500">▲</span> <%= t("calendar.index.legend.expense") %></span>
+    <% end %>
+    <% if current_user.feature_health_log %>
+      <span><span class="text-rose-500">◆</span> <%= t("calendar.index.legend.health") %></span>
+    <% end %>
+    <% if current_user.feature_schedule %>
+      <span><span class="text-amber-500">★</span> <%= t("calendar.index.legend.schedule") %></span>
+    <% end %>
   </div>
 
-  <!-- PC専用（従来の7カラム） -->
+  <!-- Desktop only: 7-column calendar grid -->
   <div class="hidden md:block">
 
-    <!-- 曜日ヘッダー -->
+    <!-- Weekday header row -->
     <div class="grid grid-cols-7 text-center font-semibold mb-1">
-      <div class="text-red-500">日</div>
-      <div>月</div>
-      <div>火</div>
-      <div>水</div>
-      <div>木</div>
-      <div>金</div>
-      <div class="text-blue-500">土</div>
+      <% t("date.abbr_day_names").each_with_index do |name, i| %>
+        <div class="<%= i == 0 ? 'text-red-500' : i == 6 ? 'text-blue-500' : '' %>"><%= name %></div>
+      <% end %>
     </div>
 
-    <!-- カレンダー本体 -->
+    <!-- Calendar body -->
     <div class="grid grid-cols-7 gap-1">
 
-      <%# 1日の曜日に応じて空白セルを追加（日曜=0, 月曜=1 ...） %>
+      <%# Blank cells for day-of-week offset (Sun=0, Mon=1, ...) %>
       <% first_wday = @start_date.wday %>
       <% first_wday.times do %>
         <div class="bg-transparent"></div>
@@ -59,43 +64,24 @@
         <% expenses = @expenses_by_date[day] %>
         <% health_log = @health_logs_by_date[day] %>
         <% schedules = @schedules_by_date[day] %>
+        <% pc_day_color = case day.wday
+                          when 0 then "text-red-500"
+                          when 6 then "text-blue-500"
+                          else ""
+                          end %>
 
         <div
           class="bg-white border rounded-lg p-2 h-24 cursor-pointer hover:shadow-md transition flex flex-col"
           onclick="openCalendarLayer('<%= day %>')"
         >
-          <div class="text-sm font-semibold <%= 'text-blue-600' if day == Date.today %>">
+          <div class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-semibold
+                      <%= day == Date.today ? 'bg-slate-500 text-white' : pc_day_color %>">
             <%= day.day %>
           </div>
 
-          <div class="mt-1 text-left space-y-0.5 text-xs">
-            <% if diary.present? %>
-              <div class="flex items-center gap-1 text-indigo-700 font-medium bg-indigo-100 rounded-lg px-1">
-                <span class="text-indigo-500">●</span>
-                <span>日記</span>
-              </div>
-            <% end %>
-
-            <% if expenses.present? %>
-              <div class="flex items-center gap-1 text-emerald-700 font-medium bg-emerald-100 rounded-lg px-1">
-                <span class="text-emerald-500">▲</span>
-                <span><%= number_with_delimiter(expenses.sum(&:amount)) %>円</span>
-              </div>
-            <% end %>
-
-            <% if health_log.present? %>
-              <div class="flex items-center gap-1 text-rose-700 font-medium bg-rose-100 rounded-lg px-1">
-                <span class="text-rose-500">◆</span>
-                <span>体調</span>
-              </div>
-            <% end %>
-
-            <% if schedules.present? %>
-              <div class="flex items-center gap-1 text-amber-700 font-medium bg-amber-100 rounded-lg px-1">
-                <span class="text-amber-500">★</span>
-                <span><%= schedules.size %>件</span>
-              </div>
-            <% end %>
+          <%# Desktop: symbol badges (enabled features only) %>
+          <div class="mt-1 flex flex-wrap gap-1 text-sm">
+            <%= render "shared/calendar_badges", diary: diary, expenses: expenses, health_log: health_log, schedules: schedules %>
           </div>
         </div>
       <% end %>
@@ -103,7 +89,7 @@
 
   </div>
 
-  <!-- スマホ専用（縦リスト） -->
+  <!-- Mobile only: vertical day list -->
   <div class="md:hidden space-y-2">
 
     <% @start_date.upto(@end_date) do |day| %>
@@ -117,61 +103,34 @@
         onclick="openCalendarLayer('<%= day %>')"
       >
 
-        <!-- 左：日付＋曜日（1/4） -->
+        <!-- Left: date and weekday (1/4 width) -->
         <div class="col-span-1 flex items-center gap-2">
 
-          <%# 曜日カラー %>
+          <%# Weekday color class %>
           <% wday_color =
               case day.wday
-              when 0 then "text-red-500"   # 日曜
-              when 6 then "text-blue-500"  # 土曜
-              else "text-gray-500"         # 平日
+              when 0 then "text-red-500"
+              when 6 then "text-blue-500"
+              else "text-gray-500"
               end
           %>
 
-          <!-- 曜日 -->
-          <div class="text-sm <%= wday_color %>">
-            <%= %w(日 月 火 水 木 金 土)[day.wday] %>
+          <!-- Weekday label: fixed width keeps day numbers vertically aligned -->
+          <div class="w-6 text-center text-xs flex-shrink-0 <%= wday_color %>">
+            <%= t("date.abbr_day_names")[day.wday] %>
           </div>
 
-          <!-- 日付 -->
-          <div class="text-lg font-bold <%= 'text-blue-600' if day == Date.today %>">
+          <!-- Day number (circled if today) -->
+          <div class="w-8 h-8 flex items-center justify-center rounded-full text-lg font-bold flex-shrink-0
+                      <%= day == Date.today ? 'bg-slate-500 text-white' : wday_color %>">
             <%= day.day %>
           </div>
 
         </div>
 
-        <!-- 右：各種アイコン（3/4） -->
-        <div class="col-span-3 text-left text-sm space-y-1">
-
-          <% if diary.present? %>
-            <div class="flex items-center gap-1 text-indigo-700 font-medium truncate bg-indigo-100 rounded-lg px-1">
-              <span class="text-indigo-500">●</span>
-              <span>日記</span>
-            </div>
-          <% end %>
-
-          <% if expenses.present? %>
-            <div class="flex items-center gap-1 text-emerald-700 font-medium truncate bg-emerald-100 rounded-lg px-1">
-              <span class="text-emerald-500">▲</span>
-              <span><%= number_with_delimiter(expenses.sum(&:amount)) %> 円</span>
-            </div>
-          <% end %>
-
-          <% if health_log.present? %>
-            <div class="flex items-center gap-1 text-rose-700 font-medium truncate bg-rose-100 rounded-lg px-1">
-              <span class="text-rose-500">◆</span>
-              <span>体調</span>
-            </div>
-          <% end %>
-
-          <% if schedules.present? %>
-            <div class="flex items-center gap-1 text-amber-700 font-medium truncate bg-amber-100 rounded-lg px-1">
-              <span class="text-amber-500">★</span>
-              <span><%= schedules.size %>件の予定</span>
-            </div>
-          <% end %>
-
+        <%# Mobile: symbol badges (enabled features only) %>
+        <div class="col-span-3 flex items-center gap-2 text-lg">
+          <%= render "shared/calendar_badges", diary: diary, expenses: expenses, health_log: health_log, schedules: schedules %>
         </div>
 
       </div>

@@ -1,4 +1,4 @@
-# Web Push通知のサブスクリプション登録API
+# API endpoint for Web Push subscription registration
 class PushSubscriptionsController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :verify_authenticity_token, only: [ :create ]

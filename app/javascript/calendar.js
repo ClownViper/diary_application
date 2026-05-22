@@ -1,3 +1,4 @@
+// Calendar layer: fetch and display daily records in a modal overlay
 document.addEventListener("DOMContentLoaded", () => {
 
   window.openCalendarLayer = function(date) {

@@ -1,0 +1,43 @@
+<div class="max-w-3xl mx-auto pb-8 mb-10">
+  <%= render "shared/page_header", title: t("csv_exports.title") %>
+
+  <p class="text-sm text-gray-500 mb-6">
+    <%= t("csv_exports.description") %>
+  </p>
+
+  <div class="space-y-6">
+
+    <%# Diary section %>
+    <% if current_user.feature_diary %>
+      <%= render "csv_exports/section",
+            section_key: "diary",
+            export_path: csv_export_diaries_path,
+            import_path: csv_import_diaries_path %>
+    <% end %>
+
+    <%# Expenses section %>
+    <% if current_user.feature_expense %>
+      <%= render "csv_exports/section",
+            section_key: "expense",
+            export_path: csv_export_expenses_path,
+            import_path: csv_import_expenses_path %>
+    <% end %>
+
+    <%# Health log section %>
+    <% if current_user.feature_health_log %>
+      <%= render "csv_exports/section",
+            section_key: "health_log",
+            export_path: csv_export_health_logs_path,
+            import_path: csv_import_health_logs_path %>
+    <% end %>
+
+    <%# Reading log section %>
+    <% if current_user.feature_book %>
+      <%= render "csv_exports/section",
+            section_key: "book",
+            export_path: csv_export_books_path,
+            import_path: csv_import_books_path %>
+    <% end %>
+
+  </div>
+</div>

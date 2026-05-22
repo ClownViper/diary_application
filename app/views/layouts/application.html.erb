@@ -2,10 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title><%= content_for(:title) || "MyDiary" %></title>
+    <title><%= content_for(:title) || app_name %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Minimal Kakeibo Diary">
+    <meta name="application-name" content="<%= app_name %>">
     <meta name="mobile-web-app-capable" content="yes">
 
     <%= csrf_meta_tags %>
@@ -21,8 +21,15 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#1d4ed8">
+    <meta name="theme-color" content="#334155">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body { font-family: 'Noto Sans JP', sans-serif; }
+    </style>
 
     <%= javascript_importmap_tags %>
   </head>
@@ -31,87 +38,55 @@
 
     <% if user_signed_in? %>
       <!-- PC Sidebar -->
-      <aside class="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0 
-                    bg-blue-700 text-white p-6 shadow-lg">
+      <aside class="hidden md:flex flex-col w-64 h-screen fixed left-0 top-0
+                    bg-slate-700 text-white p-6 shadow-lg">
 
-        <h1 class="text-2xl font-bold text-white mb-6">MyDiary</h1>
+        <h1 class="text-2xl font-bold text-white mb-6"><%= app_name %></h1>
 
         <nav>
-          <%= sidebar_link_to "ダッシュボード", root_path %>
-
-          <%= sidebar_link_to "日記一覧", diaries_path %>
-
-          <%= sidebar_link_to "出費一覧", expenses_path %>
-
-          <%= sidebar_link_to "カテゴリ", categories_path %>
-
-          <%= sidebar_link_to "カレンダー", calendar_path %>
-
-          <%= sidebar_link_to "体調ログ", health_logs_path %>
-
-          <%= sidebar_link_to "読書ログ", books_path %>
-
-          <%= sidebar_link_to "スケジュール", schedules_path %>
-
-          <%= sidebar_link_to "通知設定", settings_path %>
+          <%= render "shared/sidebar_nav" %>
         </nav>
 
-        <div class="mt-auto border-t border-blue-500 pt-4">
+        <div class="mt-auto border-t border-slate-500 pt-4">
           <p class="text-sm text-white px-3 mb-1">
             <%= current_user.name %>
           </p>
 
-          <%= button_to "ログアウト",
+          <%= button_to t("layouts.logout"),
                 destroy_user_session_path,
                 method: :delete,
                 form: { class: "inline" },
                 class: "block w-full text-left px-3 py-2 text-sm rounded transition
-                  hover:bg-blue-300 hover:text-white text-white" %>
+                  hover:bg-slate-500 hover:text-white text-white" %>
         </div>
       </aside>
 
       <!-- Mobile Header -->
-      <header class="md:hidden fixed top-0 left-0 right-0 bg-blue-700 text-white shadow p-4 flex justify-between items-center z-50">
-        <h1 class="text-xl font-bold">MyDiary</h1>
+      <header class="md:hidden fixed top-0 left-0 right-0 bg-slate-700 text-white shadow p-4 flex justify-between items-center z-50">
+        <h1 class="text-xl font-bold"><%= app_name %></h1>
         <button id="menuButton" class="text-3xl">☰</button>
       </header>
 
       <!-- Mobile Slide Menu -->
       <div id="mobileMenu"
-          class="md:hidden fixed top-0 left-0 w-64 h-full bg-blue-700 text-white shadow-lg p-6 
+           class="md:hidden fixed top-0 left-0 w-64 h-full bg-slate-700 text-white shadow-lg p-6
                   transform -translate-x-full transition-transform z-40">
 
         <nav class="space-y-2 mt-10 mb-10">
-          <%= sidebar_link_to "ダッシュボード", root_path %>
-
-          <%= sidebar_link_to "日記一覧", diaries_path %>
-
-          <%= sidebar_link_to "出費一覧", expenses_path %>
-
-          <%= sidebar_link_to "カテゴリ", categories_path %>
-
-          <%= sidebar_link_to "カレンダー", calendar_path %>
-
-          <%= sidebar_link_to "体調ログ", health_logs_path %>
-
-          <%= sidebar_link_to "読書ログ", books_path %>
-
-          <%= sidebar_link_to "スケジュール", schedules_path %>
-
-          <%= sidebar_link_to "通知設定", settings_path %>
+          <%= render "shared/sidebar_nav" %>
         </nav>
 
-        <div class="mt-auto border-t border-blue-500 pt-4">
+        <div class="mt-auto border-t border-slate-500 pt-4">
           <p class="text-sm text-white px-3 mb-1">
             <%= current_user.email %>
           </p>
 
-          <%= button_to "ログアウト",
+          <%= button_to t("layouts.logout"),
               destroy_user_session_path,
               method: :delete,
               form: { class: "w-full" },
               class: "block w-full text-left px-3 py-2 text-sm rounded transition
-                hover:bg-blue-300 hover:text-white text-white" %>
+                hover:bg-slate-500 hover:text-white text-white" %>
         </div>
       </div>
     <% end %>
@@ -121,9 +96,6 @@
       mx-auto
       <%= user_signed_in? ? 'pt-20 max-w-screen-xl px-5 md:ml-64 md:pt-10' : 'md:ml-0 md:pt-0' %>
     ">
-      <div class="<%= user_signed_in? ? 'max-w-4xl mx-auto' : 'max-w-md mx-auto px-4' %>">
-        <%= render "shared/flash" %>
-      </div>
       <%= yield %>
     </main>
 
@@ -139,13 +111,22 @@
           };
         }
       });
+
+      // Toggle settings submenu open/close
+      function toggleSettingsMenu(button) {
+        const submenu = button.nextElementSibling;
+        const arrow = button.querySelector(".settings-arrow");
+        submenu.classList.toggle("hidden");
+        arrow.style.transform = submenu.classList.contains("hidden") ? "" : "rotate(180deg)";
+      }
     </script>
 
     <!-- Calendar Layer -->
     <div id="calendarLayer"
          class="fixed top-0 left-0 w-screen h-screen bg-black/50 hidden items-center justify-center z-[99999]">
+      <%# Layer height capped at 80vh with scroll support %>
       <div id="calendarLayerContent"
-           class="bg-white w-[90%] max-w-[600px] p-6 rounded-xl relative">
+           class="bg-white w-[90%] max-w-[600px] max-h-[80vh] overflow-y-auto p-6 rounded-xl relative">
         <button onclick="closeCalendarLayer()"
                 class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center
                     text-2xl font-bold text-gray-600 hover:text-black

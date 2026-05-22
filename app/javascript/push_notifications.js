@@ -1,4 +1,4 @@
-// Web Push通知のサブスクリプション登録
+// Register Web Push notification subscription
 document.addEventListener("DOMContentLoaded", () => {
   const vapidPublicKey = document.querySelector('meta[name="vapid-public-key"]');
   if (!vapidPublicKey) return;
@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
   navigator.serviceWorker.ready.then((registration) => {
     registration.pushManager.getSubscription().then((subscription) => {
       if (subscription) {
-        // 既にサブスクリプション済み → サーバーに登録
+        // Already subscribed — send existing subscription to server
         sendSubscriptionToServer(subscription);
         return;
       }
 
-      // 通知許可をリクエスト
+      // Request notification permission from the user
       Notification.requestPermission().then((permission) => {
         if (permission !== "granted") return;
 
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// サブスクリプション情報をサーバーに送信
+// Send subscription data to the server
 function sendSubscriptionToServer(subscription) {
   const csrfToken = document.querySelector('meta[name="csrf-token"]');
 
@@ -45,7 +45,7 @@ function sendSubscriptionToServer(subscription) {
   });
 }
 
-// Base64文字列をUint8Arrayに変換
+// Convert a Base64 string to Uint8Array
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");

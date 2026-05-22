@@ -1,151 +1,210 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
-  <h1 class="text-2xl font-bold mb-6">ダッシュボード</h1>
+<div class="max-w-4xl mx-auto pb-8 mb-10">
+  <h1 class="text-2xl font-bold mb-6"><%= t("dashboard.title") %></h1>
+  <%= render "shared/flash" %>
 
   <div class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
 
-    <!-- 今日の情報 -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <h2 class="text-lg font-bold text-gray-700 mb-4">
-        今日の情報（<%= @today.strftime("%m/%d") %>）
-      </h2>
+    <%# Today's info card (shown when diary or expense feature is enabled) %>
+    <% if current_user.feature_diary || current_user.feature_expense %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <h2 class="text-lg font-bold text-gray-700 mb-4">
+          <%= t("dashboard.today_info", date: @today.strftime("%m/%d")) %>
+        </h2>
 
-      <div class="space-y-2">
-        <% if @today_diary %>
-          <p class="text-green-600 font-semibold">📘 日記あり：<%= @today_diary.title %></p>
-        <% else %>
-          <p class="text-gray-500">📘 日記なし</p>
-        <% end %>
-
-        <p class="text-gray-700">
-          💴 出費：
-          <span class="font-bold text-lg"><%= number_with_delimiter(@today_expenses.sum(:amount)) %></span> 円
-        </p>
-      </div>
-    </div>
-
-    <!-- 今月の出費 -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <h2 class="text-lg font-bold text-gray-700 mb-4">今月の出費</h2>
-
-      <p class="text-3xl font-extrabold text-gray-800 mb-2">
-        <%= number_with_delimiter(@monthly_total) %> 円
-      </p>
-
-      <div class="w-full bg-gray-200 rounded-full h-3 mt-4">
-        <div class="bg-red-400 h-3 rounded-full"
-            style="width: <%= [(@monthly_total / 150000.0 * 100).round, 100].min %>%"></div>
-      </div>
-
-      <p class="text-sm text-gray-500 mt-1">※ 目安：15万円/月</p>
-    </div>
-
-    <!-- 今日の日記 -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-700">今日の日記</h2>
-
-        <% if @today_diary %>
-          <%= ui_link_button "編集", edit_diary_path(@today_diary), variant: :compact %>
-        <% else %>
-          <%= ui_link_button "追加", new_diary_path(date: @today), variant: :compact %>
-        <% end %>
-      </div>
-
-      <% if @today_diary %>
-        <p class="font-semibold text-gray-800"><%= @today_diary.title %></p>
-        <p class="text-sm text-gray-500"><%= @today_diary.date.strftime("%Y/%m/%d") %></p>
-        <p class="mt-2 text-gray-700 whitespace-pre-line"><%= @today_diary.body.truncate(80) %></p>
-      <% else %>
-        <p class="text-gray-500">日記はありません</p>
-      <% end %>
-    </div>
-
-    <!-- 今日の体調ログ -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-700">今日の体調</h2>
-
-        <% if @today_health_log %>
-          <%= ui_link_button "編集", edit_health_log_path(@today_health_log), variant: :compact %>
-        <% else %>
-          <%= ui_link_button "追加", new_health_log_path(date: @today), variant: :compact %>
-        <% end %>
-      </div>
-
-      <% if @today_health_log %>
-        <div class="space-y-1">
-          <% if @today_health_log.weight.present? %>
-            <p class="text-gray-700">体重: <span class="font-bold text-lg"><%= @today_health_log.weight %></span> kg</p>
+        <div class="space-y-2">
+          <% if current_user.feature_diary %>
+            <% if @today_diary %>
+              <p class="text-gray-700">
+                <%= t("dashboard.today_diary_entry") %>
+                <span class="font-bold text-lg"><%= @today_diary.title %></span>
+              </p>
+            <% else %>
+              <p class="text-gray-700"><%= t("dashboard.today_diary_none") %></p>
+            <% end %>
           <% end %>
-          <% if @today_health_log.condition.present? %>
-            <p class="text-gray-700">体調: <span class="font-bold"><%= @today_health_log.condition_label %></span></p>
+
+          <% if current_user.feature_expense %>
+            <p class="text-gray-700">
+              <%= t("dashboard.today_expense") %>
+              <span class="font-bold text-lg"><%= number_with_delimiter(@today_expenses.sum(:amount)) %></span> <%= t("dashboard.expense_currency") %>
+            </p>
           <% end %>
         </div>
-      <% else %>
-        <p class="text-gray-500">体調ログはありません</p>
-      <% end %>
-    </div>
-
-    <!-- 今日のスケジュール -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-700">今日の予定</h2>
-        <%= ui_link_button "追加", new_schedule_path(date: @today), variant: :compact %>
       </div>
+    <% end %>
 
-      <div class="space-y-2">
-        <% if @today_schedules.any? %>
-          <% @today_schedules.each do |schedule| %>
-            <div class="border-b py-2 flex justify-between items-center">
-              <span class="font-semibold text-gray-800"><%= schedule.title %></span>
-              <% if schedule.start_time.present? %>
-                <span class="text-sm text-gray-500"><%= schedule.start_time.strftime("%H:%M") %></span>
-              <% end %>
-            </div>
+    <%# Monthly expense card %>
+    <% if current_user.feature_expense %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <h2 class="text-lg font-bold text-gray-700 mb-4"><%= t("dashboard.monthly_expense") %></h2>
+
+        <p class="text-3xl font-extrabold text-gray-800 mb-2">
+          <%= number_with_delimiter(@monthly_total) %> <%= t("dashboard.expense_currency") %>
+        </p>
+
+        <div class="w-full bg-gray-200 rounded-full h-3 mt-4">
+          <div class="bg-red-400 h-3 rounded-full"
+              style="width: <%= @expense_target > 0 ? [(@monthly_total / @expense_target.to_f * 100).round, 100].min : 0 %>%"></div>
+        </div>
+
+        <p class="text-sm text-gray-500 mt-1"><%= t("dashboard.expense_guide", amount: number_with_delimiter(@expense_target)) %></p>
+      </div>
+    <% end %>
+
+    <%# Today's diary card %>
+    <% if current_user.feature_diary %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.today_diary_card") %></h2>
+
+          <% if @today_diary %>
+            <%= ui_link_button t("shared.edit"), edit_diary_path(@today_diary), variant: :compact %>
+          <% else %>
+            <%= ui_link_button t("shared.new_record"), new_diary_path(date: @today), variant: :compact %>
           <% end %>
+        </div>
+
+        <% if @today_diary %>
+          <p class="font-semibold text-gray-800"><%= @today_diary.title %></p>
+          <p class="text-sm text-gray-500"><%= format_date(@today_diary.date) %></p>
+          <p class="mt-2 text-gray-700 whitespace-pre-line"><%= @today_diary.body.truncate(80) %></p>
         <% else %>
-          <p class="text-gray-500 text-sm">今日の予定はありません</p>
+          <p class="text-gray-500"><%= t("dashboard.diary_none") %></p>
         <% end %>
       </div>
-    </div>
+    <% end %>
 
-    <!-- 読書中の本 -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-700">読書中</h2>
-        <%= ui_link_button "一覧", books_path, variant: :compact %>
-      </div>
-
-      <div class="space-y-2">
-        <% if @reading_books.any? %>
-          <% @reading_books.each do |book| %>
-            <div class="border-b py-2">
-              <p class="font-semibold text-gray-800"><%= book.title %></p>
-              <p class="text-sm text-gray-500"><%= book.author.presence || "著者不明" %></p>
-            </div>
+    <%# Today's health log card %>
+    <% if current_user.feature_health_log %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <%# Header: title + new/edit button only %>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.today_health_card") %></h2>
+          <% if @today_health_log %>
+            <%= ui_link_button t("shared.edit"), edit_health_log_path(@today_health_log), variant: :compact %>
+          <% else %>
+            <%= ui_link_button t("shared.new_record"), new_health_log_path(date: @today), variant: :compact %>
           <% end %>
+        </div>
+
+        <%# Health info %>
+        <% if @today_health_log %>
+          <div class="space-y-1 mb-4">
+            <% if @today_health_log.weight.present? %>
+              <p class="text-gray-700"><%= t("dashboard.weight_display", value: @today_health_log.weight) %></p>
+            <% end %>
+            <% if @today_health_log.condition.present? %>
+              <p class="text-gray-700"><%= t("dashboard.condition_display", label: @today_health_log.condition_label) %></p>
+            <% end %>
+          </div>
         <% else %>
-          <p class="text-gray-500 text-sm">読書中の本はありません</p>
+          <p class="text-gray-500 mb-4"><%= t("dashboard.health_none") %></p>
+        <% end %>
+
+        <%# Graph button (right-aligned) %>
+        <div class="flex justify-end mb-3">
+          <%= ui_link_button t("health_logs.index.tab_graph"), stats_health_logs_path, variant: :compact %>
+        </div>
+
+        <!-- Weight sparkline chart (last 30 days) -->
+        <% if @sparkline_any %>
+          <div class="relative h-20">
+            <canvas id="sparklineChart"></canvas>
+          </div>
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              new Chart(document.getElementById("sparklineChart").getContext("2d"), {
+                type: "line",
+                data: {
+                  labels: <%= raw @sparkline_labels %>,
+                  datasets: [{
+                    data: <%= raw @sparkline_data %>,
+                    borderColor: "rgb(59, 130, 246)",
+                    backgroundColor: "rgba(59, 130, 246, 0.08)",
+                    borderWidth: 1.5,
+                    pointRadius: 2,
+                    fill: true,
+                    tension: 0.3
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.parsed.y} kg` } } },
+                  scales: {
+                    x: { display: false },
+                    y: { display: false }
+                  }
+                }
+              });
+            });
+          </script>
+          <p class="text-xs text-gray-400 text-right mt-1"><%= t("dashboard.sparkline_caption") %></p>
+        <% else %>
+          <p class="text-xs text-gray-400 text-center py-4"><%= t("dashboard.sparkline_none") %></p>
         <% end %>
       </div>
-    </div>
+    <% end %>
 
-    <!-- ミニカレンダー -->
+    <%# Today's schedule card %>
+    <% if current_user.feature_schedule %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.today_schedule_card") %></h2>
+          <%= ui_link_button t("shared.new_record"), new_schedule_path(date: @today), variant: :compact %>
+        </div>
+
+        <div class="space-y-2">
+          <% if @today_schedules.any? %>
+            <% @today_schedules.each do |schedule| %>
+              <div class="border-b py-2 flex justify-between items-center">
+                <span class="font-semibold text-gray-800"><%= schedule.title %></span>
+                <% if schedule.start_time.present? %>
+                  <span class="text-sm text-gray-500"><%= schedule.start_time.strftime("%H:%M") %></span>
+                <% end %>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-gray-500 text-sm"><%= t("dashboard.schedule_none") %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%# Currently reading card %>
+    <% if current_user.feature_book %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.reading_card") %></h2>
+          <%= ui_link_button t("diaries.index.title"), books_path, variant: :compact %>
+        </div>
+
+        <div class="space-y-2">
+          <% if @reading_books.any? %>
+            <% @reading_books.each do |book| %>
+              <div class="border-b py-2">
+                <p class="font-semibold text-gray-800"><%= book.title %></p>
+                <p class="text-sm text-gray-500"><%= book.author.presence || t("shared.unknown_author") %></p>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-gray-500 text-sm"><%= t("dashboard.reading_none") %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Mini calendar -->
     <div class="bg-white rounded-xl shadow-sm border p-6">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-700"><%= @today.strftime("%-m月") %></h2>
-
-        <%= ui_link_button "カレンダー", calendar_path, variant: :compact %>
+        <h2 class="text-lg font-bold text-gray-700"><%= l(@today, format: :month_only) %></h2>
+        <%= ui_link_button t("dashboard.mini_calendar_btn"), calendar_path, variant: :compact %>
       </div>
 
       <div class="grid grid-cols-7 text-center text-sm font-semibold text-gray-600 mb-2">
-        <div class="text-red-500">日</div>
-        <div>月</div>
-        <div>火</div>
-        <div>水</div>
-        <div>木</div>
-        <div>金</div>
-        <div class="text-blue-500">土</div>
+        <% t("date.abbr_day_names").each_with_index do |name, i| %>
+          <div class="<%= i == 0 ? 'text-red-500' : i == 6 ? 'text-blue-500' : '' %>"><%= name %></div>
+        <% end %>
       </div>
 
       <div class="grid grid-cols-7 text-center gap-1">
@@ -165,55 +224,60 @@
               end
           %>
 
-          <% bg_class = is_today ? "bg-blue-500 text-white font-bold" : "" %>
-
-          <div class="p-2 rounded-lg <%= bg_class %> <%= text_color %>">
-            <%= day.day %>
+          <div class="flex items-center justify-center py-1">
+            <div class="w-7 h-7 flex items-center justify-center rounded-full
+                        <%= is_today ? 'bg-slate-500 text-white font-bold' : text_color %>">
+              <%= day.day %>
+            </div>
           </div>
         <% end %>
       </div>
     </div>
 
-    <!-- 最近の出費 -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-700">最近の出費</h2>
-        <%= ui_link_button "出費一覧", expenses_path, variant: :compact %>
-      </div>
+    <%# Recent expenses card %>
+    <% if current_user.feature_expense %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.recent_expense_card") %></h2>
+          <%= ui_link_button t("expenses.index.title"), expenses_path, variant: :compact %>
+        </div>
 
-      <div class="space-y-3">
-        <% if @recent_expenses.any? %>
-          <% @recent_expenses.each do |e| %>
-            <div class="border-b py-2 flex justify-between">
-              <span><%= e.category&.name || "未分類" %></span>
-              <span><%= e.amount %> 円</span>
-            </div>
+        <div class="space-y-3">
+          <% if @recent_expenses.any? %>
+            <% @recent_expenses.each do |e| %>
+              <div class="border-b py-2 flex justify-between">
+                <span><%= e.category&.name || t("shared.uncategorized") %></span>
+                <span><%= e.amount %> <%= t("dashboard.expense_currency") %></span>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-gray-500 text-sm"><%= t("dashboard.recent_expense_none") %></p>
           <% end %>
-        <% else %>
-          <p class="text-gray-500 text-sm">最近の出費はありません</p>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
 
-    <!-- 最近の日記 -->
-    <div class="bg-white rounded-xl shadow-sm border p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-700">最近の日記</h2>
-        <%= ui_link_button "日記一覧", diaries_path, variant: :compact %>
-      </div>
+    <%# Recent diary entries card %>
+    <% if current_user.feature_diary %>
+      <div class="bg-white rounded-xl shadow-sm border p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.recent_diary_card") %></h2>
+          <%= ui_link_button t("diaries.index.title"), diaries_path, variant: :compact %>
+        </div>
 
-      <div class="space-y-3">
-        <% if @recent_diaries.any? %>
-          <% @recent_diaries.each do |d| %>
-            <div class="border-b py-2">
-              <p class="font-semibold"><%= d.title %></p>
-              <p class="text-sm text-gray-600"><%= d.date %></p>
-            </div>
+        <div class="space-y-3">
+          <% if @recent_diaries.any? %>
+            <% @recent_diaries.each do |d| %>
+              <div class="border-b py-2">
+                <p class="font-semibold"><%= d.title %></p>
+                <p class="text-sm text-gray-600"><%= d.date %></p>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="text-gray-500 text-sm"><%= t("dashboard.recent_diary_none") %></p>
           <% end %>
-        <% else %>
-          <p class="text-gray-500 text-sm">最近の日記はありません</p>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>

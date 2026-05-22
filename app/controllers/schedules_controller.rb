@@ -1,21 +1,22 @@
-# スケジュールのCRUDコントローラー
+# CRUD controller for schedules
 class SchedulesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_schedule, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @schedules = current_user.schedules.order(date: :desc, start_time: :asc)
 
-    # キーワード検索（タイトル・メモ）
+    # Keyword search (title, memo)
     if params[:q].present?
       keyword = "%#{params[:q]}%"
       @schedules = @schedules.where("title LIKE ? OR memo LIKE ?", keyword, keyword)
     end
 
-    # 日付検索
+    # Date filter
     if params[:date].present?
       @schedules = @schedules.where(date: params[:date])
     end
+
+    @schedules = @schedules.page(params[:page]).per(10)
   end
 
   def show
@@ -33,7 +34,7 @@ class SchedulesController < ApplicationController
     @schedule = current_user.schedules.new(schedule_params)
 
     if @schedule.save
-      redirect_to @schedule, notice: "スケジュールを登録しました"
+      redirect_to @schedule, notice: t("schedules.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -41,7 +42,7 @@ class SchedulesController < ApplicationController
 
   def update
     if @schedule.update(schedule_params)
-      redirect_to @schedule, notice: "スケジュールを更新しました"
+      redirect_to @schedule, notice: t("schedules.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -49,7 +50,7 @@ class SchedulesController < ApplicationController
 
   def destroy
     @schedule.destroy
-    redirect_to schedules_path, notice: "スケジュールを削除しました"
+    redirect_to schedules_path, notice: t("schedules.flash.deleted")
   end
 
   private

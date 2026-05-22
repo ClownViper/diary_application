@@ -1,0 +1,8 @@
+<%# locals: (content:, empty_message: nil) %>
+<div class="bg-gray-50 px-3 pt-5 pb-10 rounded-lg leading-tight text-gray-800">
+  <% if content.present? %>
+    <p class="whitespace-pre-line"><%= content %></p>
+  <% else %>
+    <p class="text-gray-400 text-sm"><%= empty_message || t("shared.memo_empty") %></p>
+  <% end %>
+</div>

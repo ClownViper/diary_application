@@ -1,0 +1,12 @@
+<%# locals: (message:, inline: false) %>
+<%# inline: true  => use inside an existing container, e.g. a table (no background card) %>
+<%# inline: false => standalone card layout (default) %>
+<% if inline %>
+  <div class="px-4 py-6 text-center text-gray-500">
+    <%= message %>
+  </div>
+<% else %>
+  <div class="bg-white rounded-xl shadow p-6 text-center text-gray-500 mt-4">
+    <%= message %>
+  </div>
+<% end %>

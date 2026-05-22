@@ -1,3 +1,4 @@
+# Category model for classifying expenses
 class Category < ApplicationRecord
   HEX_COLOR = /\A#[0-9A-Fa-f]{6}\z/
 

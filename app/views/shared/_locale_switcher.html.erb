@@ -1,0 +1,15 @@
+<%# Locale switcher: highlights the currently active locale %>
+<div class="flex gap-2 items-center">
+  <% [[:ja, t("locale_switcher.ja")], [:en, t("locale_switcher.en")]].each do |loc, label| %>
+    <%= button_to label, locale_path,
+          method: :patch,
+          params: { locale: loc },
+          form: { class: "inline" },
+          class: [
+            "px-4 py-1.5 text-sm rounded-lg border transition font-medium",
+            I18n.locale.to_s == loc.to_s \
+              ? "bg-slate-600 text-white border-slate-600" \
+              : "bg-white text-slate-600 border-slate-300 hover:bg-slate-50"
+          ].join(" ") %>
+  <% end %>
+</div>

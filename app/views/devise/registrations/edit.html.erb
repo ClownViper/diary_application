@@ -1,42 +1,71 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<div class="max-w-4xl mx-auto pb-8 mb-10">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <h1 class="text-2xl font-bold mb-6">アカウント設定</h1>
+  <%= render "shared/flash" %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+  <!-- Account info form -->
+  <div class="bg-white p-6 rounded-xl shadow mb-6">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+      <%
+        def field_class(base, errors) = errors.any? ? "#{base} border-red-500" : base
+      %>
 
-  <div class="field">
-    <p><%= f.label :password %> <i>(leave blank if you don't want to change it)</i></p>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-    <% if @minimum_password_length %>
-      <p><em><%= @minimum_password_length %> characters minimum</em></p>
+      <div class="mb-4">
+        <%= f.label :email, "メールアドレス", class: ApplicationHelper::LABEL_CLASS %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email",
+              class: field_class(ApplicationHelper::INPUT_CLASS, resource.errors[:email]) %>
+        <% if resource.errors[:email].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:email].first %></p>
+        <% end %>
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <p class="text-sm text-gray-500 mt-1">確認待ちのメールアドレス: <%= resource.unconfirmed_email %></p>
+        <% end %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password, "新しいパスワード", class: ApplicationHelper::LABEL_CLASS %>
+        <p class="text-xs text-gray-500 mb-1">変更しない場合は空白のままにしてください<% if @minimum_password_length %>（<%= @minimum_password_length %>文字以上）<% end %></p>
+        <%= f.password_field :password, autocomplete: "new-password",
+              class: field_class(ApplicationHelper::INPUT_CLASS, resource.errors[:password]) %>
+        <% if resource.errors[:password].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:password].first %></p>
+        <% end %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password_confirmation, "新しいパスワード（確認）", class: ApplicationHelper::LABEL_CLASS %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password",
+              class: field_class(ApplicationHelper::INPUT_CLASS, resource.errors[:password_confirmation]) %>
+        <% if resource.errors[:password_confirmation].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:password_confirmation].first %></p>
+        <% end %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.label :current_password, "現在のパスワード", class: ApplicationHelper::LABEL_CLASS %>
+        <p class="text-xs text-gray-500 mb-1">変更を保存するには現在のパスワードが必要です</p>
+        <%= f.password_field :current_password, autocomplete: "current-password",
+              class: field_class(ApplicationHelper::INPUT_CLASS, resource.errors[:current_password]) %>
+        <% if resource.errors[:current_password].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:current_password].first %></p>
+        <% end %>
+      </div>
+
+      <%= f.submit "変更を保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+
     <% end %>
   </div>
 
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
+  <!-- Account deletion -->
+  <div class="bg-white p-6 rounded-xl shadow border border-red-100">
+    <h2 class="text-lg font-bold text-red-700 mb-2">アカウントを削除</h2>
+    <p class="text-sm text-gray-500 mb-4">アカウントを削除すると、すべてのデータが失われます。この操作は取り消せません。</p>
+    <%= button_to "アカウントを削除",
+          registration_path(resource_name),
+          method: :delete,
+          data: { confirm: "本当に削除しますか？この操作は取り消せません。", turbo_confirm: "本当に削除しますか？この操作は取り消せません。" },
+          class: ui_button_classes(variant: :danger, size: :md) %>
   </div>
 
-  <div class="field">
-    <p><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i></p>
-    <p><%= f.password_field :current_password, autocomplete: "current-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
-
-<%= link_to "Back", :back %>
+</div>

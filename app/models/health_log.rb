@@ -1,5 +1,9 @@
-# 体重・体調ログモデル
+# Health log model (weight and condition tracking)
 class HealthLog < ApplicationRecord
+  include DateDefaultable
+
+  after_initialize { self.condition ||= 3 }
+
   belongs_to :user
 
   validates :date, presence: true
@@ -8,20 +12,11 @@ class HealthLog < ApplicationRecord
   validates :condition, inclusion: { in: 1..5, allow_nil: true }
   validates :memo, length: { maximum: 100 }
 
-  # 体調レベルのラベル
-  CONDITION_LABELS = {
-    1 => "とても悪い",
-    2 => "悪い",
-    3 => "普通",
-    4 => "良い",
-    5 => "とても良い"
-  }.freeze
-
-  def condition_label
-    CONDITION_LABELS[condition]
+  def self.condition_labels
+    (1..5).index_with { |i| I18n.t("health_logs.condition_labels.#{i}") }
   end
 
-  after_initialize do
-    self.date ||= Date.current
+  def condition_label
+    I18n.t("health_logs.condition_labels.#{condition}")
   end
 end

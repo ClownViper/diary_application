@@ -1,0 +1,45 @@
+<%# Sidebar navigation (shared between desktop and mobile) %>
+<%# Show/hide feature links based on content settings flags %>
+
+<%= sidebar_link_to t("nav.dashboard"), root_path %>
+
+<% if current_user.feature_diary %>
+  <%= sidebar_link_to t("nav.diaries"), diaries_path %>
+<% end %>
+
+<% if current_user.feature_expense %>
+  <%= sidebar_link_to t("nav.expenses"), expenses_path %>
+<% end %>
+
+<% if current_user.feature_health_log %>
+  <%= sidebar_link_to t("nav.health_logs"), health_logs_path %>
+<% end %>
+
+<% if current_user.feature_book %>
+  <%= sidebar_link_to t("nav.books"), books_path %>
+<% end %>
+
+<% if current_user.feature_schedule %>
+  <%= sidebar_link_to t("nav.schedules"), schedules_path %>
+<% end %>
+
+<%= sidebar_link_to t("nav.calendar"), calendar_path %>
+
+<%= sidebar_link_to t("nav.csv_data"), csv_exports_path %>
+
+<%# Settings submenu (categories, notifications, content settings) %>
+<div class="mt-2">
+  <button onclick="toggleSettingsMenu(this)"
+          class="w-full text-left text-lg px-3 py-2 rounded transition text-white hover:bg-slate-500 flex items-center justify-between">
+    <span><%= t("nav.settings_menu") %></span>
+    <span class="settings-arrow text-sm transition-transform">▼</span>
+  </button>
+
+  <div class="settings-submenu hidden ml-3 space-y-1 mt-1">
+    <% if current_user.feature_expense %>
+      <%= sidebar_link_to t("nav.categories"), categories_path, class: "text-base" %>
+    <% end %>
+    <%= sidebar_link_to t("nav.notification_settings"), settings_path, class: "text-base" %>
+    <%= sidebar_link_to t("nav.content_settings"), content_settings_path, class: "text-base" %>
+  </div>
+</div>

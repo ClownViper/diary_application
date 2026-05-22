@@ -1,0 +1,116 @@
+<div class="max-w-4xl mx-auto pb-8 mb-10">
+
+  <%= render "shared/page_header", title: t("health_logs.index.title"), button_label: t("shared.new_record"), button_path: new_health_log_path %>
+
+  <!-- List / Graph tabs -->
+  <div class="flex gap-2 mb-6">
+    <%= link_to t("health_logs.index.tab_list"), health_logs_path,
+          class: "px-4 py-2 rounded-lg font-semibold text-sm bg-white text-gray-600 border hover:bg-gray-50 transition" %>
+    <span class="px-4 py-2 rounded-lg font-semibold text-sm bg-slate-600 text-white"><%= t("health_logs.index.tab_graph") %></span>
+  </div>
+
+  <!-- Month / Year toggle -->
+  <div class="flex gap-2 mb-6">
+    <%= link_to t("health_logs.stats.tab_month"), stats_health_logs_path(tab: "month"),
+          class: "px-4 py-1.5 rounded-full text-sm font-semibold transition
+                  #{@tab == 'month' ? 'bg-slate-100 text-slate-700' : 'bg-white text-gray-500 border hover:bg-gray-50'}" %>
+    <%= link_to t("health_logs.stats.tab_year"), stats_health_logs_path(tab: "year"),
+          class: "px-4 py-1.5 rounded-full text-sm font-semibold transition
+                  #{@tab == 'year' ? 'bg-slate-100 text-slate-700' : 'bg-white text-gray-500 border hover:bg-gray-50'}" %>
+  </div>
+
+  <% if @stats_logs.any? %>
+
+    <!-- Summary statistics -->
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div class="bg-white rounded-xl shadow-sm border p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1"><%= t("health_logs.stats.avg_weight") %></p>
+        <p class="text-2xl font-bold text-gray-800"><%= @weight_avg %><span class="text-sm font-normal text-gray-500 ml-1">kg</span></p>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1"><%= t("health_logs.stats.max_weight") %></p>
+        <p class="text-2xl font-bold text-red-500"><%= @weight_max %><span class="text-sm font-normal text-gray-500 ml-1">kg</span></p>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1"><%= t("health_logs.stats.min_weight") %></p>
+        <p class="text-2xl font-bold text-blue-500"><%= @weight_min %><span class="text-sm font-normal text-gray-500 ml-1">kg</span></p>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+      <h2 class="text-base font-bold text-gray-700 mb-4">
+        <%= @tab == "year" ? t("health_logs.stats.graph_yearly") : t("health_logs.stats.graph_monthly") %>
+      </h2>
+      <div class="relative h-56 md:h-72">
+        <canvas id="weightChart"></canvas>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById("weightChart").getContext("2d");
+        const labels = <%= raw @chart_labels %>;
+        const data   = <%= raw @chart_data %>;
+
+        const min = Math.min(...data);
+        const max = Math.max(...data);
+        const padding = Math.max((max - min) * 0.2, 1);
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "<%= t('health_logs.form.weight_with_unit') %>",
+              data: data,
+              borderColor: "rgb(59, 130, 246)",
+              backgroundColor: "rgba(59, 130, 246, 0.08)",
+              borderWidth: 2,
+              pointBackgroundColor: "rgb(59, 130, 246)",
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: ctx => `${ctx.parsed.y} kg`
+                }
+              }
+            },
+            scales: {
+              y: {
+                min: Math.floor((min - padding) * 10) / 10,
+                max: Math.ceil((max + padding) * 10) / 10,
+                ticks: {
+                  callback: val => `${val} kg`
+                },
+                grid: { color: "rgba(0,0,0,0.05)" }
+              },
+              x: {
+                grid: { display: false },
+                ticks: {
+                  maxTicksLimit: 8,
+                  maxRotation: 45
+                }
+              }
+            }
+          }
+        });
+      });
+    </script>
+
+  <% else %>
+    <div class="bg-white rounded-xl shadow-sm border p-10 text-center text-gray-400">
+      <%= @tab == "year" ? t("health_logs.stats.no_data_year") : t("health_logs.stats.no_data_month") %>
+    </div>
+  <% end %>
+
+</div>

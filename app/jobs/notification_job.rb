@@ -1,5 +1,5 @@
-# 毎分実行される通知ジョブ
-# 各機能の通知設定を確認し、条件に合致するユーザーにWeb Push通知を送信する
+# Job executed every minute to send Web Push notifications
+
 class NotificationJob < ApplicationJob
   queue_as :default
 
@@ -8,31 +8,31 @@ class NotificationJob < ApplicationJob
     current_time = now.strftime("%H:%M")
     today = Date.current
 
-    # 日記通知: 通知時刻が一致 && 今日の日記がないユーザー
+    # Diary: notify users whose time matches and have no diary entry today
     notify_users(:diary, current_time) do |user|
       user.diaries.where(date: today).none?
     end
 
-    # 家計簿通知: 通知時刻が一致
+    # Expenses: notify users whose time matches
     notify_users(:entry, current_time)
 
-    # 体調ログ通知: 通知時刻が一致 && 今日の記録がないユーザー
+    # Health log: notify users whose time matches and have no health log today
     notify_users(:health, current_time) do |user|
       user.health_logs.where(date: today).none?
     end
 
-    # 読書ログ通知: 通知時刻が一致 && 読書中の本があるユーザー
+    # Reading log: notify users whose time matches and have a book in progress
     notify_users(:books, current_time) do |user|
       user.books.reading.any?
     end
 
-    # スケジュール通知: 予定の開始前N分に通知
+    # Schedule: notify users N minutes before their event starts
     send_schedule_notifications(now)
   end
 
   private
 
-  # 機能ごとの通知カラム定義
+  # Column definitions per notification feature
   NOTIFICATION_COLUMNS = {
     diary:  { flag: :notify_diary,  time: :notify_diary_time },
     entry:  { flag: :notify_entry,  time: :notify_entry_time },
@@ -40,7 +40,7 @@ class NotificationJob < ApplicationJob
     books:  { flag: :notify_books,  time: :notify_books_time }
   }.freeze
 
-  # 指定された機能の通知対象ユーザーに通知を送信
+  # Send notifications to eligible users for the given feature
   def notify_users(feature, current_time)
     columns = NOTIFICATION_COLUMNS[feature]
     return unless columns
@@ -49,11 +49,11 @@ class NotificationJob < ApplicationJob
                 .where.not(columns[:time] => nil)
 
     users.find_each do |user|
-      # 通知時刻を比較（時:分のみ）
+      # Compare notification time (HH:MM only)
       notify_time = user.public_send(columns[:time]).strftime("%H:%M")
       next unless notify_time == current_time
 
-      # 追加条件がある場合はチェック
+      # Check optional eligibility condition
       next if block_given? && !yield(user)
 
       message = I18n.t("notifications.#{feature}")
@@ -61,23 +61,23 @@ class NotificationJob < ApplicationJob
     end
   end
 
-  # スケジュール通知の送信
+  # Send schedule-based notifications
   def send_schedule_notifications(now)
     User.where(notify_schedule: true).find_each do |user|
       minutes_before = user.notify_schedule_before || 10
 
-      # 今日のスケジュールで、開始N分前のものを探す
+      # Find today's schedules that start in exactly N minutes
       user.schedules.where(date: Date.current).find_each do |schedule|
         next unless schedule.start_time.present?
 
-        # スケジュールの開始時刻を今日の日付と組み合わせる
+        # Combine schedule start time with today's date
         schedule_time = Time.zone.local(
           now.year, now.month, now.day,
           schedule.start_time.hour, schedule.start_time.min
         )
         notify_at = schedule_time - minutes_before.minutes
 
-        # 通知時刻が現在の分と一致するか確認
+        # Check if the notification time matches the current minute
         if notify_at.strftime("%H:%M") == now.strftime("%H:%M")
           message = I18n.t("notifications.schedule", title: schedule.title)
           send_push_notification(user, message)
@@ -86,7 +86,7 @@ class NotificationJob < ApplicationJob
     end
   end
 
-  # Web Push通知を送信
+  # Send a Web Push notification to all subscriptions of the given user
   def send_push_notification(user, message)
     vapid_keys = Rails.application.credentials.dig(:webpush)
 
@@ -108,7 +108,7 @@ class NotificationJob < ApplicationJob
       rescue WebPush::ExpiredSubscription
         sub.destroy
       rescue => e
-        Rails.logger.error("Push通知送信エラー: #{e.message}")
+        Rails.logger.error("Push notification error: #{e.message}")
       end
     end
   end

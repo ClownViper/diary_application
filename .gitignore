@@ -41,3 +41,15 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+# aider
+.aider*
+
+# Claude Code
+.claude/
+
+# JetBrains IDE
+.idea/
+
+# Build logs
+build.log

@@ -1,9 +1,9 @@
+# CRUD controller for categories
 class CategoriesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_category, only: [:edit, :update, :destroy]
 
   def index
-    @categories = current_user.categories.order(:name)
+    @categories = current_user.categories.order(:name).page(params[:page]).per(10)
   end
 
   def new
@@ -16,7 +16,7 @@ class CategoriesController < ApplicationController
   def create
     @category = current_user.categories.new(category_params)
     if @category.save
-      redirect_to categories_path, notice: "カテゴリを作成しました"
+      redirect_to categories_path, notice: t("categories.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -24,16 +24,15 @@ class CategoriesController < ApplicationController
 
   def update
     if @category.update(category_params)
-      redirect_to categories_path, notice: "カテゴリを更新しました"
+      redirect_to categories_path, notice: t("categories.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @category = current_user.categories.find(params[:id])
     @category.destroy
-    redirect_to categories_path, notice: "カテゴリを削除しました"
+    redirect_to categories_path, notice: t("categories.flash.deleted")
   end
 
   private

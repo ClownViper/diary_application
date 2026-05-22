@@ -1,6 +1,5 @@
-# 通知設定コントローラー
+# Controller for notification settings
 class SettingsController < ApplicationController
-  before_action :authenticate_user!
 
   def show
     @user = current_user
@@ -10,7 +9,7 @@ class SettingsController < ApplicationController
     @user = current_user
 
     if @user.update(settings_params)
-      redirect_to settings_path, notice: "通知設定を更新しました"
+      redirect_to settings_path, notice: t("settings.flash.updated")
     else
       render :show, status: :unprocessable_entity
     end

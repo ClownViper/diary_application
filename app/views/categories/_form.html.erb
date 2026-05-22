@@ -1,14 +1,13 @@
 <%= render layout: "shared/form_card" do %>
   <%= form_with model: category, class: "space-y-6" do |f| %>
-    <%= render "shared/form_errors", resource: category %>
 
     <div class="!mt-2">
-      <%= render "shared/form_field", form: f, attr: :name, field_label: "カテゴリ名",
-            field_options: { placeholder: "例：食費" } %>
+      <%= render "shared/form_field", form: f, attr: :name,
+            field_options: { placeholder: t("categories.form.name_placeholder") } %>
     </div>
 
     <div>
-      <%= f.label :color, "表示カラー", class: ApplicationHelper::LABEL_CLASS %>
+      <%= f.label :color, class: ApplicationHelper::LABEL_CLASS %>
 
       <div class="flex gap-3 mb-3">
         <% ["#EF4444", "#F97316", "#FACC15", "#22C55E", "#3B82F6", "#8B5CF6", "#EC4899", "#6B7280"].each do |c| %>
@@ -25,7 +24,7 @@
     </div>
 
     <div>
-      <%= f.submit "保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+      <%= f.submit t("shared.save"), class: ui_button_classes(variant: :primary, size: :lg) %>
     </div>
   <% end %>
 <% end %>

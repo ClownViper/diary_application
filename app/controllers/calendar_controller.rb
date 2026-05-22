@@ -1,21 +1,21 @@
+# Controller for the monthly calendar view
 class CalendarController < ApplicationController
-  before_action :authenticate_user!
 
   def index
-    # 表示する月
+    # Month to display
     @date = params[:date] ? Date.parse(params[:date]) : Date.today
 
-    # 月の開始・終了
+    # Start and end of the month
     @start_date = @date.beginning_of_month
     @end_date   = @date.end_of_month
 
-    # データ取得
+    # Fetch records
     diaries = current_user.diaries.where(date: @start_date..@end_date)
     expenses = current_user.expenses.where(date: @start_date..@end_date)
     health_logs = current_user.health_logs.where(date: @start_date..@end_date)
     schedules = current_user.schedules.where(date: @start_date..@end_date)
 
-    # 日付ごとにまとめる（ビューで高速に参照できるように）
+    # Group by date for fast lookup in views
     @diaries_by_date = diaries.index_by(&:date)
     @expenses_by_date = expenses.group_by(&:date)
     @health_logs_by_date = health_logs.index_by(&:date)
@@ -24,10 +24,10 @@ class CalendarController < ApplicationController
 
   def layer
     @date = Date.parse(params[:date])
-    @diary = Diary.find_by(date: @date, user: current_user)
-    @expenses = Expense.where(date: @date, user: current_user)
-    @health_log = HealthLog.find_by(date: @date, user: current_user)
-    @schedules = Schedule.where(date: @date, user: current_user).order(start_time: :asc)
+    @diary      = current_user.diaries.find_by(date: @date)
+    @expenses   = current_user.expenses.where(date: @date)
+    @health_log = current_user.health_logs.find_by(date: @date)
+    @schedules  = current_user.schedules.where(date: @date).order(start_time: :asc)
 
     render partial: "calendar/layer"
   end

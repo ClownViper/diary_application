@@ -1,21 +1,22 @@
-# 読書ログのCRUDコントローラー
+# CRUD controller for reading logs
 class BooksController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_book, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @books = current_user.books.order(created_at: :desc)
 
-    # キーワード検索（タイトル・著者・メモ）
+    # Keyword search (title, author, memo)
     if params[:q].present?
       keyword = "%#{params[:q]}%"
       @books = @books.where("title LIKE ? OR author LIKE ? OR memo LIKE ?", keyword, keyword, keyword)
     end
 
-    # ステータス検索
+    # Status filter
     if params[:status].present?
       @books = @books.where(status: params[:status])
     end
+
+    @books = @books.page(params[:page]).per(10)
   end
 
   def show
@@ -32,7 +33,7 @@ class BooksController < ApplicationController
     @book = current_user.books.new(book_params)
 
     if @book.save
-      redirect_to @book, notice: "読書ログを登録しました"
+      redirect_to @book, notice: t("books.flash.created")
     else
       render :new, status: :unprocessable_entity
     end
@@ -40,7 +41,7 @@ class BooksController < ApplicationController
 
   def update
     if @book.update(book_params)
-      redirect_to @book, notice: "読書ログを更新しました"
+      redirect_to @book, notice: t("books.flash.updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -48,7 +49,7 @@ class BooksController < ApplicationController
 
   def destroy
     @book.destroy
-    redirect_to books_path, notice: "読書ログを削除しました"
+    redirect_to books_path, notice: t("books.flash.deleted")
   end
 
   private

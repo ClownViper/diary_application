@@ -1,8 +1,407 @@
 ja:
+  # ===== 日付フォーマット =====
+  date:
+    formats:
+      year_month: "%Y年%m月"
+      month_only: "%-m月"
+      full_date: "%Y年%m月%d日"
+    abbr_day_names: ["日", "月", "火", "水", "木", "金", "土"]
+
+  # ===== 共通 =====
   shared:
     back_to_index: "← 一覧へ戻る"
     delete_confirm: "削除しますか？"
+    edit: "編集"
+    delete: "削除"
+    save: "保存"
+    search: "検索"
+    new_record: "新規作成"
+    new_add: "新規追加"
+    file_select: "ファイルを選択"
+    memo_empty: "メモはありません。"
+    no_image: "No Image"
+    unknown_author: "著者不明"
+    uncategorized: "未分類"
+    today_link: "今月へ"
+    search_form:
+      keyword: "キーワード"
+      date: "日付"
+      all: "すべて"
 
+  # ===== ページネーション =====
+  pagination:
+    suffix: "/ %{total}ページ"
+
+  # ===== サイドバーナビ =====
+  nav:
+    dashboard: "ダッシュボード"
+    diaries: "日記一覧"
+    expenses: "出費一覧"
+    health_logs: "体調ログ"
+    books: "読書ログ"
+    schedules: "スケジュール"
+    calendar: "カレンダー"
+    csv_data: "CSVデータ管理"
+    settings_menu: "設定"
+    categories: "カテゴリ"
+    notification_settings: "通知設定"
+    content_settings: "コンテンツ設定"
+
+  # ===== レイアウト =====
+  layouts:
+    logout: "ログアウト"
+
+  # ===== ダッシュボード =====
+  dashboard:
+    title: "ダッシュボード"
+    today_info: "今日の情報（%{date}）"
+    today_diary_entry: "📘 日記："
+    today_diary_none: "📘 日記：なし"
+    today_expense: "💴 出費："
+    expense_currency: "円"
+    monthly_expense: "今月の出費"
+    expense_guide: "※ 目安：%{amount}円/月"
+    today_diary_card: "今日の日記"
+    diary_none: "日記はありません。"
+    today_health_card: "今日の体調"
+    health_none: "体調ログはありません。"
+    weight_display: "体重: %{value} kg"
+    condition_display: "体調: %{label}"
+    sparkline_caption: "直近30日の体重推移"
+    sparkline_none: "体重データがありません"
+    today_schedule_card: "今日の予定"
+    schedule_none: "今日の予定はありません。"
+    reading_card: "読書中"
+    reading_none: "読書中の本はありません。"
+    mini_calendar_btn: "カレンダー"
+    recent_expense_card: "最近の出費"
+    recent_expense_none: "最近の出費はありません。"
+    recent_diary_card: "最近の日記"
+    recent_diary_none: "最近の日記はありません。"
+
+  # ===== 日記 =====
+  diaries:
+    index:
+      title: "日記一覧"
+      search_keyword_placeholder: "タイトル・本文を検索"
+      empty: "日記はありません。"
+    new:
+      title: "日記を作成"
+      existing_notice: "この日付の日記はすでに存在します。"
+      edit_existing: "編集する"
+    edit:
+      title: "日記を編集"
+    form:
+      image: "画像"
+    flash:
+      existing_date: "この日はすでに日記があります"
+      created: "日記を作成しました"
+      updated: "日記を更新しました"
+      deleted: "日記を削除しました"
+
+  # ===== 出費 =====
+  expenses:
+    index:
+      title: "出費一覧"
+      search_keyword_placeholder: "名称・メモを検索"
+      col_title: "タイトル"
+      col_category: "カテゴリ"
+      col_date: "日付"
+      col_amount: "金額"
+      empty: "出費はありません。"
+    show:
+      category_label: "カテゴリ："
+    new:
+      title: "出費を登録"
+    edit:
+      title: "出費を編集"
+    form:
+      select_category: "選択してください"
+    flash:
+      created: "出費を登録しました"
+      updated: "出費を更新しました"
+      deleted: "出費を削除しました"
+
+  # ===== 体調ログ =====
+  health_logs:
+    index:
+      title: "体調ログ"
+      tab_list: "一覧"
+      tab_graph: "グラフ"
+      search_keyword_placeholder: "メモを検索"
+      col_date: "日付"
+      col_weight: "体重"
+      col_condition: "体調"
+      col_memo: "メモ"
+      empty: "体調ログはありません。"
+    show:
+      title: "体調ログ"
+      weight_label: "体重"
+      condition_label: "体調"
+      condition_display: "%{label}（%{value}/5）"
+      sleep_hours_label: "睡眠時間"
+      temperature_label: "体温"
+    stats:
+      tab_month: "今月"
+      tab_year: "今年"
+      avg_weight: "平均体重"
+      max_weight: "最高"
+      min_weight: "最低"
+      graph_monthly: "今月の体重推移"
+      graph_yearly: "今年の体重推移（月平均）"
+      no_data_month: "今月の体重データがありません。"
+      no_data_year: "今年の体重データがありません。"
+    new:
+      title: "体調ログを登録"
+    edit:
+      title: "体調ログを編集"
+    condition_labels:
+      1: "とても悪い"
+      2: "悪い"
+      3: "普通"
+      4: "良い"
+      5: "とても良い"
+    form:
+      weight_with_unit: "体重 (kg)"
+      weight_placeholder: "例: 65.5"
+      sleep_hours_with_unit: "睡眠時間 (h)"
+      sleep_hours_placeholder: "例: 7.5"
+      temperature_with_unit: "体温 (℃)"
+      temperature_placeholder: "例: 36.5"
+      memo_placeholder: "100文字以内"
+    flash:
+      existing_date: "この日はすでに記録があります"
+      created: "体調ログを登録しました"
+      updated: "体調ログを更新しました"
+      deleted: "体調ログを削除しました"
+
+  # ===== 読書ログ =====
+  books:
+    index:
+      title: "読書ログ一覧"
+      search_keyword_placeholder: "タイトル・著者・メモを検索"
+      search_status: "ステータス"
+      empty: "読書ログはありません。"
+    show:
+      started_on: "読み始め: %{date}"
+      finished_on: "読了: %{date}"
+      no_review: "感想はありません。"
+    new:
+      title: "読書ログを登録"
+    edit:
+      title: "読書ログを編集"
+    form:
+      memo_placeholder: "300文字以内"
+    status_labels:
+      unread: "未読"
+      reading: "読書中"
+      finished: "読了"
+    flash:
+      created: "読書ログを登録しました"
+      updated: "読書ログを更新しました"
+      deleted: "読書ログを削除しました"
+
+  # ===== スケジュール =====
+  schedules:
+    index:
+      title: "スケジュール一覧"
+      search_keyword_placeholder: "タイトル・メモを検索"
+      col_date: "日付"
+      col_title: "タイトル"
+      col_time: "時間"
+      col_memo: "メモ"
+      empty: "スケジュールはありません。"
+    show:
+      start_time: "開始時刻"
+      end_time: "終了時刻"
+    new:
+      title: "スケジュールを登録"
+    edit:
+      title: "スケジュールを編集"
+    form:
+      memo_placeholder: "200文字以内"
+    flash:
+      created: "スケジュールを登録しました"
+      updated: "スケジュールを更新しました"
+      deleted: "スケジュールを削除しました"
+
+  # ===== カテゴリ =====
+  categories:
+    index:
+      title: "カテゴリ管理"
+      col_name: "カテゴリ名"
+      col_color: "カラー"
+      col_count: "使用回数"
+      col_actions: "操作"
+      count_suffix: "%{count}件"
+      note: "カテゴリは出費管理で使用できます。使用中のカテゴリを削除すると、紐づく出費のカテゴリが未設定になります。"
+      empty: "カテゴリはありません。"
+    new:
+      title: "カテゴリを追加"
+    edit:
+      title: "カテゴリを編集"
+    form:
+      name_placeholder: "例：食費"
+    flash:
+      created: "カテゴリを作成しました"
+      updated: "カテゴリを更新しました"
+      deleted: "カテゴリを削除しました"
+
+  # ===== 通知設定 =====
+  settings:
+    title: "通知設定"
+    save: "設定を保存"
+    minutes_before_suffix: "分前"
+    notification_items:
+      diary:
+        name: "日記"
+        desc: "書き忘れ防止のリマインド通知"
+        time_label: "通知時刻"
+      entry:
+        name: "家計簿"
+        desc: "入力リマインド通知"
+        time_label: "通知時刻"
+      health:
+        name: "体調ログ"
+        desc: "毎日の体重・体調記録のリマインド"
+        time_label: "通知時刻"
+      books:
+        name: "読書ログ"
+        desc: "読書中の本がある場合のみ通知"
+        time_label: "通知時刻"
+      schedule:
+        name: "スケジュール"
+        desc: "予定の開始前に通知"
+        time_label: "何分前"
+    flash:
+      updated: "通知設定を更新しました"
+
+  # ===== コンテンツ設定 =====
+  content_settings:
+    title: "コンテンツ設定"
+    features_title: "機能の表示切替"
+    features_desc: "使わない機能はOFFにするとサイドバーやダッシュボードから非表示になります。"
+    expense_target_title: "出費目安金額"
+    expense_target_desc: "ダッシュボードの進捗バーで使用する月間の目安金額です。"
+    expense_target_suffix: "円 / 月"
+    save: "設定を保存"
+    feature_items:
+      diary:
+        label: "📘 日記"
+        desc: "日記の作成・管理"
+      expense:
+        label: "💴 家計簿"
+        desc: "出費の記録・カテゴリ管理"
+      health_log:
+        label: "⚖️ 体調ログ"
+        desc: "体重・体調の記録"
+      book:
+        label: "📚 読書ログ"
+        desc: "読書記録の管理"
+      schedule:
+        label: "🗓 スケジュール"
+        desc: "予定の管理"
+    flash:
+      updated: "コンテンツ設定を更新しました。"
+
+  # ===== CSVエクスポート・インポート =====
+  csv_exports:
+    title: "CSVエクスポート・インポート"
+    description: "各データのCSVダウンロードと、CSVファイルからのインポートができます。インポート用CSVはエクスポートしたファイルをそのまま使用できます。"
+    section:
+      columns_label: "カラム: %{columns}"
+      export:
+        title: "⬇️ エクスポート（ダウンロード）"
+        desc: "現在の全データをCSVでダウンロードします。"
+        button: "CSVダウンロード"
+      import:
+        title: "⬆️ インポート（アップロード）"
+        desc: "CSVファイルを選択してインポートします。重複データはスキップされます。"
+        button: "インポート"
+    sections:
+      diary:
+        title: "日記"
+        icon: "📖"
+        columns: "日付・タイトル・本文"
+      expense:
+        title: "家計簿"
+        icon: "💰"
+        columns: "日付・品目・金額・カテゴリ・メモ"
+      health_log:
+        title: "体調ログ"
+        icon: "🩺"
+        columns: "日付・体重・体調・睡眠・体温・メモ"
+      book:
+        title: "読書ログ"
+        icon: "📚"
+        columns: "タイトル・著者・ステータス・読み始め日・読了日・感想"
+    csv_columns:
+      diary:
+        date: "日付"
+        title: "タイトル"
+        body: "本文"
+      expense:
+        date: "日付"
+        name: "品目"
+        amount: "金額"
+        category: "カテゴリ"
+        memo: "メモ"
+      health_log:
+        date: "日付"
+        weight: "体重(kg)"
+        condition: "体調"
+        sleep_hours: "睡眠(h)"
+        temperature: "体温(℃)"
+        memo: "メモ"
+      book:
+        title: "タイトル"
+        author: "著者"
+        status: "ステータス"
+        started_on: "読み始め日"
+        finished_on: "読了日"
+        memo: "感想"
+    import_defaults:
+      no_title: "(タイトルなし)"
+      no_name: "(品目なし)"
+    flash:
+      no_file: "ファイルを選択してください。"
+      import_success: "%{success}件をインポートしました。"
+      import_success_skip: "%{success}件をインポートしました。（%{skip}件スキップ）"
+      import_error: "インポートに失敗しました: %{message}"
+
+  # ===== カレンダー =====
+  calendar:
+    index:
+      legend:
+        diary: "日記"
+        expense: "家計簿"
+        health: "体調"
+        schedule: "予定"
+    layer:
+      diary:
+        title: "日記"
+        add: "+追加"
+        empty: "この日の日記はありません。"
+      expense:
+        title: "家計簿"
+        add: "+追加"
+        all_items: "すべて表示（%{count}件）"
+        total: "合計: %{amount}"
+        no_title: "（タイトルなし）"
+        empty: "この日の出費はありません。"
+      health_log:
+        title: "体調ログ"
+        add: "+追加"
+        weight: "体重:"
+        condition: "体調:"
+        empty: "この日の体調ログはありません。"
+      schedule:
+        title: "スケジュール"
+        add: "+追加"
+        all_items: "すべて表示（%{count}件）"
+        empty: "この日の予定はありません。"
+
+  # ===== ActiveRecord =====
   activerecord:
     models:
       diary: 日記
@@ -33,6 +432,8 @@ ja:
         date: 記録日
         weight: 体重
         condition: 体調
+        sleep_hours: 睡眠時間
+        temperature: 体温
         memo: メモ
       book:
         title: 書籍タイトル
@@ -66,6 +467,7 @@ ja:
         greater_than: は%{count}より大きい値にしてください
         invalid_hex: は #RRGGBB 形式で入力してください
 
+  # ===== エラー =====
   errors:
     form_header:
       one: "%{model}を保存できませんでした（1件のエラー）"
@@ -75,6 +477,53 @@ ja:
         one: "1件のエラーがあるため、%{resource}を保存できませんでした"
         other: "%{count}件のエラーがあるため、%{resource}を保存できませんでした"
 
+  # ===== 言語切替 =====
+  locale_switcher:
+    title: "言語"
+    desc: "アプリ全体の表示言語を選択します。"
+    ja: "日本語"
+    en: "English"
+
+  # ===== Devise 認証画面 =====
+  devise:
+    sessions:
+      new:
+        title: "ログイン"
+        email: "メールアドレス"
+        password: "パスワード"
+        remember_me: "ログイン状態を保持する"
+        submit: "ログイン"
+        no_account: "アカウントをお持ちでない方は"
+        sign_up_link: "新規登録"
+    registrations:
+      new:
+        title: "新規ユーザー登録"
+        name: "名前"
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認）"
+        submit: "登録する"
+        have_account: "すでにアカウントをお持ちの方は"
+        login_link: "ログイン"
+    passwords:
+      new:
+        title: "パスワードをお忘れの方"
+        email: "メールアドレス"
+        submit: "パスワードリセットの手順を送信"
+        back_to_login: "ログインに戻る"
+      edit:
+        title: "新しいパスワードを設定"
+        password: "新しいパスワード"
+        password_min_length: "%{min}文字以上"
+        password_confirmation: "新しいパスワード（確認）"
+        submit: "パスワードを変更する"
+
+  # ===== コンテンツ設定の言語セクション =====
+  content_settings_locale:
+    title: "言語設定"
+    desc: "アプリ全体の表示言語を選択します。"
+
+  # ===== プッシュ通知本文 =====
   notifications:
     diary: "今日の日記を書きませんか？"
     entry: "今日の支出を入力しましょう"

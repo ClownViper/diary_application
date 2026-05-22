@@ -1,5 +1,2 @@
-<%= render "shared/back_link", back_path: schedules_path %>
-<div class="p-4 max-w-4xl mx-auto">
-  <h1 class="text-2xl font-bold">スケジュールを登録</h1>
-</div>
+<%= render "shared/form_page", title: t("schedules.new.title"), back_path: schedules_path %>
 <%= render "form", schedule: @schedule %>

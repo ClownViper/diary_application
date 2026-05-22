@@ -1,22 +1,21 @@
 <%= render "shared/back_link", back_path: books_path %>
 
-<div class="max-w-4xl mx-auto py-10 mb-10">
+<div class="max-w-4xl mx-auto pb-10 mb-10">
 
   <div class="bg-white p-6 rounded-xl shadow leading-relaxed text-gray-800 mb-8">
 
     <div class="flex gap-6 mb-4">
-      <!-- 表紙画像 -->
       <% if @book.cover.attached? %>
         <%= image_tag @book.cover, class: "w-32 h-44 object-cover rounded-lg flex-shrink-0" %>
       <% else %>
         <div class="w-32 h-44 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm flex-shrink-0">
-          No Image
+          <%= t("shared.no_image") %>
         </div>
       <% end %>
 
       <div>
         <h1 class="text-2xl font-bold text-gray-800"><%= @book.title %></h1>
-        <p class="text-gray-500"><%= @book.author.presence || "著者不明" %></p>
+        <p class="text-gray-500"><%= @book.author.presence || t("shared.unknown_author") %></p>
 
         <span class="mt-2 inline-block px-2 py-1 rounded-full text-xs font-semibold
           <%= case @book.status
@@ -29,19 +28,16 @@
 
         <div class="mt-3 text-sm text-gray-600 space-y-1">
           <% if @book.started_on.present? %>
-            <p>読み始め: <%= @book.started_on.strftime("%Y/%m/%d") %></p>
+            <p><%= t("books.show.started_on", date: format_date(@book.started_on)) %></p>
           <% end %>
           <% if @book.finished_on.present? %>
-            <p>読了: <%= @book.finished_on.strftime("%Y/%m/%d") %></p>
+            <p><%= t("books.show.finished_on", date: format_date(@book.finished_on)) %></p>
           <% end %>
         </div>
       </div>
     </div>
 
-    <!-- 感想メモ -->
-    <div class="bg-gray-50 px-3 pt-5 pb-10 rounded-lg leading-tight text-gray-800">
-      <%= @book.memo.presence || "感想はありません" %>
-    </div>
+    <%= render "shared/memo_block", content: @book.memo, empty_message: t("books.show.no_review") %>
 
     <div class="flex gap-4 pt-4">
       <%= render "shared/record_actions",

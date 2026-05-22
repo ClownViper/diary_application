@@ -1,45 +1,47 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
 
-  <%= render "shared/page_header", title: "カテゴリ管理", button_label: "新規追加", button_path: new_category_path %>
+  <%= render "shared/page_header", title: t("categories.index.title"), button_label: t("shared.new_add"), button_path: new_category_path %>
 
   <div class="bg-white rounded-xl shadow overflow-hidden">
 
-    <!-- PC用ヘッダー（スマホでは非表示） -->
+    <!-- Table header (hidden on mobile) -->
     <div class="hidden md:grid grid-cols-4 bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700">
-      <div>カテゴリ名</div>
-      <div>カラー</div>
-      <div>使用回数</div>
-      <div class="text-center">操作</div>
+      <div><%= t("categories.index.col_name") %></div>
+      <div><%= t("categories.index.col_color") %></div>
+      <div><%= t("categories.index.col_count") %></div>
+      <div class="text-center"><%= t("categories.index.col_actions") %></div>
     </div>
+
+    <%= render "shared/empty_state", message: t("categories.index.empty"), inline: true if @categories.empty? %>
 
     <% @categories.each do |category| %>
 
-      <!-- PC: 4カラム / スマホ: カード風 -->
+      <!-- Desktop: 4-column grid / Mobile: card style -->
       <div class="px-4 py-4 border-b hover:bg-gray-50 transition">
 
-        <!-- スマホ：カテゴリ名・カラー・件数を横並び -->
+        <!-- Mobile: category name, color, count in a row -->
         <div class="flex md:hidden items-center justify-between mb-3">
 
-          <!-- 左：カテゴリ名 -->
+          <!-- Left: category name -->
           <div class="font-medium text-gray-900">
             <%= category.name %>
           </div>
 
-          <!-- 中央：カラー -->
+          <!-- Center: color swatch -->
           <div class="flex items-center">
             <div class="w-5 h-5 rounded-full"
                  style="background-color: <%= category.color %>;">
             </div>
           </div>
 
-          <!-- 右：件数 -->
+          <!-- Right: usage count -->
           <div class="text-gray-700 text-sm">
-            <%= category.expenses.count %>件
+            <%= t("categories.index.count_suffix", count: category.expenses.count) %>
           </div>
 
         </div>
 
-        <!-- PC：従来の4カラム -->
+        <!-- Desktop: 4-column grid -->
         <div class="hidden md:grid grid-cols-4 items-center">
           <div class="font-medium text-gray-900"><%= category.name %></div>
 
@@ -50,33 +52,33 @@
           </div>
 
           <div class="text-gray-700">
-            <%= category.expenses.count %>件
+            <%= t("categories.index.count_suffix", count: category.expenses.count) %>
           </div>
 
-          <!-- PCボタン -->
+          <!-- Desktop action buttons -->
           <div class="text-right space-x-2 text-sm">
-            <%= ui_link_button "編集", edit_category_path(category), variant: :secondary, size: :md %>
+            <%= ui_link_button t("shared.edit"), edit_category_path(category), variant: :secondary, size: :md %>
 
-            <%= button_to "削除",
+            <%= button_to t("shared.delete"),
                   category_path(category),
                   method: :delete,
-                  data: { confirm: "削除しますか？" },
+                  data: { confirm: t("shared.delete_confirm") },
                   class: ui_button_classes(variant: :danger, size: :md),
                   form: { class: "inline" } %>
           </div>
         </div>
 
-        <!-- スマホ：ボタンを横並び -->
+        <!-- Mobile: action buttons in a row -->
         <div class="flex md:hidden gap-2 mt-2">
 
-          <%= link_to "編集", edit_category_path(category),
+          <%= link_to t("shared.edit"), edit_category_path(category),
                 class: [ui_button_classes(variant: :secondary, size: :sm), "block w-full text-center flex-1"].join(" ") %>
 
-          <%= button_to "削除",
+          <%= button_to t("shared.delete"),
                 category_path(category),
                 method: :delete,
                 form: { class: "flex-1" },
-                data: { confirm: "削除しますか？" },
+                data: { confirm: t("shared.delete_confirm") },
                 class: [ui_button_classes(variant: :danger, size: :sm), "block w-full text-center"].join(" ") %>
 
         </div>
@@ -84,8 +86,10 @@
     <% end %>
   </div>
 
+  <%= render "shared/pagination", collection: @categories %>
+
   <p class="text-sm text-gray-500 mt-4">
-    カテゴリは出費管理で使用できます。使用中のカテゴリを削除すると、紐づく出費のカテゴリが未設定になります。
+    <%= t("categories.index.note") %>
   </p>
 
 </div>

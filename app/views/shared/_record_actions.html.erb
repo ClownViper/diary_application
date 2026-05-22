@@ -3,9 +3,9 @@
   confirm_message = local_assigns.fetch(:confirm_message) { t("shared.delete_confirm") }
 %>
 <div class="flex gap-3 sm:shrink-0">
-  <%= ui_link_button "編集", edit_path, variant: :secondary, size: :sm,
+  <%= ui_link_button t("shared.edit"), edit_path, variant: :secondary, size: :sm,
         class: "md:px-4 md:py-2" %>
-  <%= button_to "削除", destroy_path,
+  <%= button_to t("shared.delete"), destroy_path,
         method: :delete,
         data: { confirm: confirm_message },
         class: [ui_button_classes(variant: :danger, size: :sm), "md:px-4 md:py-2"].join(" ") %>

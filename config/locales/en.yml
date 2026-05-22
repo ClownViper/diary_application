@@ -1,31 +1,532 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  # ===== Date formats =====
+  date:
+    formats:
+      year_month: "%B %Y"
+      month_only: "%B"
+      full_date: "%B %d, %Y"
+    abbr_day_names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+  # ===== Shared =====
+  shared:
+    back_to_index: "← Back to list"
+    delete_confirm: "Are you sure you want to delete?"
+    edit: "Edit"
+    delete: "Delete"
+    save: "Save"
+    search: "Search"
+    new_record: "New"
+    new_add: "Add New"
+    file_select: "Choose file"
+    memo_empty: "No memo."
+    no_image: "No Image"
+    unknown_author: "Unknown author"
+    uncategorized: "Uncategorized"
+    today_link: "Go to today"
+    search_form:
+      keyword: "Keyword"
+      date: "Date"
+      all: "All"
+
+  # ===== Pagination =====
+  pagination:
+    suffix: "/ %{total} pages"
+
+  # ===== Sidebar navigation =====
+  nav:
+    dashboard: "Dashboard"
+    diaries: "Diaries"
+    expenses: "Expenses"
+    health_logs: "Health Log"
+    books: "Reading Log"
+    schedules: "Schedule"
+    calendar: "Calendar"
+    csv_data: "CSV Data"
+    settings_menu: "Settings"
+    categories: "Categories"
+    notification_settings: "Notifications"
+    content_settings: "Content Settings"
+
+  # ===== Layout =====
+  layouts:
+    logout: "Log out"
+
+  # ===== Dashboard =====
+  dashboard:
+    title: "Dashboard"
+    today_info: "Today's summary (%{date})"
+    today_diary_entry: "📘 Diary:"
+    today_diary_none: "📘 Diary: none"
+    today_expense: "💴 Expenses:"
+    expense_currency: ""
+    monthly_expense: "Monthly Expenses"
+    expense_guide: "※ Budget: ¥%{amount}/month"
+    today_diary_card: "Today's Diary"
+    diary_none: "No diary entry."
+    today_health_card: "Today's Health"
+    health_none: "No health log."
+    weight_display: "Weight: %{value} kg"
+    condition_display: "Condition: %{label}"
+    sparkline_caption: "Weight trend (last 30 days)"
+    sparkline_none: "No weight data available"
+    today_schedule_card: "Today's Schedule"
+    schedule_none: "No events today."
+    reading_card: "Currently Reading"
+    reading_none: "No books in progress."
+    mini_calendar_btn: "Calendar"
+    recent_expense_card: "Recent Expenses"
+    recent_expense_none: "No recent expenses."
+    recent_diary_card: "Recent Diaries"
+    recent_diary_none: "No recent diary entries."
+
+  # ===== Diaries =====
+  diaries:
+    index:
+      title: "Diaries"
+      search_keyword_placeholder: "Search title or body"
+      empty: "No diary entries."
+    new:
+      title: "New Diary"
+      existing_notice: "A diary entry already exists for this date."
+      edit_existing: "Edit it"
+    edit:
+      title: "Edit Diary"
+    form:
+      image: "Image"
+    flash:
+      existing_date: "A diary entry already exists for this date"
+      created: "Diary created."
+      updated: "Diary updated."
+      deleted: "Diary deleted."
+
+  # ===== Expenses =====
+  expenses:
+    index:
+      title: "Expenses"
+      search_keyword_placeholder: "Search name or memo"
+      col_title: "Name"
+      col_category: "Category"
+      col_date: "Date"
+      col_amount: "Amount"
+      empty: "No expenses."
+    show:
+      category_label: "Category:"
+    new:
+      title: "New Expense"
+    edit:
+      title: "Edit Expense"
+    form:
+      select_category: "Select category"
+    flash:
+      created: "Expense recorded."
+      updated: "Expense updated."
+      deleted: "Expense deleted."
+
+  # ===== Health logs =====
+  health_logs:
+    index:
+      title: "Health Log"
+      tab_list: "List"
+      tab_graph: "Graph"
+      search_keyword_placeholder: "Search memo"
+      col_date: "Date"
+      col_weight: "Weight"
+      col_condition: "Condition"
+      col_memo: "Memo"
+      empty: "No health logs."
+    show:
+      title: "Health Log"
+      weight_label: "Weight"
+      condition_label: "Condition"
+      condition_display: "%{label} (%{value}/5)"
+      sleep_hours_label: "Sleep"
+      temperature_label: "Temp"
+    stats:
+      tab_month: "This month"
+      tab_year: "This year"
+      avg_weight: "Avg weight"
+      max_weight: "Max"
+      min_weight: "Min"
+      graph_monthly: "Weight trend this month"
+      graph_yearly: "Weight trend this year (monthly avg)"
+      no_data_month: "No weight data for this month."
+      no_data_year: "No weight data for this year."
+    new:
+      title: "New Health Log"
+    edit:
+      title: "Edit Health Log"
+    condition_labels:
+      1: "Very bad"
+      2: "Bad"
+      3: "Normal"
+      4: "Good"
+      5: "Very good"
+    form:
+      weight_with_unit: "Weight (kg)"
+      weight_placeholder: "e.g. 65.5"
+      sleep_hours_with_unit: "Sleep (h)"
+      sleep_hours_placeholder: "e.g. 7.5"
+      temperature_with_unit: "Temp (°C)"
+      temperature_placeholder: "e.g. 36.5"
+      memo_placeholder: "Up to 100 characters"
+    flash:
+      existing_date: "A health log already exists for this date"
+      created: "Health log recorded."
+      updated: "Health log updated."
+      deleted: "Health log deleted."
+
+  # ===== Books =====
+  books:
+    index:
+      title: "Reading Log"
+      search_keyword_placeholder: "Search title, author, or memo"
+      search_status: "Status"
+      empty: "No books."
+    show:
+      started_on: "Started: %{date}"
+      finished_on: "Finished: %{date}"
+      no_review: "No review."
+    new:
+      title: "New Book"
+    edit:
+      title: "Edit Book"
+    status_labels:
+      unread: "Unread"
+      reading: "Reading"
+      finished: "Finished"
+    form:
+      memo_placeholder: "Up to 300 characters"
+    flash:
+      created: "Book added."
+      updated: "Book updated."
+      deleted: "Book deleted."
+
+  # ===== Schedules =====
+  schedules:
+    index:
+      title: "Schedule"
+      search_keyword_placeholder: "Search title or memo"
+      col_date: "Date"
+      col_title: "Title"
+      col_time: "Time"
+      col_memo: "Memo"
+      empty: "No schedule entries."
+    show:
+      start_time: "Start time"
+      end_time: "End time"
+    new:
+      title: "New Event"
+    edit:
+      title: "Edit Event"
+    form:
+      memo_placeholder: "Up to 200 characters"
+    flash:
+      created: "Event created."
+      updated: "Event updated."
+      deleted: "Event deleted."
+
+  # ===== Categories =====
+  categories:
+    index:
+      title: "Categories"
+      col_name: "Name"
+      col_color: "Color"
+      col_count: "Usage"
+      col_actions: "Actions"
+      count_suffix: "%{count} items"
+      note: "Categories are used in expense management. Deleting a category in use will unset the category for related expenses."
+      empty: "No categories."
+    new:
+      title: "New Category"
+    edit:
+      title: "Edit Category"
+    form:
+      name_placeholder: "e.g. Food"
+    flash:
+      created: "Category created."
+      updated: "Category updated."
+      deleted: "Category deleted."
+
+  # ===== Notification settings =====
+  settings:
+    title: "Notification Settings"
+    save: "Save settings"
+    minutes_before_suffix: "min before"
+    notification_items:
+      diary:
+        name: "Diary"
+        desc: "Reminder to write your diary"
+        time_label: "Notify at"
+      entry:
+        name: "Expenses"
+        desc: "Reminder to log expenses"
+        time_label: "Notify at"
+      health:
+        name: "Health Log"
+        desc: "Daily reminder for weight and condition"
+        time_label: "Notify at"
+      books:
+        name: "Reading Log"
+        desc: "Notified only when a book is in progress"
+        time_label: "Notify at"
+      schedule:
+        name: "Schedule"
+        desc: "Notify before an event starts"
+        time_label: "Minutes before"
+    flash:
+      updated: "Notification settings updated."
+
+  # ===== Content settings =====
+  content_settings:
+    title: "Content Settings"
+    features_title: "Feature visibility"
+    features_desc: "Turning off unused features hides them from the sidebar and dashboard."
+    expense_target_title: "Monthly budget"
+    expense_target_desc: "Target amount used for the progress bar on the dashboard."
+    expense_target_suffix: "/ month"
+    save: "Save settings"
+    feature_items:
+      diary:
+        label: "📘 Diary"
+        desc: "Create and manage diary entries"
+      expense:
+        label: "💴 Expenses"
+        desc: "Record expenses and manage categories"
+      health_log:
+        label: "⚖️ Health Log"
+        desc: "Track weight and condition"
+      book:
+        label: "📚 Reading Log"
+        desc: "Manage reading records"
+      schedule:
+        label: "🗓 Schedule"
+        desc: "Manage events"
+    flash:
+      updated: "Content settings updated."
+
+  # ===== CSV exports =====
+  csv_exports:
+    title: "CSV Export / Import"
+    description: "Download your data as CSV or import from a CSV file. Exported files can be used directly for import."
+    section:
+      columns_label: "Columns: %{columns}"
+      export:
+        title: "⬇️ Export (Download)"
+        desc: "Download all current data as CSV."
+        button: "Download CSV"
+      import:
+        title: "⬆️ Import (Upload)"
+        desc: "Select a CSV file to import. Duplicate data will be skipped."
+        button: "Import"
+    sections:
+      diary:
+        title: "Diary"
+        icon: "📖"
+        columns: "Date / Title / Body"
+      expense:
+        title: "Expenses"
+        icon: "💰"
+        columns: "Date / Name / Amount / Category / Memo"
+      health_log:
+        title: "Health Log"
+        icon: "🩺"
+        columns: "Date / Weight / Condition / Sleep / Temp / Memo"
+      book:
+        title: "Reading Log"
+        icon: "📚"
+        columns: "Title / Author / Status / Started / Finished / Review"
+    csv_columns:
+      diary:
+        date: "Date"
+        title: "Title"
+        body: "Body"
+      expense:
+        date: "Date"
+        name: "Name"
+        amount: "Amount"
+        category: "Category"
+        memo: "Memo"
+      health_log:
+        date: "Date"
+        weight: "Weight (kg)"
+        condition: "Condition"
+        sleep_hours: "Sleep (h)"
+        temperature: "Temp (°C)"
+        memo: "Memo"
+      book:
+        title: "Title"
+        author: "Author"
+        status: "Status"
+        started_on: "Start Date"
+        finished_on: "Finish Date"
+        memo: "Review"
+    import_defaults:
+      no_title: "(no title)"
+      no_name: "(no name)"
+    flash:
+      no_file: "Please select a file."
+      import_success: "%{success} records imported."
+      import_success_skip: "%{success} records imported. (%{skip} skipped)"
+      import_error: "Import failed: %{message}"
+
+  # ===== Calendar =====
+  calendar:
+    index:
+      legend:
+        diary: "Diary"
+        expense: "Expenses"
+        health: "Health"
+        schedule: "Schedule"
+    layer:
+      diary:
+        title: "Diary"
+        add: "+ Add"
+        empty: "No diary entry for this day."
+      expense:
+        title: "Expenses"
+        add: "+ Add"
+        all_items: "View all (%{count})"
+        total: "Total: %{amount}"
+        no_title: "(no title)"
+        empty: "No expenses for this day."
+      health_log:
+        title: "Health Log"
+        add: "+ Add"
+        weight: "Weight:"
+        condition: "Condition:"
+        empty: "No health log for this day."
+      schedule:
+        title: "Schedule"
+        add: "+ Add"
+        all_items: "View all (%{count})"
+        empty: "No events for this day."
+
+  # ===== ActiveRecord =====
+  activerecord:
+    models:
+      diary: Diary
+      expense: Expense
+      category: Category
+      user: User
+      health_log: Health Log
+      book: Book
+      schedule: Schedule
+      push_subscription: Push Subscription
+    attributes:
+      diary:
+        title: Title
+        body: Body
+        date: Date
+        image: Image
+      expense:
+        name: Name
+        amount: Amount
+        date: Date
+        memo: Memo
+        category: Category
+        category_id: Category
+      category:
+        name: Category Name
+        color: Display Color
+      health_log:
+        date: Date
+        weight: Weight
+        condition: Condition
+        sleep_hours: Sleep hours
+        temperature: Temperature
+        memo: Memo
+      book:
+        title: Book Title
+        author: Author
+        status: Status
+        started_on: Started On
+        finished_on: Finished On
+        memo: Review
+        cover: Cover Image
+      schedule:
+        title: Title
+        date: Date
+        start_time: Start Time
+        end_time: End Time
+        memo: Memo
+    errors:
+      models:
+        diary:
+          attributes:
+            date:
+              taken: has already been registered
+        health_log:
+          attributes:
+            date:
+              taken: has already been registered
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+        blank: can't be blank
+        taken: has already been taken
+        not_a_number: is not a number
+        greater_than: must be greater than %{count}
+        invalid_hex: must be in #RRGGBB format
+
+  # ===== Errors =====
+  errors:
+    form_header:
+      one: "Could not save %{model} (1 error)"
+      other: "Could not save %{model} (%{count} errors)"
+    messages:
+      not_saved:
+        one: "1 error prevented this %{resource} from being saved"
+        other: "%{count} errors prevented this %{resource} from being saved"
+
+  # ===== Locale switcher =====
+  locale_switcher:
+    title: "Language"
+    desc: "Select the display language for the entire app."
+    ja: "日本語"
+    en: "English"
+
+  # ===== Devise authentication screens =====
+  devise:
+    sessions:
+      new:
+        title: "Sign In"
+        email: "Email"
+        password: "Password"
+        remember_me: "Keep me signed in"
+        submit: "Sign In"
+        no_account: "Don't have an account?"
+        sign_up_link: "Sign up"
+    registrations:
+      new:
+        title: "Create Account"
+        name: "Name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Confirm password"
+        submit: "Sign up"
+        have_account: "Already have an account?"
+        login_link: "Sign in"
+    passwords:
+      new:
+        title: "Forgot your password?"
+        email: "Email"
+        submit: "Send reset instructions"
+        back_to_login: "Back to sign in"
+      edit:
+        title: "Set new password"
+        password: "New password"
+        password_min_length: "%{min} characters minimum"
+        password_confirmation: "Confirm new password"
+        submit: "Change password"
+
+  # ===== Content settings locale section =====
+  content_settings_locale:
+    title: "Language"
+    desc: "Select the display language for the entire app."
+
+  # ===== Push notification body =====
+  notifications:
+    diary: "How about writing today's diary?"
+    entry: "Let's record today's expenses"
+    health: "Let's record today's weight and condition"
+    books: "How about continuing your reading?"
+    schedule: "You have an upcoming event: '%{title}'"

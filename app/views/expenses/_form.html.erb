@@ -2,33 +2,31 @@
 
 <%= render layout: "shared/form_card" do %>
   <%= form_with model: expense, data: { turbo: false }, class: "space-y-6" do |f| %>
-    <%= render "shared/form_errors", resource: expense %>
 
     <div class="!mt-2">
-      <%= render "shared/form_field", form: f, attr: :name, field_label: "名称" %>
+      <%= render "shared/form_field", form: f, attr: :name %>
     </div>
 
-    <%= render "shared/form_field", form: f, attr: :amount, field_label: "金額", field_type: :number_field,
+    <%= render "shared/form_field", form: f, attr: :amount, field_type: :number_field,
           field_options: { inputmode: "numeric", pattern: "[0-9]*", min: 1, step: 1 } %>
 
-    <%= render "shared/form_field", form: f, attr: :date, field_label: "日付", field_type: :date_field,
-          field_options: { placeholder: " ", class: "w-full md:max-w-[33%] h-[42px] bg-white appearance-none" } %>
+    <%= render "shared/form_field", form: f, attr: :date, field_type: :date_field %>
 
     <div>
-      <%= f.label :category_id, "カテゴリ", class: ApplicationHelper::LABEL_CLASS %>
+      <%= f.label :category_id, t("activerecord.attributes.expense.category_id"), class: ApplicationHelper::LABEL_CLASS %>
       <%= f.collection_select :category_id, categories, :id, :name,
-            { include_blank: "選択してください" },
+            { include_blank: t("expenses.form.select_category") },
             { class: ApplicationHelper::INPUT_CLASS } %>
       <% if expense.errors[:category_id].any? %>
         <p class="mt-1 text-sm text-red-600"><%= expense.errors[:category_id].first %></p>
       <% end %>
     </div>
 
-    <%= render "shared/form_field", form: f, attr: :memo, field_label: "メモ", field_type: :text_area,
+    <%= render "shared/form_field", form: f, attr: :memo, field_type: :text_area,
           field_options: { rows: 5 } %>
 
     <div>
-      <%= f.submit "保存", class: ui_button_classes(variant: :primary, size: :lg) %>
+      <%= f.submit t("shared.save"), class: ui_button_classes(variant: :primary, size: :lg) %>
     </div>
   <% end %>
 <% end %>

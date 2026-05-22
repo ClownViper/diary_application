@@ -1,4 +1,4 @@
-# Web Push通知のサブスクリプションモデル
+# Model for Web Push subscription data
 class PushSubscription < ApplicationRecord
   belongs_to :user
 

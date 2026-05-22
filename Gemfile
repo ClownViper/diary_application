@@ -16,6 +16,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 gem "devise"
+gem "kaminari"
 gem "simple_calendar"
 gem "propshaft"
 gem "cssbundling-rails"
@@ -58,6 +59,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # テスト
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
 end
 
 group :development do

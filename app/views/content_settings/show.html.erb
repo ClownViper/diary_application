@@ -1,0 +1,63 @@
+<div class="max-w-4xl mx-auto pb-8 mb-10">
+
+  <h1 class="text-2xl font-bold mb-6"><%= t("content_settings.title") %></h1>
+  <%= render "shared/flash" %>
+
+  <%# Language settings %>
+  <div class="bg-white rounded-xl shadow p-6 mb-6">
+    <h2 class="text-lg font-bold text-gray-700 mb-2"><%= t("content_settings_locale.title") %></h2>
+    <p class="text-sm text-gray-500 mb-4"><%= t("content_settings_locale.desc") %></p>
+    <%= render "shared/locale_switcher" %>
+  </div>
+
+  <%= form_with model: @user, url: content_settings_path, method: :patch, data: { turbo: false }, class: "space-y-6" do |f| %>
+
+    <%# Feature on/off settings %>
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-lg font-bold text-gray-700 mb-4"><%= t("content_settings.features_title") %></h2>
+      <p class="text-sm text-gray-500 mb-4"><%= t("content_settings.features_desc") %></p>
+
+      <div class="space-y-4">
+        <%# Toggle switches for each feature %>
+        <% [
+          [:feature_diary,      "diary"],
+          [:feature_expense,    "expense"],
+          [:feature_health_log, "health_log"],
+          [:feature_book,       "book"],
+          [:feature_schedule,   "schedule"]
+        ].each do |attr, key| %>
+          <div class="flex items-center justify-between py-2 border-b last:border-b-0">
+            <div>
+              <p class="font-semibold text-gray-700"><%= t("content_settings.feature_items.#{key}.label") %></p>
+              <p class="text-xs text-gray-500"><%= t("content_settings.feature_items.#{key}.desc") %></p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <%= f.check_box attr, class: "sr-only peer" %>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-slate-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-slate-600"></div>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Monthly budget target setting %>
+    <div class="bg-white rounded-xl shadow p-6">
+      <h2 class="text-lg font-bold text-gray-700 mb-4"><%= t("content_settings.expense_target_title") %></h2>
+      <p class="text-sm text-gray-500 mb-4"><%= t("content_settings.expense_target_desc") %></p>
+
+      <div class="flex items-center gap-2">
+        <%= f.number_field :expense_target, min: 0, step: 1000,
+              class: "border rounded-lg px-3 py-2 w-40 bg-white focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-slate-400",
+              placeholder: "150000" %>
+        <span class="text-gray-600"><%= t("content_settings.expense_target_suffix") %></span>
+      </div>
+    </div>
+
+    <div>
+      <%= f.submit t("content_settings.save"), class: ui_button_classes(variant: :primary, size: :lg) %>
+    </div>
+
+  <% end %>
+
+
+</div>

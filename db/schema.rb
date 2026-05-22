@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_05_171940) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_27_102757) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_171940) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "books", force: :cascade do |t|
+    t.string "author"
+    t.datetime "created_at", null: false
+    t.date "finished_on"
+    t.text "memo"
+    t.date "started_on"
+    t.integer "status", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "status"], name: "index_books_on_user_id_and_status"
+    t.index ["user_id"], name: "index_books_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -76,11 +90,66 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_171940) do
     t.index ["user_id"], name: "index_expenses_on_user_id"
   end
 
+  create_table "health_logs", force: :cascade do |t|
+    t.integer "condition"
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.string "memo", limit: 100
+    t.decimal "sleep_hours", precision: 4, scale: 1
+    t.decimal "temperature", precision: 4, scale: 1
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.decimal "weight", precision: 5, scale: 1
+    t.index ["user_id", "date"], name: "index_health_logs_on_user_id_and_date", unique: true
+    t.index ["user_id"], name: "index_health_logs_on_user_id"
+  end
+
+  create_table "push_subscriptions", force: :cascade do |t|
+    t.string "auth", null: false
+    t.datetime "created_at", null: false
+    t.string "endpoint", null: false
+    t.string "p256dh", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["endpoint"], name: "index_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.time "end_time"
+    t.string "memo", limit: 200
+    t.time "start_time"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "date"], name: "index_schedules_on_user_id_and_date"
+    t.index ["user_id"], name: "index_schedules_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.integer "expense_target", default: 150000, null: false
+    t.boolean "feature_book", default: true, null: false
+    t.boolean "feature_diary", default: true, null: false
+    t.boolean "feature_expense", default: true, null: false
+    t.boolean "feature_health_log", default: true, null: false
+    t.boolean "feature_schedule", default: true, null: false
+    t.string "locale", default: "ja", null: false
     t.string "name"
+    t.boolean "notify_books", default: false
+    t.time "notify_books_time"
+    t.boolean "notify_diary", default: false
+    t.time "notify_diary_time"
+    t.boolean "notify_entry", default: false
+    t.time "notify_entry_time"
+    t.boolean "notify_health", default: false
+    t.time "notify_health_time"
+    t.boolean "notify_schedule", default: false
+    t.integer "notify_schedule_before", default: 10
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
@@ -91,8 +160,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_171940) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "books", "users"
   add_foreign_key "categories", "users"
   add_foreign_key "diaries", "users"
   add_foreign_key "expenses", "categories"
   add_foreign_key "expenses", "users"
+  add_foreign_key "health_logs", "users"
+  add_foreign_key "push_subscriptions", "users"
+  add_foreign_key "schedules", "users"
 end

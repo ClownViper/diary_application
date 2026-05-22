@@ -1,56 +1,63 @@
-<div class="min-h-screen flex flex-col items-center justify-center 
-            bg-gradient-to-br from-blue-400 to-blue-600 px-4">
+<div class="min-h-screen flex flex-col items-center justify-center
+            bg-gradient-to-br from-slate-400 to-slate-600 px-4">
 
-  <!-- アプリヘッダー -->
+  <!-- App header -->
   <div class="text-center mb-6">
-    <h1 class="text-3xl font-bold text-white/90">MyDiary</h1>
-    <p class="text-white/90 mt-1">出費・日記管理アプリ</p>
+    <h1 class="text-3xl font-bold text-white/90"><%= app_name %></h1>
+    <p class="text-white/90 mt-1"><%= app_subtitle %></p>
   </div>
 
-  <!-- ログインカード -->
+  <!-- Login card -->
   <div class="w-full max-w-md bg-white p-6 rounded-2xl shadow-xl">
 
-    <h2 class="text-2xl font-bold text-center mb-2">ログイン</h2>
+    <%= render "shared/flash" %>
+
+    <h2 class="text-2xl font-bold text-center mb-2"><%= t("devise.sessions.new.title") %></h2>
 
     <%= form_with scope: :user, url: session_path(:user) do |f| %>
 
-      <!-- メールアドレス -->
+      <!-- Email field -->
       <div>
-        <%= f.label :email, "メールアドレス", class: "block font-semibold mb-1" %>
+        <%= f.label :email, t("devise.sessions.new.email"), class: "block font-semibold mb-1" %>
         <%= f.email_field :email,
               autofocus: true,
-              class: "w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+              class: "w-full border rounded-lg p-3 focus:ring-2 focus:ring-slate-400 focus:outline-none" %>
       </div>
 
-      <!-- パスワード -->
+      <!-- Password field -->
       <div class="mt-6">
-        <%= f.label :password, "パスワード", class: "block font-semibold mb-5" %>
+        <%= f.label :password, t("devise.sessions.new.password"), class: "block font-semibold mb-5" %>
         <%= f.password_field :password,
               autocomplete: "current-password",
-              class: "w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+              class: "w-full border rounded-lg p-3 focus:ring-2 focus:ring-slate-400 focus:outline-none" %>
       </div>
 
-      <!-- ログイン状態保持 -->
+      <!-- Remember me -->
       <% if devise_mapping.rememberable? %>
         <div class="flex items-center mt-6">
           <%= f.check_box :remember_me, class: "mr-2" %>
-          <%= f.label :remember_me, "ログイン状態を保持する" %>
+          <%= f.label :remember_me, t("devise.sessions.new.remember_me") %>
         </div>
       <% end %>
 
-      <!-- ボタン -->
-      <%= f.submit "ログイン",
-            class: "w-full bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition mt-4 p-3" %>
+      <!-- Submit button -->
+      <%= f.submit t("devise.sessions.new.submit"),
+            class: "w-full bg-slate-600 text-white rounded-lg font-semibold hover:bg-slate-700 transition mt-4 p-3" %>
 
     <% end %>
 
-    <!-- 新規登録リンク -->
+    <!-- Sign-up link -->
     <div class="mt-3 text-center">
       <p class="text-gray-600">
-        アカウントをお持ちでない方は
-        <%= link_to "新規登録", new_user_registration_path,
-              class: "text-blue-600 font-semibold hover:underline" %>
+        <%= t("devise.sessions.new.no_account") %>
+        <%= link_to t("devise.sessions.new.sign_up_link"), new_user_registration_path,
+              class: "text-slate-600 font-semibold hover:underline" %>
       </p>
+    </div>
+
+    <!-- Locale switcher -->
+    <div class="mt-4 pt-3 border-t flex justify-center">
+      <%= render "shared/locale_switcher" %>
     </div>
 
   </div>

@@ -3,7 +3,16 @@
   field_type = local_assigns.fetch(:field_type, :text_field)
   field_options = local_assigns.fetch(:field_options, {})
   error = form.object.errors[attr]&.first
-  input_class = [ApplicationHelper::INPUT_CLASS, error.present? ? "border-red-500" : nil].compact.join(" ")
+
+  # Apply common style for date/time fields (prevents iOS jitter)
+  is_date_or_time = %i[date_field time_field].include?(field_type)
+  base_class = ApplicationHelper::INPUT_CLASS
+  if is_date_or_time
+    base_class = [base_class, ApplicationHelper::DATE_INPUT_CLASS].join(" ")
+    field_options[:placeholder] ||= " "
+  end
+
+  input_class = [base_class, error.present? ? "border-red-500" : nil].compact.join(" ")
 %>
 <div>
   <% unless hide_label %>
