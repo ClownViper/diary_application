@@ -15,6 +15,8 @@ class BooksController < ApplicationController
     if params[:status].present?
       @books = @books.where(status: params[:status])
     end
+
+    @books = @books.page(params[:page]).per(10)
   end
 
   def show

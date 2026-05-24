@@ -22,6 +22,15 @@ class DashboardController < ApplicationController
     @today_health_log = current_user.health_logs.find_by(date: @today)
     @recent_health_logs = current_user.health_logs.order(date: :desc).limit(3)
 
+    # 体重スパークライン用（直近30日・体重あるもの）
+    recent_weight_logs = current_user.health_logs
+                                     .where(date: 30.days.ago.to_date..@today)
+                                     .where.not(weight: nil)
+                                     .order(:date)
+    @sparkline_labels = recent_weight_logs.map { |l| l.date.strftime("%-m/%-d") }.to_json
+    @sparkline_data   = recent_weight_logs.map(&:weight).to_json
+    @sparkline_any    = recent_weight_logs.any?
+
     # 今日のスケジュール
     @today_schedules = current_user.schedules.where(date: @today).order(start_time: :asc)
 

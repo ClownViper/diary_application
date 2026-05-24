@@ -20,6 +20,8 @@ class ExpensesController < ApplicationController
     if params[:category_id].present?
       @expenses = @expenses.where(category_id: params[:category_id])
     end
+
+    @expenses = @expenses.page(params[:page]).per(10)
   end
 
   def show

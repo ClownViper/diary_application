@@ -23,6 +23,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1d4ed8">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <%= javascript_importmap_tags %>
   </head>
@@ -89,12 +90,6 @@
       mx-auto
       <%= user_signed_in? ? 'pt-20 max-w-screen-xl px-5 md:ml-64 md:pt-10' : 'md:ml-0 md:pt-0' %>
     ">
-      <% unless user_signed_in? %>
-        <%# 未ログイン画面はレイアウト上部にフラッシュ表示 %>
-        <div class="max-w-md mx-auto px-4">
-          <%= render "shared/flash" %>
-        </div>
-      <% end %>
       <%= yield %>
     </main>
 

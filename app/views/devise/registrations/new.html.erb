@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col items-center justify-center 
+<div class="min-h-screen flex flex-col items-center justify-center
             bg-gradient-to-br from-blue-400 to-blue-600 px-4">
 
   <!-- アプリヘッダー -->
@@ -10,41 +10,57 @@
   <!-- 新規登録カード -->
   <div class="w-full max-w-md bg-white p-6 rounded-2xl shadow-xl">
 
+    <%= render "shared/flash" %>
+
     <h2 class="text-2xl font-bold text-center mb-2">新規ユーザー登録</h2>
 
     <%= form_with model: resource,
                   as: resource_name,
                   url: registration_path(resource_name) do |f| %>
 
+      <%
+        input_base = "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+        def field_class(base, errors) = errors.any? ? "#{base} border-red-500" : base
+      %>
+
       <!-- 名前 -->
       <div class="mb-4">
         <%= f.label :name, "名前", class: "block font-semibold mb-1" %>
-        <%= f.text_field :name,
-              autofocus: true,
-              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+        <%= f.text_field :name, autofocus: true,
+              class: field_class(input_base, resource.errors[:name]) %>
+        <% if resource.errors[:name].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:name].first %></p>
+        <% end %>
       </div>
 
       <!-- メールアドレス -->
       <div class="mb-4">
         <%= f.label :email, "メールアドレス", class: "block font-semibold mb-1" %>
         <%= f.email_field :email,
-              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+              class: field_class(input_base, resource.errors[:email]) %>
+        <% if resource.errors[:email].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:email].first %></p>
+        <% end %>
       </div>
 
       <!-- パスワード -->
       <div class="mb-4">
         <%= f.label :password, "パスワード", class: "block font-semibold mb-1" %>
-        <%= f.password_field :password,
-              autocomplete: "new-password",
-              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+        <%= f.password_field :password, autocomplete: "new-password",
+              class: field_class(input_base, resource.errors[:password]) %>
+        <% if resource.errors[:password].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:password].first %></p>
+        <% end %>
       </div>
 
       <!-- パスワード確認 -->
       <div class="mb-4">
         <%= f.label :password_confirmation, "パスワード（確認）", class: "block font-semibold mb-1" %>
-        <%= f.password_field :password_confirmation,
-              autocomplete: "new-password",
-              class: "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password",
+              class: field_class(input_base, resource.errors[:password_confirmation]) %>
+        <% if resource.errors[:password_confirmation].any? %>
+          <p class="mt-1 text-sm text-red-600"><%= resource.errors[:password_confirmation].first %></p>
+        <% end %>
       </div>
 
       <!-- 登録ボタン -->

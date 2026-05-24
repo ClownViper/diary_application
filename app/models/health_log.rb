@@ -2,6 +2,8 @@
 class HealthLog < ApplicationRecord
   include DateDefaultable
 
+  after_initialize { self.condition ||= 3 }
+
   belongs_to :user
 
   validates :date, presence: true

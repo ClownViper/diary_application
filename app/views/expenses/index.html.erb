@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
 
   <%= render "shared/page_header", title: "出費一覧", button_label: "新規作成", button_path: new_expense_path %>
 
@@ -80,4 +80,5 @@
     <%= render "shared/empty_state", message: "出費はありません。", inline: true if @expenses.empty? %>
 
   </div>
+  <%= render "shared/pagination", collection: @expenses %>
 </div>

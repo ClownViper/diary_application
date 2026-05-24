@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
 
   <%= render "shared/page_header", title: "カテゴリ管理", button_label: "新規追加", button_path: new_category_path %>
 
@@ -11,6 +11,8 @@
       <div>使用回数</div>
       <div class="text-center">操作</div>
     </div>
+
+    <%= render "shared/empty_state", message: "カテゴリはありません。", inline: true if @categories.empty? %>
 
     <% @categories.each do |category| %>
 
@@ -83,6 +85,8 @@
       </div>
     <% end %>
   </div>
+
+  <%= render "shared/pagination", collection: @categories %>
 
   <p class="text-sm text-gray-500 mt-4">
     カテゴリは出費管理で使用できます。使用中のカテゴリを削除すると、紐づく出費のカテゴリが未設定になります。

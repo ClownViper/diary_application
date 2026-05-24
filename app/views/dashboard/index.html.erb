@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
   <h1 class="text-2xl font-bold mb-6">ダッシュボード</h1>
   <%= render "shared/flash" %>
 
@@ -14,9 +14,12 @@
         <div class="space-y-2">
           <% if current_user.feature_diary %>
             <% if @today_diary %>
-              <p class="text-green-600 font-semibold">📘 日記あり：<%= @today_diary.title %></p>
+              <p class="text-gray-700">
+                📘 日記：
+                <span class="font-bold text-lg"><%= @today_diary.title %></span>
+              </p>
             <% else %>
-              <p class="text-gray-500">📘 日記なし</p>
+              <p class="text-gray-700">📘 日記：なし</p>
             <% end %>
           <% end %>
 
@@ -77,16 +80,18 @@
       <div class="bg-white rounded-xl shadow-sm border p-6">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-700">今日の体調</h2>
-
-          <% if @today_health_log %>
-            <%= ui_link_button "編集", edit_health_log_path(@today_health_log), variant: :compact %>
-          <% else %>
-            <%= ui_link_button "追加", new_health_log_path(date: @today), variant: :compact %>
-          <% end %>
+          <div class="flex items-center gap-2">
+            <%= ui_link_button "グラフ", stats_health_logs_path, variant: :compact %>
+            <% if @today_health_log %>
+              <%= ui_link_button "編集", edit_health_log_path(@today_health_log), variant: :compact %>
+            <% else %>
+              <%= ui_link_button "追加", new_health_log_path(date: @today), variant: :compact %>
+            <% end %>
+          </div>
         </div>
 
         <% if @today_health_log %>
-          <div class="space-y-1">
+          <div class="space-y-1 mb-4">
             <% if @today_health_log.weight.present? %>
               <p class="text-gray-700">体重: <span class="font-bold text-lg"><%= @today_health_log.weight %></span> kg</p>
             <% end %>
@@ -95,7 +100,43 @@
             <% end %>
           </div>
         <% else %>
-          <p class="text-gray-500">体調ログはありません。</p>
+          <p class="text-gray-500 mb-4">体調ログはありません。</p>
+        <% end %>
+
+        <!-- 体重スパークライン（直近30日） -->
+        <% if @sparkline_any %>
+          <div class="relative h-20">
+            <canvas id="sparklineChart"></canvas>
+          </div>
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              new Chart(document.getElementById("sparklineChart").getContext("2d"), {
+                type: "line",
+                data: {
+                  labels: <%= raw @sparkline_labels %>,
+                  datasets: [{
+                    data: <%= raw @sparkline_data %>,
+                    borderColor: "rgb(59, 130, 246)",
+                    backgroundColor: "rgba(59, 130, 246, 0.08)",
+                    borderWidth: 1.5,
+                    pointRadius: 2,
+                    fill: true,
+                    tension: 0.3
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.parsed.y} kg` } } },
+                  scales: {
+                    x: { display: false },
+                    y: { display: false }
+                  }
+                }
+              });
+            });
+          </script>
+          <p class="text-xs text-gray-400 text-right mt-1">直近30日の体重推移</p>
         <% end %>
       </div>
     <% end %>
@@ -183,10 +224,11 @@
               end
           %>
 
-          <% bg_class = is_today ? "bg-blue-500 text-white font-bold" : "" %>
-
-          <div class="p-2 rounded-lg <%= bg_class %> <%= text_color %>">
-            <%= day.day %>
+          <div class="flex items-center justify-center py-1">
+            <div class="w-7 h-7 flex items-center justify-center rounded-full
+                        <%= is_today ? 'bg-blue-500 text-white font-bold' : text_color %>">
+              <%= day.day %>
+            </div>
           </div>
         <% end %>
       </div>

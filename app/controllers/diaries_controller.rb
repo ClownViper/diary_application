@@ -14,6 +14,8 @@ class DiariesController < ApplicationController
     if params[:date].present?
       @diaries = @diaries.where(date: params[:date])
     end
+
+    @diaries = @diaries.page(params[:page]).per(10)
   end
 
   def show
@@ -21,8 +23,7 @@ class DiariesController < ApplicationController
 
   def new
     date = params[:date].presence || Date.today
-    return if redirect_to_existing_diary(date)
-
+    @existing_diary = current_user.diaries.find_by(date: date)
     @diary = current_user.diaries.new(date: date)
   end
 

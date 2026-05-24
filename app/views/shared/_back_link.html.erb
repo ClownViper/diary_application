@@ -1,9 +1,11 @@
-<%# locals: (back_path:, back_label: nil) %>
+<%# locals: (back_path:, back_label: nil, mb_class: "mb-6") %>
 <%
   back_label = local_assigns.fetch(:back_label) { t("shared.back_to_index") }
 %>
-<div class="mt-6">
+<div class="<%= mb_class %>">
   <%= ui_back_link back_label, back_path %>
 </div>
-<%# 詳細画面のフラッシュメッセージ（戻るリンク直下） %>
-<%= render "shared/flash" %>
+<%# 詳細画面のフラッシュメッセージ（カード幅に合わせて表示） %>
+<div class="max-w-4xl mx-auto">
+  <%= render "shared/flash" %>
+</div>

@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   resources :diaries
   resources :expenses
   resources :categories
-  resources :health_logs
+  resources :health_logs do
+    collection do
+      get :stats
+    end
+  end
   resources :books
   resources :schedules
   resource :settings, only: [ :show, :update ]

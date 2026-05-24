@@ -15,6 +15,47 @@ class HealthLogsController < ApplicationController
     if params[:date].present?
       @health_logs = @health_logs.where(date: params[:date])
     end
+
+    @health_logs = @health_logs.page(params[:page]).per(10)
+  end
+
+  def stats
+    @tab = params[:tab].presence_in(%w[month year]) || "month"
+
+    if @tab == "year"
+      # 年内：今年の全記録（体重あるもの）
+      logs = current_user.health_logs
+                         .where(date: Date.today.beginning_of_year..Date.today)
+                         .where.not(weight: nil)
+                         .order(:date)
+
+      # 月ごとの平均体重に集約
+      grouped = logs.group_by { |l| l.date.strftime("%Y-%m") }
+      sorted_keys = grouped.keys.sort
+      @chart_labels = sorted_keys.map { |k| "#{k.split('-')[1]}月" }.to_json
+      @chart_data   = sorted_keys.map { |k|
+        avg = grouped[k].sum(&:weight) / grouped[k].size.to_f
+        avg.round(1)
+      }.to_json
+      @stats_logs = logs
+    else
+      # 月内：今月の日次データ
+      logs = current_user.health_logs
+                         .where(date: Date.today.beginning_of_month..Date.today)
+                         .where.not(weight: nil)
+                         .order(:date)
+      @chart_labels = logs.map { |l| l.date.strftime("%-m/%-d") }.to_json
+      @chart_data   = logs.map(&:weight).to_json
+      @stats_logs = logs
+    end
+
+    # 簡易統計
+    weights = @stats_logs.map(&:weight)
+    if weights.any?
+      @weight_avg = (weights.sum / weights.size.to_f).round(1)
+      @weight_max = weights.max
+      @weight_min = weights.min
+    end
   end
 
   def show

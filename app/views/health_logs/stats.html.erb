@@ -1,0 +1,117 @@
+<div class="max-w-4xl mx-auto pb-8 mb-10">
+
+  <%= render "shared/page_header", title: "体調ログ", button_label: "新規作成", button_path: new_health_log_path %>
+
+  <!-- 一覧 / グラフ タブ -->
+  <div class="flex gap-2 mb-6">
+    <%= link_to "一覧", health_logs_path,
+          class: "px-4 py-2 rounded-lg font-semibold text-sm bg-white text-gray-600 border hover:bg-gray-50 transition" %>
+    <span class="px-4 py-2 rounded-lg font-semibold text-sm bg-blue-600 text-white">グラフ</span>
+  </div>
+
+  <!-- 月内 / 年内 切り替え -->
+  <div class="flex gap-2 mb-6">
+    <%= link_to "今月", stats_health_logs_path(tab: "month"),
+          class: "px-4 py-1.5 rounded-full text-sm font-semibold transition
+                  #{@tab == 'month' ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-500 border hover:bg-gray-50'}" %>
+    <%= link_to "今年", stats_health_logs_path(tab: "year"),
+          class: "px-4 py-1.5 rounded-full text-sm font-semibold transition
+                  #{@tab == 'year' ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-500 border hover:bg-gray-50'}" %>
+  </div>
+
+  <% if @stats_logs.any? %>
+
+    <!-- 簡易統計サマリー -->
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div class="bg-white rounded-xl shadow-sm border p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">平均体重</p>
+        <p class="text-2xl font-bold text-gray-800"><%= @weight_avg %><span class="text-sm font-normal text-gray-500 ml-1">kg</span></p>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">最高</p>
+        <p class="text-2xl font-bold text-red-500"><%= @weight_max %><span class="text-sm font-normal text-gray-500 ml-1">kg</span></p>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">最低</p>
+        <p class="text-2xl font-bold text-blue-500"><%= @weight_min %><span class="text-sm font-normal text-gray-500 ml-1">kg</span></p>
+      </div>
+    </div>
+
+    <!-- グラフ -->
+    <div class="bg-white rounded-xl shadow-sm border p-6">
+      <h2 class="text-base font-bold text-gray-700 mb-4">
+        <%= @tab == "year" ? "今年の体重推移（月平均）" : "今月の体重推移" %>
+      </h2>
+      <div class="relative h-56 md:h-72">
+        <canvas id="weightChart"></canvas>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById("weightChart").getContext("2d");
+        const labels = <%= raw @chart_labels %>;
+        const data   = <%= raw @chart_data %>;
+
+        // Y軸の範囲をデータに合わせて少し余白を持たせる
+        const min = Math.min(...data);
+        const max = Math.max(...data);
+        const padding = Math.max((max - min) * 0.2, 1);
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "体重 (kg)",
+              data: data,
+              borderColor: "rgb(59, 130, 246)",
+              backgroundColor: "rgba(59, 130, 246, 0.08)",
+              borderWidth: 2,
+              pointBackgroundColor: "rgb(59, 130, 246)",
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: ctx => `${ctx.parsed.y} kg`
+                }
+              }
+            },
+            scales: {
+              y: {
+                min: Math.floor((min - padding) * 10) / 10,
+                max: Math.ceil((max + padding) * 10) / 10,
+                ticks: {
+                  callback: val => `${val} kg`
+                },
+                grid: { color: "rgba(0,0,0,0.05)" }
+              },
+              x: {
+                grid: { display: false },
+                ticks: {
+                  maxTicksLimit: 8,
+                  maxRotation: 45
+                }
+              }
+            }
+          }
+        });
+      });
+    </script>
+
+  <% else %>
+    <div class="bg-white rounded-xl shadow-sm border p-10 text-center text-gray-400">
+      <%= @tab == "year" ? "今年" : "今月" %>の体重データがありません。
+    </div>
+  <% end %>
+
+</div>

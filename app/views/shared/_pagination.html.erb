@@ -1,0 +1,54 @@
+<%# locals: (collection:) %>
+<% if collection.total_pages > 1 %>
+  <%
+    base_params = request.query_parameters.except("page")
+    btn_base    = "px-3 py-2 rounded-lg text-sm font-medium transition"
+    btn_active  = "#{btn_base} bg-white border text-gray-700 hover:bg-gray-50"
+    btn_disabled = "#{btn_base} bg-gray-100 text-gray-400 cursor-not-allowed"
+  %>
+
+  <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
+
+    <%# 最初のページ %>
+    <% if collection.first_page? %>
+      <span class="<%= btn_disabled %>">|&lt;</span>
+    <% else %>
+      <%= link_to url_for(base_params.merge("page" => 1)), class: btn_active do %>|&lt;<% end %>
+    <% end %>
+
+    <%# 前のページ %>
+    <% if collection.first_page? %>
+      <span class="<%= btn_disabled %>">&lt;</span>
+    <% else %>
+      <%= link_to url_for(base_params.merge("page" => collection.current_page - 1)), class: btn_active do %>&lt;<% end %>
+    <% end %>
+
+    <%# ページ番号入力 + 総ページ数（Enter／決定で移動） %>
+    <form method="get" action="<%= request.path %>" class="flex items-center gap-1">
+      <% base_params.each do |key, value| %>
+        <input type="hidden" name="<%= key %>" value="<%= value %>">
+      <% end %>
+      <input type="number" name="page"
+             value="<%= collection.current_page %>"
+             min="1" max="<%= collection.total_pages %>"
+             class="w-14 border rounded-lg px-2 py-2 text-sm text-center
+                    focus:ring-2 focus:ring-blue-400 focus:outline-none appearance-none">
+      <span class="text-sm text-gray-600">/ <%= collection.total_pages %>ページ</span>
+    </form>
+
+    <%# 次のページ %>
+    <% if collection.last_page? %>
+      <span class="<%= btn_disabled %>">&gt;</span>
+    <% else %>
+      <%= link_to url_for(base_params.merge("page" => collection.current_page + 1)), class: btn_active do %>&gt;<% end %>
+    <% end %>
+
+    <%# 最後のページ %>
+    <% if collection.last_page? %>
+      <span class="<%= btn_disabled %>">&gt;|</span>
+    <% else %>
+      <%= link_to url_for(base_params.merge("page" => collection.total_pages)), class: btn_active do %>&gt;|<% end %>
+    <% end %>
+
+  </div>
+<% end %>

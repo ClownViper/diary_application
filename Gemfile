@@ -16,6 +16,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 gem "devise"
+gem "kaminari"
 gem "simple_calendar"
 gem "propshaft"
 gem "cssbundling-rails"

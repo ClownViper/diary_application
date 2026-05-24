@@ -1,6 +1,5 @@
 <%= render layout: "shared/form_card" do %>
   <%= form_with model: health_log, data: { turbo: false }, class: "space-y-6" do |f| %>
-    <%= render "shared/form_errors", resource: health_log %>
 
     <div class="!mt-2">
       <%= render "shared/form_field", form: f, attr: :date, field_label: "日付", field_type: :date_field %>

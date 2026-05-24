@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
 
   <%= render "shared/page_header", title: "読書ログ一覧", button_label: "新規作成", button_path: new_book_path %>
 
@@ -60,5 +60,6 @@
   </div>
 
   <%= render "shared/empty_state", message: "読書ログはありません。" if @books.empty? %>
+  <%= render "shared/pagination", collection: @books %>
 
 </div>

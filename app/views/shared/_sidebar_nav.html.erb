@@ -11,8 +11,6 @@
   <%= sidebar_link_to "出費一覧", expenses_path %>
 <% end %>
 
-<%= sidebar_link_to "カレンダー", calendar_path %>
-
 <% if current_user.feature_health_log %>
   <%= sidebar_link_to "体調ログ", health_logs_path %>
 <% end %>
@@ -24,6 +22,8 @@
 <% if current_user.feature_schedule %>
   <%= sidebar_link_to "スケジュール", schedules_path %>
 <% end %>
+
+<%= sidebar_link_to "カレンダー", calendar_path %>
 
 <%# 設定メニュー（カテゴリ・通知設定・コンテンツ設定を内包） %>
 <div class="mt-2">

@@ -1,6 +1,5 @@
 <%= render layout: "shared/form_card" do %>
   <%= form_with model: diary, data: { turbo: false }, class: "space-y-6" do |f| %>
-    <%= render "shared/form_errors", resource: diary %>
 
     <div class="!mt-2">
       <%= render "shared/form_field", form: f, attr: :title, field_label: "タイトル" %>

@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
 
   <%= render "shared/page_header", title: "スケジュール一覧", button_label: "新規作成", button_path: new_schedule_path %>
 
@@ -69,4 +69,5 @@
     <%= render "shared/empty_state", message: "スケジュールはありません。", inline: true if @schedules.empty? %>
 
   </div>
+  <%= render "shared/pagination", collection: @schedules %>
 </div>

@@ -15,6 +15,8 @@ class SchedulesController < ApplicationController
     if params[:date].present?
       @schedules = @schedules.where(date: params[:date])
     end
+
+    @schedules = @schedules.page(params[:page]).per(10)
   end
 
   def show

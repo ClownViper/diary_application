@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto py-8 mb-10">
+<div class="max-w-4xl mx-auto pb-8 mb-10">
 
   <%= render "shared/page_header", title: "日記一覧", button_label: "新規作成", button_path: new_diary_path(date: @date) %>
 
@@ -56,4 +56,5 @@
   </div>
 
   <%= render "shared/empty_state", message: "日記はありません。" if @diaries.empty? %>
+  <%= render "shared/pagination", collection: @diaries %>
 </div>
