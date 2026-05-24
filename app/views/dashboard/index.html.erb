@@ -64,7 +64,7 @@
 
         <% if @today_diary %>
           <p class="font-semibold text-gray-800"><%= @today_diary.title %></p>
-          <p class="text-sm text-gray-500"><%= @today_diary.date.strftime("%Y/%m/%d") %></p>
+          <p class="text-sm text-gray-500"><%= format_date(@today_diary.date) %></p>
           <p class="mt-2 text-gray-700 whitespace-pre-line"><%= @today_diary.body.truncate(80) %></p>
         <% else %>
           <p class="text-gray-500">日記はありません。</p>

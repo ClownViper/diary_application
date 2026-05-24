@@ -34,17 +34,7 @@
       <%= link_to diary_path(diary),
             class: "block bg-white rounded-xl border shadow-sm hover:shadow-md transition p-4 flex gap-4" do %>
 
-        <%# 画像エリアのサイズを統一（noimage/写真で同じサイズ） %>
-        <div class="w-24 h-24 flex-shrink-0">
-          <% if diary.image.attached? %>
-            <%= image_tag diary.image,
-                  class: "w-full h-full object-cover rounded-lg" %>
-          <% else %>
-            <div class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
-              No Image
-            </div>
-          <% end %>
-        </div>
+        <%= render "shared/thumbnail", attachment: diary.image %>
 
         <div class="flex flex-col min-w-0">
           <p class="font-semibold text-gray-800 text-lg truncate">
@@ -52,7 +42,7 @@
           </p>
 
           <p class="text-sm text-gray-500">
-            <%= diary.date.strftime("%Y/%m/%d") %>
+            <%= format_date(diary.date) %>
           </p>
 
           <p class="text-gray-700 text-sm mt-1 line-clamp-2">
@@ -65,9 +55,5 @@
 
   </div>
 
-  <% if @diaries.empty? %>
-    <div class="bg-white rounded-xl shadow p-6 text-center text-gray-500 mt-4">
-      日記はありません。
-    </div>
-  <% end %>
+  <%= render "shared/empty_state", message: "日記はありません。" if @diaries.empty? %>
 </div>

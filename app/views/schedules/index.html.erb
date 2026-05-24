@@ -42,7 +42,7 @@
             class: "grid grid-cols-1 md:grid-cols-4 gap-1 px-4 py-3 border-b hover:bg-gray-50 transition" do %>
 
         <div class="text-gray-600">
-          <%= schedule.date.strftime("%Y/%m/%d") %>
+          <%= format_date(schedule.date) %>
         </div>
 
         <div class="font-medium text-gray-900 truncate">
@@ -66,11 +66,7 @@
       <% end %>
     <% end %>
 
-    <% if @schedules.empty? %>
-      <div class="px-4 py-6 text-center text-gray-500">
-        スケジュールはありません。
-      </div>
-    <% end %>
+    <%= render "shared/empty_state", message: "スケジュールはありません。", inline: true if @schedules.empty? %>
 
   </div>
 </div>

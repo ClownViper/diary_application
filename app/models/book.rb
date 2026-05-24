@@ -1,5 +1,7 @@
 # 読書ログモデル
 class Book < ApplicationRecord
+  include ImageAttachable
+
   belongs_to :user
 
   # 表紙画像
@@ -26,15 +28,6 @@ class Book < ApplicationRecord
   private
 
   def validate_cover_attachment
-    return unless cover.attached?
-
-    allowed_types = [ "image/png", "image/jpg", "image/jpeg", "image/webp" ]
-    unless allowed_types.include?(cover.content_type)
-      errors.add(:cover, "はPNG、JPG、JPEG、WEBPのみ対応しています")
-    end
-
-    if cover.blob.byte_size > 10.megabytes
-      errors.add(:cover, "は10MBまでです")
-    end
+    validate_image(cover, :cover)
   end
 end

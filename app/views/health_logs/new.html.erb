@@ -1,5 +1,2 @@
-<%= render "shared/back_link", back_path: health_logs_path %>
-<div class="p-4 max-w-4xl mx-auto">
-  <h1 class="text-2xl font-bold">体調ログを登録</h1>
-</div>
+<%= render "shared/form_page", title: "体調ログを登録", back_path: health_logs_path %>
 <%= render "form", health_log: @health_log %>

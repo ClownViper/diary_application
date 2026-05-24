@@ -1,4 +1,9 @@
 module ApplicationHelper
+  # 日付を "YYYY/MM/DD" 形式でフォーマットする共通ヘルパー
+  def format_date(date)
+    date&.strftime("%Y/%m/%d")
+  end
+
   def sidebar_link_to(name, path, html_options = {})
     active = current_page?(path)
 
@@ -48,19 +53,6 @@ module ApplicationHelper
   def ui_link_button(label, url, variant: :primary, size: :md, **options)
     options[:class] = [ ui_button_classes(variant: variant, size: size), options[:class] ].compact.join(" ")
     link_to label, url, **options
-  end
-  def ui_field(form, attr, label: nil, type: :text_field, **field_options)
-    label_text = label || form.object.class.human_attribute_name(attr)
-    error = form.object.errors[attr]&.first
-    input_classes = [ INPUT_CLASS, error.present? ? "border-red-500" : nil ].compact.join(" ")
-  field_options[:class] = [ input_classes, field_options[:class] ].compact.join(" ")
-    content_tag(:div) do
-      safe_join([
-        form.label(attr, label_text, class: LABEL_CLASS),
-        form.public_send(type, attr, **field_options),
-        (content_tag(:p, error, class: "mt-1 text-sm text-red-600") if error.present?)
-      ].compact)
-    end
   end
   def ui_back_link(label, path)
     ui_link_button label, path, variant: :ghost

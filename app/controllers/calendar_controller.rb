@@ -1,5 +1,4 @@
 class CalendarController < ApplicationController
-  before_action :authenticate_user!
 
   def index
     # 表示する月
@@ -24,10 +23,10 @@ class CalendarController < ApplicationController
 
   def layer
     @date = Date.parse(params[:date])
-    @diary = Diary.find_by(date: @date, user: current_user)
-    @expenses = Expense.where(date: @date, user: current_user)
-    @health_log = HealthLog.find_by(date: @date, user: current_user)
-    @schedules = Schedule.where(date: @date, user: current_user).order(start_time: :asc)
+    @diary      = current_user.diaries.find_by(date: @date)
+    @expenses   = current_user.expenses.where(date: @date)
+    @health_log = current_user.health_logs.find_by(date: @date)
+    @schedules  = current_user.schedules.where(date: @date).order(start_time: :asc)
 
     render partial: "calendar/layer"
   end

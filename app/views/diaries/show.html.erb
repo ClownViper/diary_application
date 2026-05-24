@@ -15,7 +15,7 @@
 
       <div class="flex-1">
         <p class="text-gray-500 text-sm">
-          <%= @diary.date.strftime("%Y/%m/%d") %>
+          <%= format_date(@diary.date) %>
         </p>
 
         <h1 class="text-3xl font-bold text-gray-800 break-words">

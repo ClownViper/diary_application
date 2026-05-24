@@ -1,6 +1,5 @@
 # 体重・体調ログのCRUDコントローラー
 class HealthLogsController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_health_log, only: [ :show, :edit, :update, :destroy ]
 
   def index
@@ -23,11 +22,7 @@ class HealthLogsController < ApplicationController
 
   def new
     date = params[:date].presence || Date.today
-
-    # 既にその日の記録があるなら編集へ
-    if (existing = current_user.health_logs.find_by(date: date))
-      redirect_to edit_health_log_path(existing) and return
-    end
+    return if redirect_to_existing_health_log(date)
 
     @health_log = current_user.health_logs.new(date: date)
   end
@@ -37,11 +32,7 @@ class HealthLogsController < ApplicationController
 
   def create
     date = health_log_params[:date]
-
-    # 既にその日の記録があるなら編集へ
-    if (existing = current_user.health_logs.find_by(date: date))
-      redirect_to edit_health_log_path(existing), alert: "この日はすでに記録があります" and return
-    end
+    return if redirect_to_existing_health_log(date, alert: "この日はすでに記録があります")
 
     @health_log = current_user.health_logs.new(health_log_params)
 
@@ -75,5 +66,14 @@ class HealthLogsController < ApplicationController
 
   def health_log_params
     params.require(:health_log).permit(:date, :weight, :condition, :memo)
+  end
+
+  # その日の体調ログが既にあれば編集画面へリダイレクトし true を返す
+  def redirect_to_existing_health_log(date, alert: nil)
+    existing = current_user.health_logs.find_by(date: date)
+    return false unless existing
+
+    redirect_to edit_health_log_path(existing), alert: alert
+    true
   end
 end

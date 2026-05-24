@@ -34,16 +34,7 @@
       <%= link_to book_path(book),
             class: "bg-white rounded-xl shadow hover:shadow-md transition p-4 flex gap-4" do %>
 
-        <%# 表紙画像エリアのサイズを統一（noimage/写真で同じサイズ） %>
-        <div class="w-20 h-28 flex-shrink-0">
-          <% if book.cover.attached? %>
-            <%= image_tag book.cover, class: "w-full h-full object-cover rounded-lg" %>
-          <% else %>
-            <div class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-xs">
-              No Image
-            </div>
-          <% end %>
-        </div>
+        <%= render "shared/thumbnail", attachment: book.cover, size_class: "w-20 h-28" %>
 
         <!-- 情報 -->
         <div class="flex flex-col min-w-0">
@@ -68,10 +59,6 @@
     <% end %>
   </div>
 
-  <% if @books.empty? %>
-    <div class="bg-white rounded-xl shadow p-6 text-center text-gray-500">
-      読書ログはありません。
-    </div>
-  <% end %>
+  <%= render "shared/empty_state", message: "読書ログはありません。" if @books.empty? %>
 
 </div>

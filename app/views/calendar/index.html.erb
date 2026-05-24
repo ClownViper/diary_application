@@ -77,20 +77,9 @@
             <%= day.day %>
           </div>
 
-          <%# PC版：記号のみ表示（コンテンツ設定でONの機能のみ） %>
+          <%# PC版：記号バッジ（コンテンツ設定でONの機能のみ） %>
           <div class="mt-1 flex flex-wrap gap-1 text-sm">
-            <% if current_user.feature_diary && diary.present? %>
-              <span class="text-indigo-500" title="日記">●</span>
-            <% end %>
-            <% if current_user.feature_expense && expenses.present? %>
-              <span class="text-emerald-500" title="家計簿">▲</span>
-            <% end %>
-            <% if current_user.feature_health_log && health_log.present? %>
-              <span class="text-rose-500" title="体調">◆</span>
-            <% end %>
-            <% if current_user.feature_schedule && schedules.present? %>
-              <span class="text-amber-500" title="予定">★</span>
-            <% end %>
+            <%= render "shared/calendar_badges", diary: diary, expenses: expenses, health_log: health_log, schedules: schedules %>
           </div>
         </div>
       <% end %>
@@ -136,20 +125,9 @@
 
         </div>
 
-        <%# スマホ版：記号のみ横並び表示（コンテンツ設定でONの機能のみ） %>
+        <%# スマホ版：記号バッジ（コンテンツ設定でONの機能のみ） %>
         <div class="col-span-3 flex items-center gap-2 text-lg">
-          <% if current_user.feature_diary && diary.present? %>
-            <span class="text-indigo-500">●</span>
-          <% end %>
-          <% if current_user.feature_expense && expenses.present? %>
-            <span class="text-emerald-500">▲</span>
-          <% end %>
-          <% if current_user.feature_health_log && health_log.present? %>
-            <span class="text-rose-500">◆</span>
-          <% end %>
-          <% if current_user.feature_schedule && schedules.present? %>
-            <span class="text-amber-500">★</span>
-          <% end %>
+          <%= render "shared/calendar_badges", diary: diary, expenses: expenses, health_log: health_log, schedules: schedules %>
         </div>
 
       </div>

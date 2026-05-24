@@ -1,9 +1,8 @@
 class ExpensesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_expense, only: [:show, :edit, :update, :destroy]
+  before_action :set_categories, only: [:index, :new, :edit, :create, :update]
 
   def index
-    @categories = current_user.categories.order(:name)
     @expenses = current_user.expenses.includes(:category).order(date: :desc)
 
     # キーワード検索（名前・メモ）
@@ -27,14 +26,10 @@ class ExpensesController < ApplicationController
   end
 
   def new
-    date = params[:date].presence || Date.today
-
-    @expense = current_user.expenses.new(date: date)
-    @categories = current_user.categories.order(:name)
+    @expense = current_user.expenses.new(date: params[:date].presence || Date.today)
   end
 
   def edit
-    @categories = current_user.categories.order(:name)
   end
 
   def create
@@ -42,7 +37,6 @@ class ExpensesController < ApplicationController
     if @expense.save
       redirect_to @expense, notice: "出費を登録しました"
     else
-      @categories = current_user.categories.order(:name)
       render :new, status: :unprocessable_entity
     end
   end
@@ -51,13 +45,11 @@ class ExpensesController < ApplicationController
     if @expense.update(expense_params)
       redirect_to @expense, notice: "出費を更新しました"
     else
-      @categories = current_user.categories.order(:name)
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @expense = current_user.expenses.find(params[:id])
     @expense.destroy
     redirect_to expenses_path, notice: "出費を削除しました"
   end
@@ -66,6 +58,10 @@ class ExpensesController < ApplicationController
 
   def set_expense
     @expense = current_user.expenses.find(params[:id])
+  end
+
+  def set_categories
+    @categories = current_user.categories.order(:name)
   end
 
   def expense_params

@@ -1,0 +1,15 @@
+<%# locals: (diary:, expenses:, health_log:, schedules:) %>
+<%# カレンダーの日付セルに表示する機能記号バッジ %>
+<%# コンテンツ設定でONの機能のみ表示する %>
+<% if current_user.feature_diary && diary.present? %>
+  <span class="text-indigo-500" title="日記">●</span>
+<% end %>
+<% if current_user.feature_expense && expenses.present? %>
+  <span class="text-emerald-500" title="家計簿">▲</span>
+<% end %>
+<% if current_user.feature_health_log && health_log.present? %>
+  <span class="text-rose-500" title="体調">◆</span>
+<% end %>
+<% if current_user.feature_schedule && schedules.present? %>
+  <span class="text-amber-500" title="予定">★</span>
+<% end %>

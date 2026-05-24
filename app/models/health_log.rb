@@ -1,5 +1,7 @@
 # 体重・体調ログモデル
 class HealthLog < ApplicationRecord
+  include DateDefaultable
+
   belongs_to :user
 
   validates :date, presence: true
@@ -19,9 +21,5 @@ class HealthLog < ApplicationRecord
 
   def condition_label
     CONDITION_LABELS[condition]
-  end
-
-  after_initialize do
-    self.date ||= Date.current
   end
 end

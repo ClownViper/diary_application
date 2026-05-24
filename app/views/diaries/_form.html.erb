@@ -1,5 +1,5 @@
 <%= render layout: "shared/form_card" do %>
-  <%= form_with model: diary, local: true, class: "space-y-6" do |f| %>
+  <%= form_with model: diary, data: { turbo: false }, class: "space-y-6" do |f| %>
     <%= render "shared/form_errors", resource: diary %>
 
     <div class="!mt-2">

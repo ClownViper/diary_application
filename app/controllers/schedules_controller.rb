@@ -1,6 +1,5 @@
 # スケジュールのCRUDコントローラー
 class SchedulesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_schedule, only: [ :show, :edit, :update, :destroy ]
 
   def index

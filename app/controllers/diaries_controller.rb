@@ -1,5 +1,4 @@
 class DiariesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_diary, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -22,11 +21,7 @@ class DiariesController < ApplicationController
 
   def new
     date = params[:date].presence || Date.today
-
-    # 既にその日の日記があるなら編集へ
-    if (existing = current_user.diaries.find_by(date: date))
-      redirect_to edit_diary_path(existing) and return
-    end
+    return if redirect_to_existing_diary(date)
 
     @diary = current_user.diaries.new(date: date)
   end
@@ -36,11 +31,7 @@ class DiariesController < ApplicationController
 
   def create
     date = diary_params[:date]
-
-    # 既にその日の日記があるなら編集へ
-    if (existing = current_user.diaries.find_by(date: date))
-      redirect_to edit_diary_path(existing), alert: "この日はすでに日記があります" and return
-    end
+    return if redirect_to_existing_diary(date, alert: "この日はすでに日記があります")
 
     @diary = current_user.diaries.new(diary_params)
 
@@ -74,5 +65,14 @@ class DiariesController < ApplicationController
 
   def diary_params
     params.require(:diary).permit(:title, :body, :date, :image)
+  end
+
+  # その日の日記が既にあれば編集画面へリダイレクトし true を返す
+  def redirect_to_existing_diary(date, alert: nil)
+    existing = current_user.diaries.find_by(date: date)
+    return false unless existing
+
+    redirect_to edit_diary_path(existing), alert: alert
+    true
   end
 end

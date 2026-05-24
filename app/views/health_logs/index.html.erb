@@ -42,7 +42,7 @@
             class: "grid grid-cols-1 md:grid-cols-4 gap-1 px-4 py-3 border-b hover:bg-gray-50 transition" do %>
 
         <div class="text-gray-600">
-          <%= log.date.strftime("%Y/%m/%d") %>
+          <%= format_date(log.date) %>
         </div>
 
         <div class="font-medium text-gray-900">
@@ -71,11 +71,7 @@
       <% end %>
     <% end %>
 
-    <% if @health_logs.empty? %>
-      <div class="px-4 py-6 text-center text-gray-500">
-        体調ログはありません。
-      </div>
-    <% end %>
+    <%= render "shared/empty_state", message: "体調ログはありません。", inline: true if @health_logs.empty? %>
 
   </div>
 </div>

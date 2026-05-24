@@ -1,0 +1,12 @@
+<%# locals: (attachment:, size_class: "w-24 h-24") %>
+<%# attachment: Active Storage の添付オブジェクト（image / cover など） %>
+<%# size_class:  外枠の Tailwind サイズクラス（例: "w-20 h-28", "w-32 h-44"） %>
+<div class="<%= size_class %> flex-shrink-0">
+  <% if attachment.attached? %>
+    <%= image_tag attachment, class: "w-full h-full object-cover rounded-lg" %>
+  <% else %>
+    <div class="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-sm">
+      No Image
+    </div>
+  <% end %>
+</div>

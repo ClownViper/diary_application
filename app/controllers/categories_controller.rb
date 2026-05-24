@@ -1,5 +1,4 @@
 class CategoriesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_category, only: [:edit, :update, :destroy]
 
   def index
@@ -31,7 +30,6 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    @category = current_user.categories.find(params[:id])
     @category.destroy
     redirect_to categories_path, notice: "カテゴリを削除しました"
   end

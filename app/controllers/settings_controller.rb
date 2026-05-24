@@ -1,6 +1,5 @@
 # 通知設定コントローラー
 class SettingsController < ApplicationController
-  before_action :authenticate_user!
 
   def show
     @user = current_user

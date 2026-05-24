@@ -1,7 +1,6 @@
 # コンテンツ設定コントローラー
 # 各機能のON/OFFと出費目安金額を管理
 class ContentSettingsController < ApplicationController
-  before_action :authenticate_user!
 
   def show
     @user = current_user

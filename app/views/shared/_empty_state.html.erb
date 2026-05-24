@@ -1,0 +1,12 @@
+<%# locals: (message:, inline: false) %>
+<%# inline: true  → テーブル内など既存コンテナの中で使う（背景なし）  %>
+<%# inline: false → カード形式で独立表示（デフォルト）                %>
+<% if inline %>
+  <div class="px-4 py-6 text-center text-gray-500">
+    <%= message %>
+  </div>
+<% else %>
+  <div class="bg-white rounded-xl shadow p-6 text-center text-gray-500 mt-4">
+    <%= message %>
+  </div>
+<% end %>
