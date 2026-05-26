@@ -1,0 +1,52 @@
+<div class="max-w-3xl mx-auto pb-8 mb-10">
+  <%= render "shared/page_header", title: "CSVエクスポート・インポート" %>
+
+  <p class="text-sm text-gray-500 mb-6">
+    各データのCSVダウンロードと、CSVファイルからのインポートができます。<br>
+    インポート用CSVはエクスポートしたファイルをそのまま使用できます。
+  </p>
+
+  <div class="space-y-6">
+
+    <%# 日記 %>
+    <% if current_user.feature_diary %>
+      <%= render "csv_exports/section",
+            title: "日記",
+            icon: "📖",
+            export_path: csv_export_diaries_path,
+            import_path: csv_import_diaries_path,
+            columns: "日付・タイトル・本文" %>
+    <% end %>
+
+    <%# 家計簿 %>
+    <% if current_user.feature_expense %>
+      <%= render "csv_exports/section",
+            title: "家計簿",
+            icon: "💰",
+            export_path: csv_export_expenses_path,
+            import_path: csv_import_expenses_path,
+            columns: "日付・品目・金額・カテゴリ・メモ" %>
+    <% end %>
+
+    <%# 体調ログ %>
+    <% if current_user.feature_health_log %>
+      <%= render "csv_exports/section",
+            title: "体調ログ",
+            icon: "🩺",
+            export_path: csv_export_health_logs_path,
+            import_path: csv_import_health_logs_path,
+            columns: "日付・体重・体調・睡眠・体温・メモ" %>
+    <% end %>
+
+    <%# 読書ログ %>
+    <% if current_user.feature_book %>
+      <%= render "csv_exports/section",
+            title: "読書ログ",
+            icon: "📚",
+            export_path: csv_export_books_path,
+            import_path: csv_import_books_path,
+            columns: "タイトル・著者・ステータス・読み始め日・読了日・感想" %>
+    <% end %>
+
+  </div>
+</div>

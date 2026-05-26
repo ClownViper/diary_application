@@ -1,0 +1,12 @@
+default: &default
+  name: "MyDiary"
+  subtitle: "日記・家計簿・体調・読書 管理アプリ"
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

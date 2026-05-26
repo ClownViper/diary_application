@@ -1,10 +1,10 @@
 <div class="min-h-screen flex flex-col items-center justify-center
-            bg-gradient-to-br from-blue-400 to-blue-600 px-4">
+            bg-gradient-to-br from-slate-400 to-slate-600 px-4">
 
   <!-- アプリヘッダー -->
   <div class="text-center mb-6">
-    <h1 class="text-3xl font-bold text-white/90">MyDiary</h1>
-    <p class="text-white/90 mt-1">出費・日記管理アプリ</p>
+    <h1 class="text-3xl font-bold text-white/90"><%= app_name %></h1>
+    <p class="text-white/90 mt-1"><%= app_subtitle %></p>
   </div>
 
   <!-- 新規登録カード -->
@@ -19,7 +19,7 @@
                   url: registration_path(resource_name) do |f| %>
 
       <%
-        input_base = "w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+        input_base = "w-full border rounded-lg p-2 focus:ring-2 focus:ring-slate-400 focus:outline-none"
         def field_class(base, errors) = errors.any? ? "#{base} border-red-500" : base
       %>
 
@@ -65,7 +65,7 @@
 
       <!-- 登録ボタン -->
       <%= f.submit "登録する",
-            class: "w-full bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition mt-4 p-3" %>
+            class: "w-full bg-slate-600 text-white rounded-lg font-semibold hover:bg-slate-700 transition mt-4 p-3" %>
 
     <% end %>
 
@@ -74,7 +74,7 @@
       <p class="text-gray-600">
         すでにアカウントをお持ちの方は
         <%= link_to "ログイン", new_user_session_path,
-              class: "text-blue-600 font-semibold hover:underline" %>
+              class: "text-slate-600 font-semibold hover:underline" %>
       </p>
     </div>
 

@@ -2,7 +2,7 @@
   <%= render "shared/flash" %>
 
   <!-- 月切り替え -->
-  <div class="flex justify-between items-center mb-2 bg-blue-700 text-white p-2.5 rounded-lg">
+  <div class="flex justify-between items-center mb-2 bg-slate-700 text-white p-2.5 rounded-lg">
 
     <!-- 左：前月 -->
     <%= link_to "◀︎", calendar_path(date: @date.prev_month),
@@ -68,12 +68,18 @@
         <% expenses = @expenses_by_date[day] %>
         <% health_log = @health_logs_by_date[day] %>
         <% schedules = @schedules_by_date[day] %>
+        <% pc_day_color = case day.wday
+                          when 0 then "text-red-500"
+                          when 6 then "text-blue-500"
+                          else ""
+                          end %>
 
         <div
           class="bg-white border rounded-lg p-2 h-24 cursor-pointer hover:shadow-md transition flex flex-col"
           onclick="openCalendarLayer('<%= day %>')"
         >
-          <div class="text-sm font-semibold <%= 'text-blue-600' if day == Date.today %>">
+          <div class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-semibold
+                      <%= day == Date.today ? 'bg-slate-500 text-white' : pc_day_color %>">
             <%= day.day %>
           </div>
 
@@ -118,8 +124,9 @@
             <%= %w(日 月 火 水 木 金 土)[day.wday] %>
           </div>
 
-          <!-- 日付 -->
-          <div class="text-lg font-bold <%= 'text-blue-600' if day == Date.today %>">
+          <!-- 日付（今日は丸囲み） -->
+          <div class="w-8 h-8 flex items-center justify-center rounded-full text-lg font-bold
+                      <%= day == Date.today ? 'bg-slate-500 text-white' : wday_color %>">
             <%= day.day %>
           </div>
 

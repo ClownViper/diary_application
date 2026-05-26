@@ -1,0 +1,50 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3002/users/sign_in)",
+      "Bash(kill %1)",
+      "Read(//home/piero_999/workspace/mini_health_log/**)",
+      "Bash(grep -v \"^#\\\\|^$\")",
+      "Bash(bin/rails generate *)",
+      "Bash(bin/rails db:schema:dump)",
+      "Bash(kill 75101)",
+      "Bash(xargs kill)",
+      "Bash(find /home/piero_999/workspace/mini_reading_log -type f | sort | head -80)",
+      "Read(//home/piero_999/workspace/mini_reading_log/**)",
+      "Bash(bundle exec *)",
+      "Bash(bin/rails db:drop db:create db:migrate)",
+      "Bash(bin/rails db:migrate:status)",
+      "Bash(bin/rails server *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3003/users/sign_in)",
+      "Bash(curl -s http://localhost:3003/users/sign_in)",
+      "Bash(bin/rails db:seed)",
+      "Bash(bin/rails db:seed --trace)",
+      "Bash(env)",
+      "Bash(grep -E \"^    pg$|^  pg \" /home/piero_999/workspace/mini_reading_log/Gemfile.lock)",
+      "Bash(ruby -e \"require 'yaml'; puts YAML.load_file\\('/home/piero_999/workspace/mini_reading_log/config/database.yml', aliases: true\\).inspect\")",
+      "Bash(bin/rails db:drop db:create)",
+      "Bash(pkill -f \"rails server -p 3003\")",
+      "Bash(lsof -i :3003 2>/dev/null | head -5 || echo \"no process on 3003\" *)",
+      "Bash(zip -r /tmp/mini_expense.zip mini_expense --exclude mini_expense/.git/* --exclude mini_expense/.git --exclude mini_expense/storage/development.sqlite3 --exclude mini_expense/storage/test.sqlite3 --exclude mini_expense/log/development.log --exclude mini_expense/log/test.log --exclude mini_expense/tmp/cache/* --exclude mini_expense/tmp/pids/* --exclude mini_expense/tmp/sockets/* --exclude mini_expense/tmp/storage/*)",
+      "Bash(mkdir -p /tmp/test_expense)",
+      "Bash(unzip -q /tmp/mini_expense.zip -d /tmp/test_expense)",
+      "Bash(curl -s -o /dev/null -w \"mini_expense: %{http_code}\\\\n\" http://localhost:3012/)",
+      "Bash(mkdir -p /tmp/test_health)",
+      "Bash(unzip -q /tmp/mini_health_log.zip -d /tmp/test_health)",
+      "Bash(curl -s -o /dev/null -w \"mini_health_log: %{http_code}\\\\n\" http://localhost:3013/)",
+      "Bash(mkdir -p /tmp/test_reading)",
+      "Bash(unzip -q /tmp/mini_reading_log.zip -d /tmp/test_reading)",
+      "Bash(curl -s -o /dev/null -w \"mini_reading_log: %{http_code}\\\\n\" http://localhost:3014/)",
+      "Bash(rails db:schema:dump)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'improve: miniアプリの改善をdiary_appに逆反映（テーマ/CSV/RSpec他） *)"
+    ],
+    "additionalDirectories": [
+      "/home/piero_999/workspace/mini_expense",
+      "/home/piero_999/workspace/mini_health_log",
+      "/home/piero_999/workspace/mini_reading_log",
+      "/tmp",
+      "/home/piero_999/workspace/mini_diary"
+    ]
+  }
+}

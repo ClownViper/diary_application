@@ -25,11 +25,17 @@
     <%= render "shared/form_field", form: f, attr: :memo, field_label: "感想", field_type: :text_area,
           field_options: { rows: 5, maxlength: 300, placeholder: "300文字以内" } %>
 
-    <!-- 表紙画像 -->
+    <!-- 表紙画像（ファイル名表示付き） -->
     <div>
       <%= f.label :cover, "表紙画像", class: ApplicationHelper::LABEL_CLASS %>
-      <%= f.file_field :cover, accept: "image/png,image/jpeg,image/webp",
-            class: ApplicationHelper::FILE_INPUT_CLASS %>
+      <div class="flex items-center gap-3">
+        <label class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition text-sm text-gray-700 font-medium">
+          ファイルを選択
+          <%= f.file_field :cover, accept: "image/png,image/jpeg,image/webp", class: "hidden",
+                onchange: "this.closest('div').querySelector('.file-name').textContent = this.files[0]?.name || ''" %>
+        </label>
+        <span class="file-name text-sm text-gray-500"></span>
+      </div>
       <% if book.cover.attached? %>
         <div class="mt-2">
           <%= image_tag book.cover, class: "w-20 h-28 object-cover rounded" %>

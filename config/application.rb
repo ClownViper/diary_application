@@ -23,5 +23,8 @@ module DiaryApp
 
     config.i18n.default_locale = :ja
     config.i18n.available_locales = [:ja, :en]
+
+    # アプリ設定（アプリ名・サブタイトルなど）
+    config.app = config_for(:app)
   end
 end

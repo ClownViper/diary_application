@@ -1,0 +1,40 @@
+<%# locals: (title:, icon:, export_path:, import_path:, columns:) %>
+<div class="bg-white rounded-xl shadow p-5">
+  <div class="flex items-center gap-2 mb-3">
+    <span class="text-xl"><%= icon %></span>
+    <h2 class="text-lg font-bold"><%= title %></h2>
+  </div>
+  <p class="text-xs text-gray-500 mb-4">カラム: <%= columns %></p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <%# エクスポート %>
+    <div class="border rounded-lg p-4">
+      <h3 class="font-semibold text-sm text-gray-700 mb-2">⬇️ エクスポート（ダウンロード）</h3>
+      <p class="text-xs text-gray-500 mb-3">現在の全データをCSVでダウンロードします。</p>
+      <%= link_to "CSVダウンロード", export_path,
+            class: ui_button_classes(variant: :secondary, size: :sm) %>
+    </div>
+
+    <%# インポート %>
+    <div class="border rounded-lg p-4">
+      <h3 class="font-semibold text-sm text-gray-700 mb-2">⬆️ インポート（アップロード）</h3>
+      <p class="text-xs text-gray-500 mb-3">CSVファイルを選択してインポートします。<br>重複データはスキップされます。</p>
+      <%= form_with url: import_path, multipart: true, data: { turbo: false } do |f| %>
+        <div class="flex items-center gap-2">
+          <label class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition text-xs text-gray-700 font-medium">
+            ファイルを選択
+            <%= f.file_field :file, accept: ".csv", class: "hidden",
+                  onchange: "this.closest('div').querySelector('.file-name').textContent = this.files[0]?.name || ''" %>
+          </label>
+          <span class="file-name text-xs text-gray-500 truncate max-w-[120px]"></span>
+        </div>
+        <div class="mt-2">
+          <%= f.submit "インポート",
+                class: ui_button_classes(variant: :primary, size: :sm) %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

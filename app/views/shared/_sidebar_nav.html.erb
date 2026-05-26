@@ -25,10 +25,12 @@
 
 <%= sidebar_link_to "カレンダー", calendar_path %>
 
+<%= sidebar_link_to "CSVデータ管理", csv_exports_path %>
+
 <%# 設定メニュー（カテゴリ・通知設定・コンテンツ設定を内包） %>
 <div class="mt-2">
   <button onclick="toggleSettingsMenu(this)"
-          class="w-full text-left text-lg px-3 py-2 rounded transition text-white hover:bg-blue-300 flex items-center justify-between">
+          class="w-full text-left text-lg px-3 py-2 rounded transition text-white hover:bg-slate-500 flex items-center justify-between">
     <span>設定</span>
     <span class="settings-arrow text-sm transition-transform">▼</span>
   </button>
