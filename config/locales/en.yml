@@ -190,6 +190,21 @@ en:
       title: "New Book"
     edit:
       title: "Edit Book"
+    scanner:
+      button: "Search by Barcode"
+      modal_title: "Scan Barcode"
+      isbn_hint: "Point the camera at the barcode starting with \"978\" on the back cover"
+      isbn_placeholder: "e.g. 978-4-xxx-xxxxx-x (hyphens optional)"
+      search_button: "Search"
+      cancel: "Cancel"
+      scanning: "Starting camera..."
+      camera_error: "Camera unavailable. Please enter ISBN manually."
+      searching: "Searching..."
+      not_found: "Book not found"
+      invalid_isbn: "Invalid ISBN format"
+      api_error: "API error occurred"
+      fill_button: "Fill Form"
+      retry: "Scan Again"
     status_labels:
       unread: "Unread"
       reading: "Reading"

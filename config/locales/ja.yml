@@ -192,6 +192,21 @@ ja:
       title: "読書ログを編集"
     form:
       memo_placeholder: "300文字以内"
+    scanner:
+      button: "バーコードで検索"
+      modal_title: "バーコードをスキャン"
+      isbn_hint: "本の裏表紙にある「978」から始まるバーコードをカメラに向けてください"
+      isbn_placeholder: "例: 978-4-xxx-xxxxx-x（ハイフン不要）"
+      search_button: "検索"
+      cancel: "キャンセル"
+      scanning: "カメラを起動中..."
+      camera_error: "カメラが使えません。ISBNを直接入力してください。"
+      searching: "検索中..."
+      not_found: "書籍が見つかりませんでした"
+      invalid_isbn: "ISBNの形式が正しくありません"
+      api_error: "APIエラーが発生しました"
+      fill_button: "フォームに入力"
+      retry: "もう一度スキャン"
     status_labels:
       unread: "未読"
       reading: "読書中"

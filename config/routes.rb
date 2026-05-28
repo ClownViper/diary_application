@@ -12,7 +12,11 @@ Rails.application.routes.draw do
       get :stats
     end
   end
-  resources :books
+  resources :books do
+    collection do
+      get :search_isbn
+    end
+  end
   resources :schedules
   resource :settings, only: [ :show, :update ]
   resource :content_settings, only: [ :show, :update ]
