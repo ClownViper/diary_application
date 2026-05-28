@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= bcp47_locale %>">
   <head>
     <meta charset="utf-8">
     <title><%= content_for(:title) || app_name %></title>
@@ -29,6 +29,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
       body { font-family: 'Noto Sans JP', sans-serif; }
+      .flatpickr-input[readonly] { cursor: pointer; }
     </style>
 
     <%= javascript_importmap_tags %>
@@ -165,7 +166,7 @@
         <div class="flex gap-2 mb-4">
           <input id="bookIsbnInput" type="text" inputmode="numeric"
                  placeholder="<%= t("books.scanner.isbn_placeholder") %>"
-                 class="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
+                 class="flex-1 min-w-0 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
                  onkeydown="if(event.key==='Enter'){bookScannerSearchManual();}">
           <button type="button" onclick="bookScannerSearchManual()"
                   class="px-4 py-2 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-700 transition whitespace-nowrap">
@@ -313,6 +314,52 @@
       })();
     </script>
     <% end %>
+
+    <!-- flatpickr: locale-aware date picker (replaces native date input) -->
+    <script>
+      (function () {
+        const FP_IS_JA = "<%= I18n.locale %>" === "ja";
+
+        function loadStyle(href) {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = href;
+          document.head.appendChild(link);
+        }
+
+        function loadScript(src, cb) {
+          const s = document.createElement("script");
+          s.src = src;
+          s.onload = cb;
+          document.head.appendChild(s);
+        }
+
+        function initAll() {
+          document.querySelectorAll("input[type='date']").forEach(function (el) {
+            flatpickr(el, {
+              locale:        FP_IS_JA ? "ja" : "en",
+              dateFormat:    "Y-m-d",
+              altInput:      true,
+              altFormat:     FP_IS_JA ? "Y年n月j日" : "m/d/Y",
+              altInputClass: el.className,
+              allowInput:    true,
+            });
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          if (!document.querySelector("input[type='date']")) return;
+          loadStyle("https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css");
+          loadScript("https://cdn.jsdelivr.net/npm/flatpickr", function () {
+            if (FP_IS_JA) {
+              loadScript("https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js", initAll);
+            } else {
+              initAll();
+            }
+          });
+        });
+      })();
+    </script>
 
     <script>
       if ("serviceWorker" in navigator) {

@@ -14,6 +14,12 @@ module ApplicationHelper
     date&.strftime("%Y/%m/%d")
   end
 
+  # Returns a BCP 47 language tag for the current locale.
+  # Used on <html> and <input type="date"> so Chrome renders date fields in the correct format.
+  def bcp47_locale
+    I18n.locale == :en ? "en-US" : "ja-JP"
+  end
+
   def sidebar_link_to(name, path, html_options = {})
     active = current_page?(path)
 

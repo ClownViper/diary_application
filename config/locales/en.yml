@@ -481,6 +481,8 @@ en:
         not_a_number: is not a number
         greater_than: must be greater than %{count}
         invalid_hex: must be in #RRGGBB format
+        invalid_image_type: must be PNG, JPG, JPEG, or WEBP
+        image_too_large: must be 10MB or less
 
   # ===== Errors =====
   errors:

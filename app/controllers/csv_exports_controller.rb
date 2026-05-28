@@ -1,6 +1,5 @@
 # Controller for CSV export and import
 class CsvExportsController < ApplicationController
-  before_action :authenticate_user!
 
   def index
     # Display-only download/upload page
@@ -84,7 +83,7 @@ class CsvExportsController < ApplicationController
       next if date.nil?
       next if current_user.health_logs.exists?(date: date)
 
-      condition_value = HealthLog::CONDITION_LABELS.key(row[cols[:condition]])
+      condition_value = HealthLog.condition_labels.key(row[cols[:condition]])
 
       current_user.health_logs.create!(
         date:        date,
@@ -108,7 +107,7 @@ class CsvExportsController < ApplicationController
     result = import_csv(params[:file]) do |row|
       next if row[cols[:title]].blank?
 
-      status_key = Book::STATUS_LABELS.key(row[cols[:status]]) || "unread"
+      status_key = Book.statuses.keys.find { |k| I18n.t("books.status_labels.#{k}") == row[cols[:status]] } || "unread"
 
       current_user.books.create!(
         title:       row[cols[:title]],

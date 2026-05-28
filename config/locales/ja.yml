@@ -481,6 +481,8 @@ ja:
         not_a_number: は数値で入力してください
         greater_than: は%{count}より大きい値にしてください
         invalid_hex: は #RRGGBB 形式で入力してください
+        invalid_image_type: はPNG、JPG、JPEG、WEBPのみ対応しています
+        image_too_large: は10MBまでです
 
   # ===== エラー =====
   errors:

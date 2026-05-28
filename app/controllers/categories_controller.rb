@@ -3,7 +3,12 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: [:edit, :update, :destroy]
 
   def index
-    @categories = current_user.categories.order(:name).page(params[:page]).per(10)
+    @categories = current_user.categories
+      .left_joins(:expenses)
+      .select("categories.*, COUNT(expenses.id) AS expenses_count")
+      .group("categories.id")
+      .order(:name)
+      .page(params[:page]).per(10)
   end
 
   def new
@@ -42,6 +47,6 @@ class CategoriesController < ApplicationController
   end
 
   def category_params
-    params.require(:category).permit(:name, :color, :icon)
+    params.require(:category).permit(:name, :color)
   end
 end

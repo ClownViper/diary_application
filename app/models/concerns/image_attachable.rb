@@ -11,12 +11,7 @@ module ImageAttachable
   def validate_image(attachment, field_name)
     return unless attachment.attached?
 
-    unless ALLOWED_IMAGE_TYPES.include?(attachment.content_type)
-      errors.add(field_name, "はPNG、JPG、JPEG、WEBPのみ対応しています")
-    end
-
-    if attachment.blob.byte_size > MAX_IMAGE_SIZE
-      errors.add(field_name, "は10MBまでです")
-    end
+    errors.add(field_name, :invalid_image_type) unless ALLOWED_IMAGE_TYPES.include?(attachment.content_type)
+    errors.add(field_name, :image_too_large) if attachment.blob.byte_size > MAX_IMAGE_SIZE
   end
 end
