@@ -53,3 +53,6 @@
 
 # Build logs
 build.log
+
+# Local documentation
+docs/

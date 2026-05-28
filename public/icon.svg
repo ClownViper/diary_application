@@ -1,3 +1,18 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg width="512" height="512" viewBox="90 0 500 500" role="img" xmlns="http://www.w3.org/2000/svg">
+  <rect x="90" y="0" width="500" height="500" rx="110" fill="#0a0e2a"/>
+
+  <g transform="translate(340, 240) rotate(-38)">
+    <rect x="-38" y="-140" width="76" height="196" rx="18" fill="#1e3a8a"/>
+    <rect x="18" y="-132" width="22" height="172" rx="10" fill="#3b82f6"/>
+    <rect x="-38" y="52" width="76" height="16" rx="4" fill="#162d6e"/>
+    <polygon points="0,72 -38,56 38,56" fill="#c8d9ff"/>
+    <polygon points="0,90 -10,72 10,72" fill="#e8f0ff"/>
+    <circle cx="0" cy="100" r="13" fill="#4cc9f0"/>
+    <circle cx="0" cy="100" r="6" fill="#fff"/>
+  </g>
+
+  <line x1="148" y1="400" x2="532" y2="400" stroke="#1e3a8a" stroke-width="10" stroke-linecap="round"/>
+  <line x1="165" y1="424" x2="515" y2="424" stroke="#3b82f6" stroke-width="6" stroke-linecap="round" stroke-dasharray="20 14"/>
+
+  <rect x="90" y="0" width="500" height="500" rx="110" fill="none" stroke="#1a2f6e" stroke-width="3"/>
 </svg>
