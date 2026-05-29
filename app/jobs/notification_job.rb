@@ -100,7 +100,7 @@ class NotificationJob < ApplicationJob
           p256dh: sub.p256dh,
           auth: sub.auth,
           vapid: {
-            subject: "mailto:#{vapid_keys[:subject] || 'noreply@example.com'}",
+            subject: vapid_keys[:subject] || "mailto:noreply@example.com",
             public_key: vapid_keys[:public_key],
             private_key: vapid_keys[:private_key]
           }

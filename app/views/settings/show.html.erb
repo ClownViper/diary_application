@@ -3,6 +3,13 @@
   <h1 class="text-2xl font-bold mb-6"><%= t("settings.title") %></h1>
   <%= render "shared/flash" %>
 
+  <div class="bg-white rounded-xl shadow-sm border p-4 mb-4">
+    <p class="text-sm text-gray-600 mb-3"><%= t("settings.push_permission_desc") %></p>
+    <button id="enable-push-btn" type="button" class="<%= ui_button_classes(variant: :primary) %>">
+      <%= t("settings.push_permission_btn") %>
+    </button>
+  </div>
+
   <%= form_with model: @user, url: settings_path, method: :patch, data: { turbo: false }, class: "space-y-4" do |f| %>
 
     <%# Notification card definitions %>

@@ -266,6 +266,8 @@ en:
   settings:
     title: "Notification Settings"
     save: "Save settings"
+    push_permission_desc: "To receive notifications, please enable them on this device first."
+    push_permission_btn: "Enable notifications"
     minutes_before_suffix: "min before"
     notification_items:
       diary:

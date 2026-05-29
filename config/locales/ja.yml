@@ -266,6 +266,8 @@ ja:
   settings:
     title: "通知設定"
     save: "設定を保存"
+    push_permission_desc: "通知を受け取るには、まずこのデバイスで通知を有効にしてください。"
+    push_permission_btn: "通知を有効にする"
     minutes_before_suffix: "分前"
     notification_items:
       diary:
