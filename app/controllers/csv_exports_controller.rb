@@ -144,7 +144,11 @@ class CsvExportsController < ApplicationController
   # Parse CSV file, execute block per row, return success/skip counts
   def import_csv(file)
     require "csv"
-    content = file.read.force_encoding("UTF-8")
+    raw = file.read
+    content = raw.dup.force_encoding("UTF-8")
+    unless content.valid_encoding?
+      content = raw.dup.force_encoding("Shift_JIS").encode("UTF-8", invalid: :replace, undef: :replace)
+    end
     # Strip BOM (UTF-8 BOM: U+FEFF)
     content = content.delete_prefix("﻿")
     success = 0
@@ -162,10 +166,17 @@ class CsvExportsController < ApplicationController
     { success: success, skip: skip }
   end
 
+  DATE_FORMATS = ["%Y/%m/%d", "%Y-%m-%d", "%m/%d/%y", "%m-%d-%y", "%m/%d/%Y", "%m-%d-%Y"].freeze
+
   def parse_date(str)
     return nil if str.blank?
-    Date.strptime(str.strip, "%Y/%m/%d")
-  rescue ArgumentError
+    DATE_FORMATS.each do |fmt|
+      date = Date.strptime(str.strip, fmt)
+      date = Date.new(date.year + 2000, date.month, date.day) if date.year < 100
+      return date
+    rescue ArgumentError
+      next
+    end
     nil
   end
 
