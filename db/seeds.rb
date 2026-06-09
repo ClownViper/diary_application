@@ -13,8 +13,13 @@ user.schedules.delete_all
 user.categories.delete_all
 
 # Categories
-cat_names = ["食費", "交通費", "娯楽", "日用品"]
-categories = cat_names.map { |name| user.categories.create!(name: name) }
+cat_attrs = [
+  { name: "食費",   color: "#ef4444" },
+  { name: "交通費", color: "#3b82f6" },
+  { name: "娯楽",   color: "#a855f7" },
+  { name: "日用品", color: "#22c55e" }
+]
+categories = cat_attrs.map { |attrs| user.categories.create!(attrs) }
 
 # Diaries (12 entries)
 diary_titles = [
