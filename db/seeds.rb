@@ -1,4 +1,7 @@
-user = User.find_or_create_by!(email: "test@example.com") { |u| u.name = "テストユーザー" }
+user = User.find_or_create_by!(email: "test@example.com") do |u|
+  u.name     = "テストユーザー"
+  u.password = "password"
+end
 user.update!(password: "password")
 
 # Reset demo data on every deploy
