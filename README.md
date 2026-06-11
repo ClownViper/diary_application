@@ -215,8 +215,4 @@ bundle exec rails db:migrate
 
 このアプリの開発について書いた記事シリーズ：
 
-1. [Claude Codeで個人Railsアプリを作った話]()
-2. [多言語対応とFlatpickrでdate inputの問題を解決した話]()
-3. [ISBNバーコードスキャンで書籍情報を自動入力する]()
-4. [RailsアプリをPWA化してWeb Push通知を実装した話]()
-5. [RenderへのデプロイでSolidQueue・環境変数・Push通知にハマった話]()
+1. [Claude Codeで個人Railsアプリを作った話](https://zenn.dev/clown_viper/books/482693b5bb9af8)
