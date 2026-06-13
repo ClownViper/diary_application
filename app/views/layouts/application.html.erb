@@ -293,51 +293,5 @@
     </script>
     <% end %>
 
-    <!-- flatpickr: locale-aware date picker (replaces native date input) -->
-    <script>
-      (function () {
-        const FP_IS_JA = "<%= I18n.locale %>" === "ja";
-
-        function loadStyle(href) {
-          const link = document.createElement("link");
-          link.rel = "stylesheet";
-          link.href = href;
-          document.head.appendChild(link);
-        }
-
-        function loadScript(src, cb) {
-          const s = document.createElement("script");
-          s.src = src;
-          s.onload = cb;
-          document.head.appendChild(s);
-        }
-
-        function initAll() {
-          document.querySelectorAll("input[type='date']").forEach(function (el) {
-            flatpickr(el, {
-              locale:        FP_IS_JA ? "ja" : "en",
-              dateFormat:    "Y-m-d",
-              altInput:      true,
-              altFormat:     FP_IS_JA ? "Y年n月j日" : "m/d/Y",
-              altInputClass: el.className,
-              allowInput:    true,
-            });
-          });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-          if (!document.querySelector("input[type='date']")) return;
-          loadStyle("https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css");
-          loadScript("https://cdn.jsdelivr.net/npm/flatpickr", function () {
-            if (FP_IS_JA) {
-              loadScript("https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js", initAll);
-            } else {
-              initAll();
-            }
-          });
-        });
-      })();
-    </script>
-
   </body>
 </html>
