@@ -3,7 +3,7 @@ class CalendarController < ApplicationController
 
   def index
     # Month to display
-    @date = params[:date] ? Date.parse(params[:date]) : Date.current
+    @date = parse_date(params[:date])
 
     # Start and end of the month
     @start_date = @date.beginning_of_month
@@ -23,12 +23,21 @@ class CalendarController < ApplicationController
   end
 
   def layer
-    @date = Date.parse(params[:date])
+    @date = parse_date(params[:date])
     @diary      = current_user.diaries.find_by(date: @date)
     @expenses   = current_user.expenses.where(date: @date)
     @health_log = current_user.health_logs.find_by(date: @date)
     @schedules  = current_user.schedules.where(date: @date).order(start_time: :asc)
 
     render partial: "calendar/layer"
+  end
+
+  private
+
+  # Parse a date param, falling back to today on missing/invalid input
+  def parse_date(value)
+    value.present? ? Date.parse(value) : Date.current
+  rescue ArgumentError, TypeError
+    Date.current
   end
 end
