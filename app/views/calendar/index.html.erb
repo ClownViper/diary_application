@@ -12,8 +12,8 @@
     <div class="flex items-center space-x-3">
       <h2 class="text-xl font-semibold"><%= l(@date, format: :year_month) %></h2>
 
-      <% unless @date.month == Date.today.month && @date.year == Date.today.year %>
-        <%= link_to t("shared.today_link"), calendar_path(date: Date.today),
+      <% unless @date.month == Date.current.month && @date.year == Date.current.year %>
+        <%= link_to t("shared.today_link"), calendar_path(date: Date.current),
               class: "text-sm underline hover:text-gray-200" %>
       <% end %>
     </div>
@@ -75,7 +75,7 @@
           onclick="openCalendarLayer('<%= day %>')"
         >
           <div class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-semibold
-                      <%= day == Date.today ? 'bg-slate-500 text-white' : pc_day_color %>">
+                      <%= day == Date.current ? 'bg-slate-500 text-white' : pc_day_color %>">
             <%= day.day %>
           </div>
 
@@ -122,7 +122,7 @@
 
           <!-- Day number (circled if today) -->
           <div class="w-8 h-8 flex items-center justify-center rounded-full text-lg font-bold flex-shrink-0
-                      <%= day == Date.today ? 'bg-slate-500 text-white' : wday_color %>">
+                      <%= day == Date.current ? 'bg-slate-500 text-white' : wday_color %>">
             <%= day.day %>
           </div>
 

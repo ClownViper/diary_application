@@ -23,7 +23,7 @@ class DiariesController < ApplicationController
   end
 
   def new
-    date = params[:date].presence || Date.today
+    date = params[:date].presence || Date.current
     @existing_diary = current_user.diaries.find_by(date: date)
     @diary = current_user.diaries.new(date: date)
   end

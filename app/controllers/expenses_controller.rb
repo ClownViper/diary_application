@@ -29,7 +29,7 @@ class ExpensesController < ApplicationController
   end
 
   def new
-    @expense = current_user.expenses.new(date: params[:date].presence || Date.today)
+    @expense = current_user.expenses.new(date: params[:date].presence || Date.current)
   end
 
   def edit

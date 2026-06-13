@@ -9,22 +9,22 @@ class CsvExportsController < ApplicationController
 
   def diaries
     diaries = current_user.diaries.order(date: :desc)
-    send_csv(generate_diaries_csv(diaries), "diaries_#{Date.today}.csv")
+    send_csv(generate_diaries_csv(diaries), "diaries_#{Date.current}.csv")
   end
 
   def expenses
     expenses = current_user.expenses.includes(:category).order(date: :desc)
-    send_csv(generate_expenses_csv(expenses), "expenses_#{Date.today}.csv")
+    send_csv(generate_expenses_csv(expenses), "expenses_#{Date.current}.csv")
   end
 
   def health_logs
     health_logs = current_user.health_logs.order(date: :desc)
-    send_csv(generate_health_logs_csv(health_logs), "health_logs_#{Date.today}.csv")
+    send_csv(generate_health_logs_csv(health_logs), "health_logs_#{Date.current}.csv")
   end
 
   def books
     books = current_user.books.order(created_at: :desc)
-    send_csv(generate_books_csv(books), "books_#{Date.today}.csv")
+    send_csv(generate_books_csv(books), "books_#{Date.current}.csv")
   end
 
   # === Import ===

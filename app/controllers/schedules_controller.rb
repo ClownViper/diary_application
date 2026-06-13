@@ -23,7 +23,7 @@ class SchedulesController < ApplicationController
   end
 
   def new
-    date = params[:date].presence || Date.today
+    date = params[:date].presence || Date.current
     @schedule = current_user.schedules.new(date: date)
   end
 

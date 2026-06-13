@@ -2,7 +2,7 @@
 class DashboardController < ApplicationController
 
   def index
-    @today = Date.today
+    @today = Date.current
 
     # Today's diary and expenses for the current user
     @today_diary = current_user.diaries.find_by(date: @today)

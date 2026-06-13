@@ -25,7 +25,7 @@ class HealthLogsController < ApplicationController
     if @tab == "year"
       # Yearly: all records this year with weight present
       logs = current_user.health_logs
-                         .where(date: Date.today.beginning_of_year..Date.today)
+                         .where(date: Date.current.beginning_of_year..Date.current)
                          .where.not(weight: nil)
                          .order(:date)
 
@@ -41,7 +41,7 @@ class HealthLogsController < ApplicationController
     else
       # Monthly: daily data for the current month
       logs = current_user.health_logs
-                         .where(date: Date.today.beginning_of_month..Date.today)
+                         .where(date: Date.current.beginning_of_month..Date.current)
                          .where.not(weight: nil)
                          .order(:date)
       @chart_labels = logs.map { |l| l.date.strftime("%-m/%-d") }.to_json
@@ -62,7 +62,7 @@ class HealthLogsController < ApplicationController
   end
 
   def new
-    date = params[:date].presence || Date.today
+    date = params[:date].presence || Date.current
     return if redirect_to_existing_health_log(date)
 
     @health_log = current_user.health_logs.new(date: date)

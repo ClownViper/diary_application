@@ -3,7 +3,7 @@ class CalendarController < ApplicationController
 
   def index
     # Month to display
-    @date = params[:date] ? Date.parse(params[:date]) : Date.today
+    @date = params[:date] ? Date.parse(params[:date]) : Date.current
 
     # Start and end of the month
     @start_date = @date.beginning_of_month
