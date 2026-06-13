@@ -2,6 +2,9 @@
 class Diary < ApplicationRecord
   include DateDefaultable
   include ImageAttachable
+  include Searchable
+
+  searchable_by :title, :body
 
   belongs_to :user
 

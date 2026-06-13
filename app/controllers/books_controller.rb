@@ -3,18 +3,12 @@ class BooksController < ApplicationController
   before_action :set_book, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @books = current_user.books.order(created_at: :desc)
-
-    # Keyword search (title, author, memo)
-    if params[:q].present?
-      keyword = "%#{params[:q]}%"
-      @books = @books.where("title LIKE ? OR author LIKE ? OR memo LIKE ?", keyword, keyword, keyword)
-    end
+    @books = current_user.books
+                         .keyword_search(params[:q])
+                         .order(created_at: :desc)
 
     # Status filter
-    if params[:status].present?
-      @books = @books.where(status: params[:status])
-    end
+    @books = @books.where(status: params[:status]) if params[:status].present?
 
     @books = @books.page(params[:page]).per(10)
   end

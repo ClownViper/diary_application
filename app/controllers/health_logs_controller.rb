@@ -3,20 +3,11 @@ class HealthLogsController < ApplicationController
   before_action :set_health_log, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @health_logs = current_user.health_logs.order(date: :desc)
-
-    # Keyword search (memo)
-    if params[:q].present?
-      keyword = "%#{params[:q]}%"
-      @health_logs = @health_logs.where("memo LIKE ?", keyword)
-    end
-
-    # Date filter
-    if params[:date].present?
-      @health_logs = @health_logs.where(date: params[:date])
-    end
-
-    @health_logs = @health_logs.page(params[:page]).per(10)
+    @health_logs = current_user.health_logs
+                               .keyword_search(params[:q])
+                               .on_date(params[:date])
+                               .order(date: :desc)
+                               .page(params[:page]).per(10)
   end
 
   def stats

@@ -1,6 +1,9 @@
 # Expense model
 class Expense < ApplicationRecord
   include DateDefaultable
+  include Searchable
+
+  searchable_by :name, :memo
 
   belongs_to :user
   belongs_to :category, optional: true

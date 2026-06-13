@@ -1,6 +1,9 @@
 # Reading log model
 class Book < ApplicationRecord
   include ImageAttachable
+  include Searchable
+
+  searchable_by :title, :author, :memo
 
   belongs_to :user
 

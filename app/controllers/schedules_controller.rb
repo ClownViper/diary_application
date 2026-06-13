@@ -3,20 +3,11 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @schedules = current_user.schedules.order(date: :desc, start_time: :asc)
-
-    # Keyword search (title, memo)
-    if params[:q].present?
-      keyword = "%#{params[:q]}%"
-      @schedules = @schedules.where("title LIKE ? OR memo LIKE ?", keyword, keyword)
-    end
-
-    # Date filter
-    if params[:date].present?
-      @schedules = @schedules.where(date: params[:date])
-    end
-
-    @schedules = @schedules.page(params[:page]).per(10)
+    @schedules = current_user.schedules
+                             .keyword_search(params[:q])
+                             .on_date(params[:date])
+                             .order(date: :desc, start_time: :asc)
+                             .page(params[:page]).per(10)
   end
 
   def show

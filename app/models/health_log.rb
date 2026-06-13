@@ -1,6 +1,9 @@
 # Health log model (weight and condition tracking)
 class HealthLog < ApplicationRecord
   include DateDefaultable
+  include Searchable
+
+  searchable_by :memo
 
   after_initialize { self.condition ||= 3 }
 

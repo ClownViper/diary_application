@@ -3,20 +3,11 @@ class DiariesController < ApplicationController
   before_action :set_diary, only: [:show, :edit, :update, :destroy]
 
   def index
-    @diaries = current_user.diaries.order(date: :desc)
-
-    # Keyword search (title, body)
-    if params[:q].present?
-      keyword = "%#{params[:q]}%"
-      @diaries = @diaries.where("title LIKE ? OR body LIKE ?", keyword, keyword)
-    end
-
-    # Date filter
-    if params[:date].present?
-      @diaries = @diaries.where(date: params[:date])
-    end
-
-    @diaries = @diaries.page(params[:page]).per(10)
+    @diaries = current_user.diaries
+                           .keyword_search(params[:q])
+                           .on_date(params[:date])
+                           .order(date: :desc)
+                           .page(params[:page]).per(10)
   end
 
   def show

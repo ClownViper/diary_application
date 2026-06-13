@@ -4,23 +4,13 @@ class ExpensesController < ApplicationController
   before_action :set_categories, only: [:index, :new, :edit, :create, :update]
 
   def index
-    @expenses = current_user.expenses.includes(:category).order(date: :desc)
-
-    # Keyword search (name, memo)
-    if params[:q].present?
-      keyword = "%#{params[:q]}%"
-      @expenses = @expenses.where("name LIKE ? OR memo LIKE ?", keyword, keyword)
-    end
-
-    # Date filter
-    if params[:date].present?
-      @expenses = @expenses.where(date: params[:date])
-    end
+    @expenses = current_user.expenses.includes(:category)
+                            .keyword_search(params[:q])
+                            .on_date(params[:date])
+                            .order(date: :desc)
 
     # Category filter
-    if params[:category_id].present?
-      @expenses = @expenses.where(category_id: params[:category_id])
-    end
+    @expenses = @expenses.where(category_id: params[:category_id]) if params[:category_id].present?
 
     @expenses = @expenses.page(params[:page]).per(10)
   end
