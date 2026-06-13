@@ -50,11 +50,12 @@ Rails.application.configure do
   config.cache_store = :file_store, Rails.root.join("tmp/cache")
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  # config.active_job.queue_adapter = :solid_queue
-  # config.solid_queue.connects_to = { database: { writing: :queue } }
-
-  # Disable SolidQueue; use inline adapter instead
-  config.active_job.queue_adapter = :inline
+  # SolidQueue runs inside Puma via the plugin (set SOLID_QUEUE_IN_PUMA=true),
+  # so no separate worker service is needed. The :inline adapter could not run
+  # the recurring NotificationJob scheduler, which left Web Push notifications
+  # disabled. SolidQueue tables live in the primary DB (created by db:prepare),
+  # so connects_to is left unset.
+  config.active_job.queue_adapter = :solid_queue
 
   # Disable Active Storage analyzers
   config.active_storage.analyzers = []

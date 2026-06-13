@@ -10,5 +10,9 @@ services:
         value: production
       - key: RAILS_SERVE_STATIC_FILES
         value: "true"
+      # Run SolidQueue (worker + recurring scheduler) inside the Puma process
+      # so the every-minute NotificationJob runs without a separate worker service.
+      - key: SOLID_QUEUE_IN_PUMA
+        value: "true"
     releaseCommand: bundle exec rails db:migrate
     healthCheckPath: "/"
