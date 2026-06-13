@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/*
+  Tailwind v4 changed the default border color from gray-200 to currentColor.
+  The CDN (v3) used gray-200, so restore that default to keep color-less
+  `border` utilities (cards, dividers) looking the same as before.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
 input[type="date"]::-webkit-date-and-time-value {
   text-align: left;
   color: transparent;
