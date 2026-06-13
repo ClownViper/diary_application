@@ -7,8 +7,8 @@ class PushSubscriptionsController < ApplicationController
     subscription = current_user.push_subscriptions.find_or_initialize_by(
       endpoint: params[:endpoint]
     )
-    subscription.p256dh = params[:keys][:p256dh]
-    subscription.auth = params[:keys][:auth]
+    subscription.p256dh = params.dig(:keys, :p256dh)
+    subscription.auth = params.dig(:keys, :auth)
 
     if subscription.save
       render json: { success: true }, status: :ok
