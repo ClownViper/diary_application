@@ -22,12 +22,6 @@ production:
     database: <%= ENV.fetch("POSTGRES_DB", "diary_app_production") %>
     url: <%= ENV["DATABASE_URL"] %>
 
-  cable:
-    <<: *default
-    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
-    database: <%= ENV.fetch("POSTGRES_CABLE_DB", "diary_app_cable_production") %>
-    url: <%= ENV["DATABASE_URL"] %>
-
   queue:
     <<: *default
     host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
