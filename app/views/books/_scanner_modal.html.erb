@@ -1,0 +1,58 @@
+<%# ISBN barcode scanner modal. Behavior lives in app/javascript/book_scanner.js, %>
+<%# which reads the search URL and localized messages from the data attributes below. %>
+<div id="bookScannerLayer"
+     class="fixed top-0 left-0 w-screen h-screen bg-black/50 hidden items-center justify-center z-[99999]"
+     data-search-url="<%= search_isbn_books_path %>"
+     data-msg-scanning="<%= t('books.scanner.scanning') %>"
+     data-msg-camera-error="<%= t('books.scanner.camera_error') %>"
+     data-msg-searching="<%= t('books.scanner.searching') %>"
+     data-msg-not-found="<%= t('books.scanner.not_found') %>"
+     data-msg-api-error="<%= t('books.scanner.api_error') %>">
+  <div class="bg-white w-[92%] max-w-md max-h-[85vh] overflow-y-auto p-6 rounded-xl relative">
+    <button type="button" onclick="closeBookScanner()"
+            class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center
+                   text-2xl font-bold text-gray-600 hover:text-black rounded-full hover:bg-gray-200 transition">×</button>
+
+    <h3 class="text-lg font-bold text-gray-800 mb-1 pr-10"><%= t("books.scanner.modal_title") %></h3>
+    <p class="text-xs text-gray-400 mb-4"><%= t("books.scanner.isbn_hint") %></p>
+
+    <%# Camera preview area %>
+    <div id="bookScannerReader" class="mb-3 rounded-lg overflow-hidden bg-gray-100 min-h-[10px]"></div>
+
+    <%# Status message %>
+    <div id="bookScannerStatus" class="text-sm text-gray-500 mb-3 text-center hidden"></div>
+
+    <%# Result card %>
+    <div id="bookScannerResult" class="hidden mb-4 p-3 border rounded-lg bg-gray-50 flex gap-3 items-start">
+      <img id="bookScannerThumb" src="" alt="" class="w-14 h-20 object-cover rounded hidden flex-shrink-0">
+      <div class="min-w-0">
+        <p id="bookScannerTitle" class="font-semibold text-gray-800 text-sm"></p>
+        <p id="bookScannerAuthor" class="text-xs text-gray-500 mt-1"></p>
+      </div>
+    </div>
+
+    <%# Manual ISBN input %>
+    <div class="flex gap-2 mb-4">
+      <input id="bookIsbnInput" type="text" inputmode="numeric"
+             placeholder="<%= t("books.scanner.isbn_placeholder") %>"
+             class="flex-1 min-w-0 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
+             onkeydown="if(event.key==='Enter'){bookScannerSearchManual();}">
+      <button type="button" onclick="bookScannerSearchManual()"
+              class="px-4 py-2 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-700 transition whitespace-nowrap">
+        <%= t("books.scanner.search_button") %>
+      </button>
+    </div>
+
+    <%# Action buttons %>
+    <div class="flex justify-end items-center">
+      <button type="button" id="bookScannerRetryBtn" onclick="bookScannerRetry()"
+              class="text-sm text-slate-600 underline hidden mr-auto">
+        <%= t("books.scanner.retry") %>
+      </button>
+      <button type="button" id="bookScannerFillBtn" onclick="bookScannerFill()"
+              class="hidden px-4 py-2 bg-slate-600 text-white text-sm rounded-lg hover:bg-slate-700 transition whitespace-nowrap">
+        <%= t("books.scanner.fill_button") %>
+      </button>
+    </div>
+  </div>
+</div>
