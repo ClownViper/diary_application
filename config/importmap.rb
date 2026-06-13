@@ -3,3 +3,5 @@
 pin "application"
 pin "calendar", to: "calendar.js"
 pin "push_notifications", to: "push_notifications.js"
+pin "menu", to: "menu.js"
+pin "pwa", to: "pwa.js"

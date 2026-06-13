@@ -100,28 +100,6 @@
       <%= yield %>
     </main>
 
-    <!-- Mobile Menu Script -->
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const btn = document.getElementById("menuButton");
-        const menu = document.getElementById("mobileMenu");
-
-        if (btn) {
-          btn.onclick = () => {
-            menu.classList.toggle("-translate-x-full");
-          };
-        }
-      });
-
-      // Toggle settings submenu open/close
-      function toggleSettingsMenu(button) {
-        const submenu = button.nextElementSibling;
-        const arrow = button.querySelector(".settings-arrow");
-        submenu.classList.toggle("hidden");
-        arrow.style.transform = submenu.classList.contains("hidden") ? "" : "rotate(180deg)";
-      }
-    </script>
-
     <!-- Calendar Layer -->
     <div id="calendarLayer"
          class="fixed top-0 left-0 w-screen h-screen bg-black/50 hidden items-center justify-center z-[99999]">
@@ -361,10 +339,5 @@
       })();
     </script>
 
-    <script>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/service_worker.js");
-      }
-    </script>
   </body>
 </html>
