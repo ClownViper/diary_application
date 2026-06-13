@@ -1,2 +1,2 @@
 web: bin/rails server -b 0.0.0.0
-css: npm run build:css -- --watch
+css: npm run build:css -- --watch=always
