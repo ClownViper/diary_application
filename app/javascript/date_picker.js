@@ -26,6 +26,9 @@
         altFormat:     isJa ? "Y年n月j日" : "m/d/Y",
         altInputClass: el.className,
         allowInput:    true,
+        // Force flatpickr on mobile too; otherwise it falls back to the native
+        // date input, whose value is hidden by our color:transparent rule.
+        disableMobile: true,
       });
     });
   }
