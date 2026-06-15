@@ -25,7 +25,9 @@
         altInput:      true,
         altFormat:     isJa ? "Y年n月j日" : "m/d/Y",
         altInputClass: el.className,
-        allowInput:    true,
+        // Keep the input read-only so tapping it opens the calendar without
+        // popping up the soft keyboard (especially on mobile).
+        allowInput:    false,
         // Force flatpickr on mobile too; otherwise it falls back to the native
         // date input, whose value is hidden by our color:transparent rule.
         disableMobile: true,
