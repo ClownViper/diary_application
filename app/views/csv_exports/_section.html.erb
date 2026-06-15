@@ -13,7 +13,7 @@
       <h3 class="font-semibold text-sm text-gray-700 mb-2"><%= t("csv_exports.section.export.title") %></h3>
       <p class="text-xs text-gray-500 mb-3"><%= t("csv_exports.section.export.desc") %></p>
       <%= link_to t("csv_exports.section.export.button"), export_path,
-            target: "_blank", rel: "noopener",
+            download: "",
             class: ui_button_classes(variant: :secondary, size: :sm) %>
     </div>
 
