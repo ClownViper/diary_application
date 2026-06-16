@@ -50,7 +50,7 @@
 
         <div class="mt-auto border-t border-slate-500 pt-4">
           <p class="text-sm text-white px-3 mb-1">
-            <%= current_user.name %>
+            <%= current_user.display_name %>
           </p>
 
           <%= button_to t("layouts.logout"),
@@ -79,7 +79,7 @@
 
         <div class="mt-auto border-t border-slate-500 pt-4">
           <p class="text-sm text-white px-3 mb-1">
-            <%= current_user.email %>
+            <%= current_user.display_name %>
           </p>
 
           <%= button_to t("layouts.logout"),
