@@ -7,13 +7,13 @@
   <%# Diary section (controlled by content settings) %>
   <% if current_user.feature_diary %>
     <div>
-      <div class="flex items-center justify-between bg-indigo-600 text-white px-3 py-2 rounded-t-lg">
+      <div class="flex items-center justify-between bg-indigo-50 text-indigo-800 px-3 py-2 rounded-t-lg border border-b-0 border-indigo-200">
         <div class="flex items-center gap-2">
-          <span class="text-indigo-200">●</span>
+          <span class="text-indigo-400">●</span>
           <span class="font-semibold"><%= t("calendar.layer.diary.title") %></span>
         </div>
         <% unless @diary.present? %>
-          <%= link_to t("calendar.layer.diary.add"), new_diary_path(date: @date), class: "text-white text-sm" %>
+          <%= link_to t("calendar.layer.diary.add"), new_diary_path(date: @date), class: "text-indigo-700 text-sm" %>
         <% end %>
       </div>
 
@@ -43,12 +43,12 @@
   <%# Expenses section (controlled by content settings) %>
   <% if current_user.feature_expense %>
     <div>
-      <div class="flex items-center justify-between bg-emerald-600 text-white px-3 py-2 rounded-t-lg">
+      <div class="flex items-center justify-between bg-emerald-50 text-emerald-800 px-3 py-2 rounded-t-lg border border-b-0 border-emerald-300">
         <div class="flex items-center gap-2">
-          <span class="text-emerald-200">▲</span>
+          <span class="text-emerald-500">▲</span>
           <span class="font-semibold"><%= t("calendar.layer.expense.title") %></span>
         </div>
-        <%= link_to t("calendar.layer.expense.add"), new_expense_path(date: @date), class: "text-white text-sm" %>
+        <%= link_to t("calendar.layer.expense.add"), new_expense_path(date: @date), class: "text-emerald-700 text-sm" %>
       </div>
 
       <%# Shows first item; displays "see all" link when there are multiple %>
@@ -88,13 +88,13 @@
   <%# Health log section (controlled by content settings) %>
   <% if current_user.feature_health_log %>
     <div>
-      <div class="flex items-center justify-between bg-rose-600 text-white px-3 py-2 rounded-t-lg">
+      <div class="flex items-center justify-between bg-rose-50 text-rose-800 px-3 py-2 rounded-t-lg border border-b-0 border-rose-200">
         <div class="flex items-center gap-2">
-          <span class="text-rose-200">◆</span>
+          <span class="text-rose-400">◆</span>
           <span class="font-semibold"><%= t("calendar.layer.health_log.title") %></span>
         </div>
         <% unless @health_log.present? %>
-          <%= link_to t("calendar.layer.health_log.add"), new_health_log_path(date: @date), class: "text-white text-sm" %>
+          <%= link_to t("calendar.layer.health_log.add"), new_health_log_path(date: @date), class: "text-rose-700 text-sm" %>
         <% end %>
       </div>
 
@@ -131,12 +131,12 @@
   <%# Schedule section (controlled by content settings) %>
   <% if current_user.feature_schedule %>
     <div>
-      <div class="flex items-center justify-between bg-amber-500 text-white px-3 py-2 rounded-t-lg">
+      <div class="flex items-center justify-between bg-amber-50 text-amber-800 px-3 py-2 rounded-t-lg border border-b-0 border-amber-200">
         <div class="flex items-center gap-2">
-          <span class="text-amber-200">★</span>
+          <span class="text-amber-500">★</span>
           <span class="font-semibold"><%= t("calendar.layer.schedule.title") %></span>
         </div>
-        <%= link_to t("calendar.layer.schedule.add"), new_schedule_path(date: @date), class: "text-white text-sm" %>
+        <%= link_to t("calendar.layer.schedule.add"), new_schedule_path(date: @date), class: "text-amber-700 text-sm" %>
       </div>
 
       <%# Shows first item; displays "see all" link when there are multiple %>

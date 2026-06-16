@@ -15,11 +15,11 @@
     <%# Notification card definitions %>
     <%
       notification_items = [
-        { toggle: :notify_diary,    time_attr: :notify_diary_time,         emoji: "📘", key: "diary",    input_type: :time   },
-        { toggle: :notify_entry,    time_attr: :notify_entry_time,         emoji: "💴", key: "entry",    input_type: :time   },
-        { toggle: :notify_health,   time_attr: :notify_health_time,        emoji: "⚖️", key: "health",   input_type: :time   },
-        { toggle: :notify_books,    time_attr: :notify_books_time,         emoji: "📚", key: "books",    input_type: :time   },
-        { toggle: :notify_schedule, time_attr: :notify_schedule_before,    emoji: "🗓", key: "schedule", input_type: :number },
+        { toggle: :notify_diary,    time_attr: :notify_diary_time,         key: "diary",    input_type: :time   },
+        { toggle: :notify_entry,    time_attr: :notify_entry_time,         key: "entry",    input_type: :time   },
+        { toggle: :notify_health,   time_attr: :notify_health_time,        key: "health",   input_type: :time   },
+        { toggle: :notify_books,    time_attr: :notify_books_time,         key: "books",    input_type: :time   },
+        { toggle: :notify_schedule, time_attr: :notify_schedule_before,    key: "schedule", input_type: :number },
       ]
     %>
 
@@ -29,7 +29,6 @@
 
           <%# Heading: mobile col1/row1, desktop col1/row1 %>
           <div class="col-start-1 row-start-1 md:col-start-1 md:row-start-1 flex items-center gap-2">
-            <span class="text-xl"><%= item[:emoji] %></span>
             <div>
               <h2 class="text-base font-bold text-gray-800"><%= t("settings.notification_items.#{item[:key]}.name") %></h2>
               <p class="text-xs text-gray-500"><%= t("settings.notification_items.#{item[:key]}.desc") %></p>

@@ -2,13 +2,13 @@
 <%# Symbol badges shown in calendar day cells %>
 <%# Only show badges for features enabled in content settings %>
 <% if current_user.feature_diary && diary.present? %>
-  <span class="text-indigo-500" title="<%= t("calendar.index.legend.diary") %>">●</span>
+  <span class="text-indigo-400" title="<%= t("calendar.index.legend.diary") %>">●</span>
 <% end %>
 <% if current_user.feature_expense && expenses.present? %>
   <span class="text-emerald-500" title="<%= t("calendar.index.legend.expense") %>">▲</span>
 <% end %>
 <% if current_user.feature_health_log && health_log.present? %>
-  <span class="text-rose-500" title="<%= t("calendar.index.legend.health") %>">◆</span>
+  <span class="text-rose-400" title="<%= t("calendar.index.legend.health") %>">◆</span>
 <% end %>
 <% if current_user.feature_schedule && schedules.present? %>
   <span class="text-amber-500" title="<%= t("calendar.index.legend.schedule") %>">★</span>

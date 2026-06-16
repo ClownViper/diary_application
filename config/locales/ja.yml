@@ -55,9 +55,9 @@ ja:
   dashboard:
     title: "ダッシュボード"
     today_info: "今日の情報（%{date}）"
-    today_diary_entry: "📘 日記："
-    today_diary_none: "📘 日記：なし"
-    today_expense: "💴 出費："
+    today_diary_entry: "日記："
+    today_diary_none: "日記：なし"
+    today_expense: "出費："
     expense_currency: "円"
     monthly_expense: "今月の出費"
     expense_guide: "※ 目安：%{amount}円/月"
@@ -304,19 +304,19 @@ ja:
     save: "設定を保存"
     feature_items:
       diary:
-        label: "📘 日記"
+        label: "日記"
         desc: "日記の作成・管理"
       expense:
-        label: "💴 家計簿"
+        label: "家計簿"
         desc: "出費の記録・カテゴリ管理"
       health_log:
-        label: "⚖️ 体調ログ"
+        label: "体調ログ"
         desc: "体重・体調の記録"
       book:
-        label: "📚 読書ログ"
+        label: "読書ログ"
         desc: "読書記録の管理"
       schedule:
-        label: "🗓 スケジュール"
+        label: "スケジュール"
         desc: "予定の管理"
     flash:
       updated: "コンテンツ設定を更新しました。"
@@ -328,29 +328,29 @@ ja:
     section:
       columns_label: "カラム: %{columns}"
       export:
-        title: "⬇️ エクスポート（ダウンロード）"
+        title: "エクスポート（ダウンロード）"
         desc: "現在の全データをCSVでダウンロードします。"
         button: "CSVダウンロード"
       import:
-        title: "⬆️ インポート（アップロード）"
+        title: "インポート（アップロード）"
         desc: "CSVファイルを選択してインポートします。重複データはスキップされます。"
         button: "インポート"
     sections:
       diary:
         title: "日記"
-        icon: "📖"
+        icon: ""
         columns: "日付・タイトル・本文"
       expense:
         title: "家計簿"
-        icon: "💰"
+        icon: ""
         columns: "日付・品目・金額・カテゴリ・メモ"
       health_log:
         title: "体調ログ"
-        icon: "🩺"
+        icon: ""
         columns: "日付・体重・体調・睡眠・体温・メモ"
       book:
         title: "読書ログ"
-        icon: "📚"
+        icon: ""
         columns: "タイトル・著者・ステータス・読み始め日・読了日・感想"
     csv_columns:
       diary:

@@ -55,9 +55,9 @@ en:
   dashboard:
     title: "Dashboard"
     today_info: "Today's summary (%{date})"
-    today_diary_entry: "📘 Diary:"
-    today_diary_none: "📘 Diary: none"
-    today_expense: "💴 Expenses:"
+    today_diary_entry: "Diary:"
+    today_diary_none: "Diary: none"
+    today_expense: "Expenses:"
     expense_currency: ""
     monthly_expense: "Monthly Expenses"
     expense_guide: "※ Budget: ¥%{amount}/month"
@@ -304,19 +304,19 @@ en:
     save: "Save settings"
     feature_items:
       diary:
-        label: "📘 Diary"
+        label: "Diary"
         desc: "Create and manage diary entries"
       expense:
-        label: "💴 Expenses"
+        label: "Expenses"
         desc: "Record expenses and manage categories"
       health_log:
-        label: "⚖️ Health Log"
+        label: "Health Log"
         desc: "Track weight and condition"
       book:
-        label: "📚 Reading Log"
+        label: "Reading Log"
         desc: "Manage reading records"
       schedule:
-        label: "🗓 Schedule"
+        label: "Schedule"
         desc: "Manage events"
     flash:
       updated: "Content settings updated."
@@ -328,29 +328,29 @@ en:
     section:
       columns_label: "Columns: %{columns}"
       export:
-        title: "⬇️ Export (Download)"
+        title: "Export (Download)"
         desc: "Download all current data as CSV."
         button: "Download CSV"
       import:
-        title: "⬆️ Import (Upload)"
+        title: "Import (Upload)"
         desc: "Select a CSV file to import. Duplicate data will be skipped."
         button: "Import"
     sections:
       diary:
         title: "Diary"
-        icon: "📖"
+        icon: ""
         columns: "Date / Title / Body"
       expense:
         title: "Expenses"
-        icon: "💰"
+        icon: ""
         columns: "Date / Name / Amount / Category / Memo"
       health_log:
         title: "Health Log"
-        icon: "🩺"
+        icon: ""
         columns: "Date / Weight / Condition / Sleep / Temp / Memo"
       book:
         title: "Reading Log"
-        icon: "📚"
+        icon: ""
         columns: "Title / Author / Status / Started / Finished / Review"
     csv_columns:
       diary:

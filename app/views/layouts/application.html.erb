@@ -21,14 +21,16 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#334155">
+    <meta name="theme-color" content="#4c3424">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <%= stylesheet_link_tag "application" %>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      body { font-family: 'Noto Sans JP', sans-serif; }
+      body { font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif; }
+      /* Friendly rounded headings for a warmer, diary-like feel */
+      h1, h2 { font-family: 'Zen Maru Gothic', 'Zen Kaku Gothic New', sans-serif; }
       .flatpickr-input[readonly] { cursor: pointer; }
     </style>
 
@@ -70,7 +72,7 @@
 
       <!-- Mobile Slide Menu -->
       <div id="mobileMenu"
-           class="md:hidden fixed top-0 left-0 w-64 h-full bg-slate-700 text-white shadow-lg p-6
+           class="md:hidden flex flex-col fixed top-0 left-0 w-64 h-full bg-slate-700 text-white shadow-lg p-6
                   transform -translate-x-full transition-transform z-40">
 
         <nav class="space-y-2 mt-10 mb-10">

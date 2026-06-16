@@ -1,6 +1,56 @@
 @import "tailwindcss";
 
 /*
+  Warm theme override.
+  The whole app is built on the `slate` (structure / dark sidebar) and `gray`
+  (backgrounds / text) palettes. Redefining those color tokens here re-skins
+  every view at once without touching individual templates. We shift the cold
+  slate/gray palette toward warm espresso & cream, and add a `clay` terracotta
+  accent for primary actions / highlights so the diary feels friendly while
+  keeping the stylish dark sidebar.
+*/
+@theme {
+  /* Friendly rounded Japanese fonts (loaded in the layout head) */
+  --font-sans: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+
+  /* gray -> warm stone / cream (page bg, cards, borders, text) */
+  --color-gray-50:  #faf7f2;
+  --color-gray-100: #f3ede3;
+  --color-gray-200: #e7ddcf;
+  --color-gray-300: #d6c8b4;
+  --color-gray-400: #b4a48c;
+  --color-gray-500: #8c7a64;
+  --color-gray-600: #6f5e4c;
+  --color-gray-700: #564838;
+  --color-gray-800: #3d3325;
+  --color-gray-900: #2a2218;
+
+  /* slate -> warm espresso (dark sidebar + structural accents) */
+  --color-slate-50:  #f7f3ef;
+  --color-slate-100: #ece1d6;
+  --color-slate-200: #d9c6b5;
+  --color-slate-300: #c0a890;
+  --color-slate-400: #9d8267;
+  --color-slate-500: #7e6047;
+  --color-slate-600: #654a34;
+  --color-slate-700: #4c3424;
+  --color-slate-800: #382517;
+  --color-slate-900: #281a0f;
+
+  /* clay -> terracotta accent (primary CTA, today badge, charts) */
+  --color-clay-50:  #fcf1ec;
+  --color-clay-100: #f7dcd0;
+  --color-clay-200: #eeb9a3;
+  --color-clay-300: #e29274;
+  --color-clay-400: #d27551;
+  --color-clay-500: #c2613f;
+  --color-clay-600: #a84f33;
+  --color-clay-700: #8a3f29;
+  --color-clay-800: #6e3322;
+  --color-clay-900: #5a2b1d;
+}
+
+/*
   Tailwind v4 changed the default border color from gray-200 to currentColor.
   The CDN (v3) used gray-200, so restore that default to keep color-less
   `border` utilities (cards, dividers) looking the same as before.
@@ -13,6 +63,40 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+}
+
+/*
+  Chrome/Safari autofill paints a light-blue background (#e8f0fe) on
+  auto-filled fields, which clashes with the warm theme. Force the field
+  background back to white via an inset box-shadow and keep the typed color.
+*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+  box-shadow: 0 0 0px 1000px #ffffff inset;
+  -webkit-text-fill-color: var(--color-gray-800, #1f2937);
+  caret-color: var(--color-gray-800, #1f2937);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/*
+  Replace the browser's default blue accent/selection highlight (seen when a
+  date segment is focused or an option is selected) with the warm theme color.
+*/
+input,
+select,
+textarea {
+  accent-color: var(--color-clay-500, #c2613f);
+}
+
+input::selection,
+textarea::selection {
+  background-color: var(--color-clay-200, #eeb9a3);
+  color: var(--color-gray-900, #2a2218);
 }
 
 input[type="date"]::-webkit-date-and-time-value {

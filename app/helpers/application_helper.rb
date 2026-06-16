@@ -41,10 +41,10 @@ module ApplicationHelper
   end
 
   BUTTON_VARIANTS = {
-    primary:   "bg-slate-600 text-white hover:bg-slate-700 shadow",
-    secondary: "border border-slate-500 text-slate-600 hover:bg-slate-50",
+    primary:   "bg-clay-500 text-white hover:bg-clay-600 shadow",
+    secondary: "border border-clay-500 text-clay-600 hover:bg-clay-50",
     danger:    "border border-red-500 text-red-600 hover:bg-red-50",
-    compact:   "px-3 py-0.5 border border-slate-500 text-slate-600 rounded-md text-sm hover:bg-slate-500 hover:text-white transition whitespace-nowrap",
+    compact:   "px-3 py-0.5 border border-clay-500 text-clay-600 rounded-md text-sm hover:bg-clay-500 hover:text-white transition whitespace-nowrap",
     ghost:     "text-gray-500 hover:underline border-0 shadow-none"
   }.freeze
 

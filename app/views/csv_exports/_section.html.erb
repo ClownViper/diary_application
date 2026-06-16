@@ -1,7 +1,6 @@
 <%# locals: (section_key:, export_path:, import_path:) %>
 <div class="bg-white rounded-xl shadow p-5">
   <div class="flex items-center gap-2 mb-3">
-    <span class="text-xl"><%= t("csv_exports.sections.#{section_key}.icon") %></span>
     <h2 class="text-lg font-bold"><%= t("csv_exports.sections.#{section_key}.title") %></h2>
   </div>
   <p class="text-xs text-gray-500 mb-4"><%= t("csv_exports.section.columns_label", columns: t("csv_exports.sections.#{section_key}.columns")) %></p>
@@ -10,7 +9,12 @@
 
     <%# Export %>
     <div class="border rounded-lg p-4">
-      <h3 class="font-semibold text-sm text-gray-700 mb-2"><%= t("csv_exports.section.export.title") %></h3>
+      <h3 class="flex items-center gap-1.5 font-semibold text-sm text-gray-700 mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 text-clay-600">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        <%= t("csv_exports.section.export.title") %>
+      </h3>
       <p class="text-xs text-gray-500 mb-3"><%= t("csv_exports.section.export.desc") %></p>
       <%= link_to t("csv_exports.section.export.button"), export_path,
             download: "",
@@ -20,7 +24,12 @@
 
     <%# Import %>
     <div class="border rounded-lg p-4">
-      <h3 class="font-semibold text-sm text-gray-700 mb-2"><%= t("csv_exports.section.import.title") %></h3>
+      <h3 class="flex items-center gap-1.5 font-semibold text-sm text-gray-700 mb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 text-clay-600">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M7.5 7.5 12 3m0 0 4.5 4.5M12 3v13.5" />
+        </svg>
+        <%= t("csv_exports.section.import.title") %>
+      </h3>
       <p class="text-xs text-gray-500 mb-3"><%= t("csv_exports.section.import.desc") %></p>
       <%= form_with url: import_path, multipart: true, data: { turbo: false } do |f| %>
         <div class="flex items-center gap-2">

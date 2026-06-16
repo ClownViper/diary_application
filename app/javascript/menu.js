@@ -7,6 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       menu.classList.toggle("-translate-x-full");
     });
+
+    // Close the slide menu when tapping outside of it (anywhere but the menu/button)
+    document.addEventListener("click", (e) => {
+      const isOpen = !menu.classList.contains("-translate-x-full");
+      if (isOpen && !menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.add("-translate-x-full");
+      }
+    });
   }
 });
 

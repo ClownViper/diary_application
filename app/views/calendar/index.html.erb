@@ -27,13 +27,13 @@
   <%# Legend (only features enabled in content settings) %>
   <div class="flex gap-4 mb-2 text-xs text-gray-600">
     <% if current_user.feature_diary %>
-      <span><span class="text-indigo-500">●</span> <%= t("calendar.index.legend.diary") %></span>
+      <span><span class="text-indigo-400">●</span> <%= t("calendar.index.legend.diary") %></span>
     <% end %>
     <% if current_user.feature_expense %>
       <span><span class="text-emerald-500">▲</span> <%= t("calendar.index.legend.expense") %></span>
     <% end %>
     <% if current_user.feature_health_log %>
-      <span><span class="text-rose-500">◆</span> <%= t("calendar.index.legend.health") %></span>
+      <span><span class="text-rose-400">◆</span> <%= t("calendar.index.legend.health") %></span>
     <% end %>
     <% if current_user.feature_schedule %>
       <span><span class="text-amber-500">★</span> <%= t("calendar.index.legend.schedule") %></span>
@@ -75,7 +75,7 @@
           onclick="openCalendarLayer('<%= day %>')"
         >
           <div class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-semibold
-                      <%= day == Date.current ? 'bg-slate-500 text-white' : pc_day_color %>">
+                      <%= day == Date.current ? 'bg-clay-500 text-white' : pc_day_color %>">
             <%= day.day %>
           </div>
 
@@ -122,7 +122,7 @@
 
           <!-- Day number (circled if today) -->
           <div class="w-8 h-8 flex items-center justify-center rounded-full text-lg font-bold flex-shrink-0
-                      <%= day == Date.current ? 'bg-slate-500 text-white' : wday_color %>">
+                      <%= day == Date.current ? 'bg-clay-500 text-white' : wday_color %>">
             <%= day.day %>
           </div>
 

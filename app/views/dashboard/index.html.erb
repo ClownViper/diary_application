@@ -43,7 +43,7 @@
         </p>
 
         <div class="w-full bg-gray-200 rounded-full h-3 mt-4">
-          <div class="bg-red-400 h-3 rounded-full"
+          <div class="bg-clay-500 h-3 rounded-full"
               style="width: <%= @expense_target > 0 ? [(@monthly_total / @expense_target.to_f * 100).round, 100].min : 0 %>%"></div>
         </div>
 
@@ -119,8 +119,8 @@
                   labels: <%= raw @sparkline_labels %>,
                   datasets: [{
                     data: <%= raw @sparkline_data %>,
-                    borderColor: "rgb(59, 130, 246)",
-                    backgroundColor: "rgba(59, 130, 246, 0.08)",
+                    borderColor: "rgb(194, 97, 63)",
+                    backgroundColor: "rgba(194, 97, 63, 0.10)",
                     borderWidth: 1.5,
                     pointRadius: 2,
                     fill: true,
@@ -226,7 +226,7 @@
 
           <div class="flex items-center justify-center py-1">
             <div class="w-7 h-7 flex items-center justify-center rounded-full
-                        <%= is_today ? 'bg-slate-500 text-white font-bold' : text_color %>">
+                        <%= is_today ? 'bg-clay-500 text-white font-bold' : text_color %>">
               <%= day.day %>
             </div>
           </div>
