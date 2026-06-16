@@ -486,6 +486,10 @@ ja:
         invalid_image_type: はPNG、JPG、JPEG、WEBPのみ対応しています
         image_too_large: は10MBまでです
 
+  # ===== 機能ガード =====
+  feature_guard:
+    disabled: "この機能は現在オフになっています。設定から有効にしてください。"
+
   # ===== エラー =====
   errors:
     form_header:

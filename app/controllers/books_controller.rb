@@ -1,5 +1,6 @@
 # CRUD controller for reading logs (includes ISBN lookup via Google Books API)
 class BooksController < ApplicationController
+  requires_feature :feature_book
   before_action :set_book, only: [ :show, :edit, :update, :destroy ]
 
   def index

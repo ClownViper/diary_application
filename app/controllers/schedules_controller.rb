@@ -1,5 +1,6 @@
 # CRUD controller for schedules
 class SchedulesController < ApplicationController
+  requires_feature :feature_schedule
   before_action :set_schedule, only: [ :show, :edit, :update, :destroy ]
 
   def index

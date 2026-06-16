@@ -1,5 +1,6 @@
 # CRUD controller for health logs
 class HealthLogsController < ApplicationController
+  requires_feature :feature_health_log
   before_action :set_health_log, only: [ :show, :edit, :update, :destroy ]
 
   def index

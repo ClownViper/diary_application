@@ -1,5 +1,6 @@
 # CRUD controller for diary entries
 class DiariesController < ApplicationController
+  requires_feature :feature_diary
   before_action :set_diary, only: [:show, :edit, :update, :destroy]
 
   def index

@@ -486,6 +486,10 @@ en:
         invalid_image_type: must be PNG, JPG, JPEG, or WEBP
         image_too_large: must be 10MB or less
 
+  # ===== Feature guard =====
+  feature_guard:
+    disabled: "This feature is currently turned off. Enable it in your settings."
+
   # ===== Errors =====
   errors:
     form_header:
