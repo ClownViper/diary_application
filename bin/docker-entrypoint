@@ -1,8 +1,11 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
+# If running the rails server then migrate and (re)seed the database.
+# Use db:migrate (not db:prepare) so seeds run only once via the explicit
+# db:seed below; db:prepare auto-seeds a freshly created DB, which would run
+# seeds twice and hit the diaries (user_id, date) unique constraint.
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
+  ./bin/rails db:migrate
   ./bin/rails db:seed
 fi
 
