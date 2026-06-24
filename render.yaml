@@ -14,5 +14,5 @@ services:
       # so the every-minute NotificationJob runs without a separate worker service.
       - key: SOLID_QUEUE_IN_PUMA
         value: "true"
-    releaseCommand: bundle exec rails db:migrate && bundle exec rails runner "load Rails.root.join('db/queue_schema.rb')"
+    releaseCommand: bundle exec rails db:migrate && bundle exec rails runner "load Rails.root.join('db/queue_schema.rb') unless ActiveRecord::Base.connection.table_exists?('solid_queue_jobs')"
     healthCheckPath: "/"
