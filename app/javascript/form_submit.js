@@ -79,9 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Navigation feedback ---
   // Internal full-page navigations (sidebar links, "new" buttons, etc.) have
   // no Turbo, so the screen looks frozen while the next page loads. Show the
-  // overlay on such clicks. A short delay avoids flashing it on fast loads.
-  let navTimer = null;
-
+  // overlay synchronously on click: once the browser starts navigating it
+  // stops painting the outgoing page, so a delayed overlay would never appear.
   document.addEventListener("click", (e) => {
     if (e.defaultPrevented) return; // handled by another script (calendar/csv)
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -114,18 +113,13 @@ document.addEventListener("DOMContentLoaded", () => {
     )
       return;
 
-    navTimer = setTimeout(() => showOverlay(navText), 150);
+    showOverlay(navText);
   });
 
-  // Clear any pending overlay if the page is being cached (back/forward).
-  window.addEventListener("pagehide", () => {
-    if (navTimer) clearTimeout(navTimer);
-  });
-
-  // Restore state if the page is shown from the bfcache (back/forward).
+  // Restore state if the page is shown from the bfcache (back/forward),
+  // otherwise the overlay shown before navigating away stays visible.
   window.addEventListener("pageshow", (e) => {
     if (!e.persisted) return;
-    if (navTimer) clearTimeout(navTimer);
     hideOverlay();
     document.querySelectorAll('form[data-submitting="true"]').forEach((form) => {
       delete form.dataset.submitting;
