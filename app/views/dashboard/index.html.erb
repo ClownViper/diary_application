@@ -1,12 +1,9 @@
 <div class="max-w-4xl mx-auto pb-8 mb-10">
-  <div class="flex flex-wrap items-end justify-between gap-2 mb-6">
+  <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
     <h1 class="text-2xl font-bold"><%= t("dashboard.title") %></h1>
-    <div class="text-right leading-tight">
-      <p class="text-xs text-gray-400"><%= l(@today, format: :year_only) %></p>
-      <p class="text-lg font-bold text-gray-700">
-        <%= l(@today, format: :month_day) %>（<%= t("date.abbr_day_names")[@today.wday] %>）
-      </p>
-    </div>
+    <p class="text-base md:text-lg font-bold text-gray-700">
+      <%= l(@today, format: :dashboard_date) %>（<%= t("date.abbr_day_names")[@today.wday] %>）
+    </p>
   </div>
   <%= render "shared/flash" %>
 

@@ -5,8 +5,7 @@ ja:
       year_month: "%Y年%m月"
       month_only: "%-m月"
       full_date: "%Y年%m月%d日"
-      year_only: "%Y年"
-      month_day: "%-m月%-d日"
+      dashboard_date: "%Y年%-m月%-d日"
     abbr_day_names: ["日", "月", "火", "水", "木", "金", "土"]
 
   # ===== 共通 =====
