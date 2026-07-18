@@ -3,8 +3,8 @@
   "short_name": "MyDiary",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0e2a",
-  "theme_color": "#334155",
+  "background_color": "#141d33",
+  "theme_color": "#2b3a5e",
   "icons": [
     {
       "src": "/icon-192.png",

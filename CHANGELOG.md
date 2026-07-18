@@ -18,3 +18,8 @@
 ### 確認
 - RSpec: 50 examples, 0 failures ／ rubocop: no offenses
 - ログインフロー実機確認（サインイン→ダッシュボード表示OK）
+
+## 2026-07-18 紺色テーマへ変更
+- `@theme` の3スケールを紺系に差し替え（gray=クール紙色 / slate=インク紺 / clay=瑠璃アクセント）
+- Chart.js直書き色（ダッシュボード・体調グラフ）、theme-colorメタ、PWA manifestの色も追随
+- スクショ確認済み（ログイン・ダッシュボード・日記一覧）
