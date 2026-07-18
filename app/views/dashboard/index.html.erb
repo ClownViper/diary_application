@@ -1,118 +1,97 @@
 <div class="max-w-4xl mx-auto pb-8 mb-10">
-  <h1 class="text-2xl font-bold mb-6"><%= t("dashboard.title") %></h1>
+  <div class="flex flex-wrap items-baseline justify-between gap-2 mb-6">
+    <h1 class="text-2xl font-bold"><%= t("dashboard.title") %></h1>
+    <p class="text-sm text-gray-500">
+      <%= l(@today, format: :full_date) %>（<%= t("date.abbr_day_names")[@today.wday] %>）
+    </p>
+  </div>
   <%= render "shared/flash" %>
 
-  <%# Today at a glance: one hero card consolidating diary / expense / health / schedule %>
-  <% today_features = [current_user.feature_diary, current_user.feature_expense,
-                       current_user.feature_health_log, current_user.feature_schedule] %>
-  <% if today_features.any? %>
-    <section class="bg-white rounded-xl border shadow-sm p-6 mb-4">
-      <div class="flex items-center justify-between mb-5">
-        <h2 class="text-lg font-bold text-gray-700">
-          <%= t("dashboard.today_summary", date: @today.strftime("%m/%d")) %>
-        </h2>
-        <%= ui_link_button t("dashboard.mini_calendar_btn"), calendar_path, variant: :compact %>
+  <%# Today's diary: slim status bar with a single action %>
+  <% if current_user.feature_diary %>
+    <div class="bg-white rounded-xl border shadow-sm px-6 py-4 mb-4 flex items-center justify-between gap-4">
+      <div class="min-w-0">
+        <p class="text-xs font-semibold text-gray-500 mb-0.5"><%= t("dashboard.diary_strip") %></p>
+        <% if @today_diary %>
+          <p class="font-bold text-gray-800 truncate"><%= @today_diary.title %></p>
+        <% else %>
+          <p class="text-gray-400"><%= t("dashboard.diary_empty") %></p>
+        <% end %>
       </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5">
-
-        <% if current_user.feature_diary %>
-          <div class="min-w-0">
-            <p class="text-xs font-semibold text-gray-500 mb-1"><%= t("dashboard.cell_diary") %></p>
-            <% if @today_diary %>
-              <p class="font-bold text-gray-800 truncate"><%= @today_diary.title %></p>
-              <%= link_to t("shared.edit"), edit_diary_path(@today_diary), class: "text-sm text-clay-600 hover:underline" %>
-            <% else %>
-              <p class="text-gray-400"><%= t("dashboard.cell_empty") %></p>
-              <%= link_to t("dashboard.action_write"), new_diary_path(date: @today), class: "text-sm text-clay-600 hover:underline" %>
-            <% end %>
-          </div>
-        <% end %>
-
-        <% if current_user.feature_expense %>
-          <div class="min-w-0">
-            <p class="text-xs font-semibold text-gray-500 mb-1"><%= t("dashboard.cell_expense") %></p>
-            <p class="font-bold text-gray-800">
-              ¥<%= number_with_delimiter(@today_expenses.sum(:amount)) %>
-            </p>
-            <%= link_to t("dashboard.action_add"), new_expense_path, class: "text-sm text-clay-600 hover:underline" %>
-          </div>
-        <% end %>
-
-        <% if current_user.feature_health_log %>
-          <div class="min-w-0">
-            <p class="text-xs font-semibold text-gray-500 mb-1"><%= t("dashboard.cell_health") %></p>
-            <% if @today_health_log %>
-              <p class="font-bold text-gray-800 truncate">
-                <%= [(@today_health_log.weight.present? ? "#{@today_health_log.weight} kg" : nil),
-                     @today_health_log.condition_label].compact.join(" / ") %>
-              </p>
-              <%= link_to t("shared.edit"), edit_health_log_path(@today_health_log), class: "text-sm text-clay-600 hover:underline" %>
-            <% else %>
-              <p class="text-gray-400"><%= t("dashboard.cell_empty") %></p>
-              <%= link_to t("dashboard.action_record"), new_health_log_path(date: @today), class: "text-sm text-clay-600 hover:underline" %>
-            <% end %>
-          </div>
-        <% end %>
-
-        <% if current_user.feature_schedule %>
-          <div class="min-w-0">
-            <p class="text-xs font-semibold text-gray-500 mb-1"><%= t("dashboard.cell_schedule") %></p>
-            <% if @today_schedules.any? %>
-              <p class="font-bold text-gray-800 truncate">
-                <%= @today_schedules.first.title %><% if @today_schedules.first.start_time.present? %>
-                  <span class="text-sm font-normal text-gray-500"><%= @today_schedules.first.start_time.strftime("%H:%M") %></span>
-                <% end %>
-              </p>
-              <% if @today_schedules.size > 1 %>
-                <p class="text-xs text-gray-500"><%= t("dashboard.schedule_more", count: @today_schedules.size - 1) %></p>
-              <% end %>
-              <%= link_to t("schedules.index.title"), schedules_path, class: "text-sm text-clay-600 hover:underline" %>
-            <% else %>
-              <p class="text-gray-400"><%= t("dashboard.cell_none") %></p>
-              <%= link_to t("dashboard.action_add"), new_schedule_path(date: @today), class: "text-sm text-clay-600 hover:underline" %>
-            <% end %>
-          </div>
-        <% end %>
-
-      </div>
-    </section>
+      <% if @today_diary %>
+        <%= ui_link_button t("shared.edit"), edit_diary_path(@today_diary), variant: :primary, size: :md %>
+      <% else %>
+        <%= ui_link_button t("dashboard.action_write"), new_diary_path(date: @today), variant: :primary, size: :md %>
+      <% end %>
+    </div>
   <% end %>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-    <%# Monthly expense card %>
+    <%# Expenses: today + this month + budget in one card %>
     <% if current_user.feature_expense %>
       <div class="bg-white rounded-xl border shadow-sm p-6">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.monthly_expense") %></h2>
-          <%= ui_link_button t("expenses.index.title"), expenses_path, variant: :compact %>
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.expense_card") %></h2>
+          <div class="flex gap-2">
+            <%= ui_link_button t("dashboard.action_add"), new_expense_path, variant: :compact %>
+            <%= ui_link_button t("expenses.index.title"), expenses_path, variant: :compact %>
+          </div>
         </div>
 
-        <p class="text-3xl font-extrabold text-gray-800 mb-2">
-          <%= number_with_delimiter(@monthly_total) %> <%= t("dashboard.expense_currency") %>
-        </p>
+        <div class="flex mb-4">
+          <div class="pr-8 border-r border-gray-200">
+            <p class="text-xs font-semibold text-gray-500 mb-0.5"><%= t("dashboard.label_today") %></p>
+            <p class="text-2xl font-extrabold text-gray-800">
+              ¥<%= number_with_delimiter(@today_expenses.sum(:amount)) %>
+            </p>
+          </div>
+          <div class="pl-8">
+            <p class="text-xs font-semibold text-gray-500 mb-0.5"><%= t("dashboard.label_month") %></p>
+            <p class="text-2xl font-extrabold text-gray-800">
+              ¥<%= number_with_delimiter(@monthly_total) %>
+            </p>
+          </div>
+        </div>
 
-        <div class="w-full bg-gray-200 rounded-full h-3 mt-4">
+        <div class="w-full bg-gray-200 rounded-full h-3">
           <div class="bg-clay-500 h-3 rounded-full"
               style="width: <%= @expense_target > 0 ? [(@monthly_total / @expense_target.to_f * 100).round, 100].min : 0 %>%"></div>
         </div>
-
         <p class="text-sm text-gray-500 mt-1"><%= t("dashboard.expense_guide", amount: number_with_delimiter(@expense_target)) %></p>
       </div>
     <% end %>
 
-    <%# Weight trend card %>
+    <%# Health: today's record + weight trend in one card %>
     <% if current_user.feature_health_log %>
       <div class="bg-white rounded-xl border shadow-sm p-6">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.weight_card") %></h2>
-          <%= ui_link_button t("health_logs.index.tab_graph"), stats_health_logs_path, variant: :compact %>
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.health_card") %></h2>
+          <div class="flex gap-2">
+            <% if @today_health_log %>
+              <%= ui_link_button t("shared.edit"), edit_health_log_path(@today_health_log), variant: :compact %>
+            <% else %>
+              <%= ui_link_button t("dashboard.action_record"), new_health_log_path(date: @today), variant: :compact %>
+            <% end %>
+            <%= ui_link_button t("health_logs.index.tab_graph"), stats_health_logs_path, variant: :compact %>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <p class="text-xs font-semibold text-gray-500 mb-0.5"><%= t("dashboard.label_today") %></p>
+          <% if @today_health_log %>
+            <p class="text-2xl font-extrabold text-gray-800 truncate">
+              <%= [(@today_health_log.weight.present? ? "#{@today_health_log.weight} kg" : nil),
+                   @today_health_log.condition_label].compact.join("・") %>
+            </p>
+          <% else %>
+            <p class="text-2xl font-extrabold text-gray-400"><%= t("dashboard.health_empty") %></p>
+          <% end %>
         </div>
 
         <!-- Weight sparkline chart (last 30 days) -->
         <% if @sparkline_any %>
-          <div class="relative h-24">
+          <div class="relative h-16">
             <canvas id="sparklineChart"></canvas>
           </div>
           <script>
@@ -145,12 +124,39 @@
           </script>
           <p class="text-xs text-gray-400 text-right mt-1"><%= t("dashboard.sparkline_caption") %></p>
         <% else %>
-          <p class="text-sm text-gray-400 text-center py-8"><%= t("dashboard.sparkline_none") %></p>
+          <p class="text-sm text-gray-400 text-center py-4"><%= t("dashboard.sparkline_none") %></p>
         <% end %>
       </div>
     <% end %>
 
-    <%# Currently reading card %>
+    <%# Today's schedule %>
+    <% if current_user.feature_schedule %>
+      <div class="bg-white rounded-xl border shadow-sm p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.schedule_card") %></h2>
+          <%= ui_link_button t("dashboard.action_add"), new_schedule_path(date: @today), variant: :compact %>
+        </div>
+
+        <% if @today_schedules.any? %>
+          <ul class="divide-y divide-gray-100">
+            <% @today_schedules.each do |schedule| %>
+              <li>
+                <%= link_to schedule_path(schedule), class: "flex items-center gap-3 py-2 hover:bg-gray-50 transition min-w-0" do %>
+                  <span class="text-sm text-gray-500 tabular-nums shrink-0 w-12">
+                    <%= schedule.start_time.present? ? schedule.start_time.strftime("%H:%M") : "—" %>
+                  </span>
+                  <span class="font-semibold text-gray-800 truncate"><%= schedule.title %></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-gray-400 text-sm py-2"><%= t("dashboard.schedule_none") %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# Currently reading %>
     <% if current_user.feature_book %>
       <div class="bg-white rounded-xl border shadow-sm p-6">
         <div class="flex items-center justify-between mb-4">
@@ -158,18 +164,20 @@
           <%= ui_link_button t("books.index.title"), books_path, variant: :compact %>
         </div>
 
-        <div class="space-y-2">
-          <% if @reading_books.any? %>
+        <% if @reading_books.any? %>
+          <ul class="divide-y divide-gray-100">
             <% @reading_books.each do |book| %>
-              <%= link_to book_path(book), class: "block border-b py-2 hover:bg-gray-50 transition min-w-0" do %>
-                <p class="font-semibold text-gray-800 truncate"><%= book.title %></p>
-                <p class="text-sm text-gray-500 truncate"><%= book.author.presence || t("shared.unknown_author") %></p>
-              <% end %>
+              <li>
+                <%= link_to book_path(book), class: "block py-2 hover:bg-gray-50 transition min-w-0" do %>
+                  <p class="font-semibold text-gray-800 truncate"><%= book.title %></p>
+                  <p class="text-sm text-gray-500 truncate"><%= book.author.presence || t("shared.unknown_author") %></p>
+                <% end %>
+              </li>
             <% end %>
-          <% else %>
-            <p class="text-gray-500 text-sm"><%= t("dashboard.reading_none") %></p>
-          <% end %>
-        </div>
+          </ul>
+        <% else %>
+          <p class="text-gray-400 text-sm py-2"><%= t("dashboard.reading_none") %></p>
+        <% end %>
       </div>
     <% end %>
 
