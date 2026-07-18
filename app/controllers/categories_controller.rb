@@ -1,7 +1,7 @@
 # CRUD controller for categories
 class CategoriesController < ApplicationController
   requires_feature :feature_expense
-  before_action :set_category, only: [:edit, :update, :destroy]
+  before_action :set_category, only: [ :edit, :update, :destroy ]
 
   def index
     @categories = current_user.categories

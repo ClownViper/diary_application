@@ -19,7 +19,7 @@ class Book < ApplicationRecord
   validate :validate_cover_attachment
 
   def self.status_select_options
-    statuses.keys.map { |k| [I18n.t("books.status_labels.#{k}"), k] }
+    statuses.keys.map { |k| [ I18n.t("books.status_labels.#{k}"), k ] }
   end
 
   def status_label

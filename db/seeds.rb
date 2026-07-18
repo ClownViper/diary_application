@@ -38,7 +38,7 @@ end
   user.health_logs.create!(
     date:        date,
     weight:      (60.0 + rand(-20..20) * 0.1).round(1),
-    temperature: [nil, 36.2, 36.5, 36.8].sample,
+    temperature: [ nil, 36.2, 36.5, 36.8 ].sample,
     sleep_hours: (6.0 + rand(0..4) * 0.5).round(1),
     condition:   rand(3..5)
   )

@@ -22,7 +22,7 @@ module DiaryApp
     config.time_zone = "Asia/Tokyo"
 
     config.i18n.default_locale = :ja
-    config.i18n.available_locales = [:ja, :en]
+    config.i18n.available_locales = [ :ja, :en ]
 
     # App configuration (name, subtitle, etc.) loaded from config/app.yml
     config.app = config_for(:app)

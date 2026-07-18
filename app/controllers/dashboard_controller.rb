@@ -1,6 +1,5 @@
 # Controller for the dashboard (overview) page
 class DashboardController < ApplicationController
-
   def index
     @today = Date.current
 
@@ -17,7 +16,7 @@ class DashboardController < ApplicationController
 
     # Recent records for the current user
     @recent_diaries = current_user.diaries.order(date: :desc).limit(3)
-    @recent_expenses = current_user.expenses.order(date: :desc).limit(3)
+    @recent_expenses = current_user.expenses.includes(:category).order(date: :desc).limit(3)
 
     # Health log
     @today_health_log = current_user.health_logs.find_by(date: @today)

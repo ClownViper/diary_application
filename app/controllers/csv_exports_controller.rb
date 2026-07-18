@@ -1,6 +1,5 @@
 # Controller for CSV export and import
 class CsvExportsController < ApplicationController
-
   def index
     # Display-only download/upload page
   end

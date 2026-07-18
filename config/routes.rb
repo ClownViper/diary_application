@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: "users/sessions" }
+  # デモ公開用に新規登録(registrations)を無効化中。戻すときは skip: を外す
+  devise_for :users, controllers: { sessions: "users/sessions" }, skip: [ :registrations ]
 
   get "calendar", to: "calendar#index"
   get "calendar/layer", to: "calendar#layer"

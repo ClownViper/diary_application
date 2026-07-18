@@ -104,7 +104,7 @@ class CsvImporter
     { success: success, skip: skip }
   end
 
-  DATE_FORMATS = ["%Y/%m/%d", "%Y-%m-%d", "%m/%d/%y", "%m-%d-%y", "%m/%d/%Y", "%m-%d-%Y"].freeze
+  DATE_FORMATS = [ "%Y/%m/%d", "%Y-%m-%d", "%m/%d/%y", "%m-%d-%y", "%m/%d/%Y", "%m-%d-%Y" ].freeze
 
   def parse_date(str)
     return nil if str.blank?

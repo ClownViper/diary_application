@@ -1,7 +1,6 @@
 # Controller for content feature settings
 
 class ContentSettingsController < ApplicationController
-
   def show
     @user = current_user
   end

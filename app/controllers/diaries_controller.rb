@@ -1,10 +1,11 @@
 # CRUD controller for diary entries
 class DiariesController < ApplicationController
   requires_feature :feature_diary
-  before_action :set_diary, only: [:show, :edit, :update, :destroy]
+  before_action :set_diary, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @diaries = current_user.diaries
+                           .with_attached_image
                            .keyword_search(params[:q])
                            .on_date(params[:date])
                            .order(date: :desc)

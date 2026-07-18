@@ -1,6 +1,5 @@
 # Controller for the monthly calendar view
 class CalendarController < ApplicationController
-
   def index
     # Month to display
     @date = parse_date(params[:date])
@@ -25,7 +24,7 @@ class CalendarController < ApplicationController
   def layer
     @date = parse_date(params[:date])
     @diary      = current_user.diaries.find_by(date: @date)
-    @expenses   = current_user.expenses.where(date: @date)
+    @expenses   = current_user.expenses.includes(:category).where(date: @date)
     @health_log = current_user.health_logs.find_by(date: @date)
     @schedules  = current_user.schedules.where(date: @date).order(start_time: :asc)
 

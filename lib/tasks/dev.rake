@@ -21,7 +21,7 @@ namespace :dev do
       end
 
       weight = (base_weight + rand(-20..20) / 10.0).round(1)
-      condition = [1, 2, 3, 3, 3, 4, 4, 4, 5, 5].sample
+      condition = [ 1, 2, 3, 3, 3, 4, 4, 4, 5, 5 ].sample
 
       user.health_logs.create!(
         date:      date,
@@ -61,7 +61,7 @@ namespace :dev do
       weight = (base_weight + rand(-15..15) / 10.0).round(1)
 
       # Condition: integer 1-5 (weighted toward 3 and 4)
-      condition = [1, 2, 3, 3, 3, 4, 4, 4, 5, 5].sample
+      condition = [ 1, 2, 3, 3, 3, 4, 4, 4, 5, 5 ].sample
 
       user.health_logs.create!(
         date:      date,

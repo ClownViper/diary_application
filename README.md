@@ -59,11 +59,14 @@ bundle install
 Copy `.env.example` to `.env` and fill in the required values (see Environment Variables below).
 
 ```bash
-bundle exec rails db:create db:migrate
-bundle exec rails server
+npm install
+bundle exec rails db:create db:migrate db:seed
+bin/dev
 ```
 
 Open `http://localhost:3000`.
+
+`db:seed` creates a demo account (`test@example.com` / `password`) with sample data. Sign-up is currently disabled for the public demo; re-enable it by removing `skip: [:registrations]` in `config/routes.rb` and the `if false` guard in `app/views/devise/sessions/new.html.erb`.
 
 ---
 
@@ -170,11 +173,14 @@ bundle install
 `.env.example` を `.env` にコピーして必要な値を入力（下記「環境変数」参照）。
 
 ```bash
-bundle exec rails db:create db:migrate
-bundle exec rails server
+npm install
+bundle exec rails db:create db:migrate db:seed
+bin/dev
 ```
 
 `http://localhost:3000` をブラウザで開く。
+
+`db:seed` でデモアカウント（`test@example.com` / `password`）とサンプルデータが作成される。デモ公開のため新規登録は無効化中。戻す場合は `config/routes.rb` の `skip: [:registrations]` と `app/views/devise/sessions/new.html.erb` の `if false` ガードを外す。
 
 ---
 
@@ -212,6 +218,8 @@ bundle exec rails db:migrate
 ---
 
 ## 開発記事
+
+※ 記事・スクショ等のドキュメント類はローカル管理（`~/workspace/kiji/life-log/`）。
 
 このアプリの開発について書いた記事シリーズ：
 

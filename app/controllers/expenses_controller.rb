@@ -1,8 +1,8 @@
 # CRUD controller for expense entries
 class ExpensesController < ApplicationController
   requires_feature :feature_expense
-  before_action :set_expense, only: [:show, :edit, :update, :destroy]
-  before_action :set_categories, only: [:index, :new, :edit, :create, :update]
+  before_action :set_expense, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_categories, only: [ :index, :new, :edit, :create, :update ]
 
   def index
     @expenses = current_user.expenses.includes(:category)

@@ -1,6 +1,5 @@
 # Controller for notification settings
 class SettingsController < ApplicationController
-
   def show
     @user = current_user
   end
