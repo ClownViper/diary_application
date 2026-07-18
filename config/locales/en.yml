@@ -513,6 +513,7 @@ en:
         submit: "Sign In"
         no_account: "Don't have an account?"
         sign_up_link: "Sign up"
+        signing_in: "Signing in…"
         demo_title: "Demo account"
         demo_note: "Demo data is reset periodically"
     registrations:

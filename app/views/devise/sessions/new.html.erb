@@ -14,7 +14,8 @@
 
     <h2 class="text-2xl font-bold text-center mb-2"><%= t("devise.sessions.new.title") %></h2>
 
-    <%= form_with scope: :user, url: session_path(:user) do |f| %>
+    <%= form_with scope: :user, url: session_path(:user),
+          data: { loading_text: t("devise.sessions.new.signing_in") } do |f| %>
 
       <!-- Email field -->
       <div>

@@ -515,6 +515,7 @@ ja:
         submit: "ログイン"
         no_account: "アカウントをお持ちでない方は"
         sign_up_link: "新規登録"
+        signing_in: "ログイン中…"
         demo_title: "お試しアカウント"
         demo_note: "デモ用データは定期的にリセットされます"
     registrations:
