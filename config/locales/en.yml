@@ -69,6 +69,7 @@ en:
     sparkline_none: "No weight data available"
     schedule_card: "Today's Schedule"
     schedule_none: "No events today"
+    schedule_more_link: "View %{count} more"
     reading_card: "Currently Reading"
     reading_none: "No books in progress."
 

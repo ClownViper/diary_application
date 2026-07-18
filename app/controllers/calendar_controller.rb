@@ -26,7 +26,7 @@ class CalendarController < ApplicationController
     @diary      = current_user.diaries.find_by(date: @date)
     @expenses   = current_user.expenses.includes(:category).where(date: @date)
     @health_log = current_user.health_logs.find_by(date: @date)
-    @schedules  = current_user.schedules.where(date: @date).order(start_time: :asc)
+    @schedules  = current_user.schedules.where(date: @date).by_start_time
 
     render partial: "calendar/layer"
   end

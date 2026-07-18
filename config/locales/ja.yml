@@ -71,6 +71,7 @@ ja:
     sparkline_none: "体重データがありません"
     schedule_card: "今日の予定"
     schedule_none: "今日の予定はありません"
+    schedule_more_link: "ほか%{count}件を見る"
     reading_card: "読書中"
     reading_none: "読書中の本はありません。"
 

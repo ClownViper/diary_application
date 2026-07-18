@@ -7,7 +7,7 @@ class SchedulesController < ApplicationController
     @schedules = current_user.schedules
                              .keyword_search(params[:q])
                              .on_date(params[:date])
-                             .order(date: :desc, start_time: :asc)
+                             .order(date: :desc).by_start_time
                              .page(params[:page]).per(10)
   end
 

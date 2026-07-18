@@ -27,7 +27,7 @@ class DashboardController < ApplicationController
     @sparkline_any    = recent_weight_logs.any?
 
     # Today's schedules
-    @today_schedules = current_user.schedules.where(date: @today).order(start_time: :asc)
+    @today_schedules = current_user.schedules.where(date: @today).by_start_time
 
     # Books currently being read
     @reading_books = current_user.books.reading.limit(3)

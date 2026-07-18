@@ -9,7 +9,7 @@
 
   <%# Today's diary: slim status bar with a single action %>
   <% if current_user.feature_diary %>
-    <div class="bg-white rounded-xl border shadow-sm px-6 py-4 mb-4 flex items-center justify-between gap-4">
+    <div class="bg-white rounded-xl border shadow-sm px-4 py-3 md:px-6 md:py-4 mb-4 flex items-center justify-between gap-4">
       <div class="min-w-0">
         <p class="text-xs font-semibold text-gray-500 mb-0.5"><%= t("dashboard.diary_strip") %></p>
         <% if @today_diary %>
@@ -18,11 +18,13 @@
           <p class="text-gray-400"><%= t("dashboard.diary_empty") %></p>
         <% end %>
       </div>
-      <% if @today_diary %>
-        <%= ui_link_button t("shared.edit"), edit_diary_path(@today_diary), variant: :primary, size: :md %>
-      <% else %>
-        <%= ui_link_button t("dashboard.action_write"), new_diary_path(date: @today), variant: :primary, size: :md %>
-      <% end %>
+      <div class="shrink-0">
+        <% if @today_diary %>
+          <%= ui_link_button t("shared.edit"), edit_diary_path(@today_diary), variant: :primary, size: :md %>
+        <% else %>
+          <%= ui_link_button t("dashboard.action_write"), new_diary_path(date: @today), variant: :primary, size: :md %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 
@@ -30,7 +32,7 @@
 
     <%# Expenses: today + this month + budget in one card %>
     <% if current_user.feature_expense %>
-      <div class="bg-white rounded-xl border shadow-sm p-6">
+      <div class="bg-white rounded-xl border shadow-sm p-4 md:p-6">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.expense_card") %></h2>
           <div class="flex gap-2">
@@ -64,7 +66,7 @@
 
     <%# Health: today's record + weight trend in one card %>
     <% if current_user.feature_health_log %>
-      <div class="bg-white rounded-xl border shadow-sm p-6">
+      <div class="bg-white rounded-xl border shadow-sm p-4 md:p-6">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.health_card") %></h2>
           <div class="flex gap-2">
@@ -131,7 +133,7 @@
 
     <%# Today's schedule %>
     <% if current_user.feature_schedule %>
-      <div class="bg-white rounded-xl border shadow-sm p-6">
+      <div class="bg-white rounded-xl border shadow-sm p-4 md:p-6">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.schedule_card") %></h2>
           <%= ui_link_button t("dashboard.action_add"), new_schedule_path(date: @today), variant: :compact %>
@@ -139,9 +141,9 @@
 
         <% if @today_schedules.any? %>
           <ul class="divide-y divide-gray-100">
-            <% @today_schedules.each do |schedule| %>
+            <% @today_schedules.first(4).each do |schedule| %>
               <li>
-                <%= link_to schedule_path(schedule), class: "flex items-center gap-3 py-2 hover:bg-gray-50 transition min-w-0" do %>
+                <%= link_to schedule_path(schedule), class: "flex items-center gap-3 py-1.5 md:py-2 hover:bg-gray-50 transition min-w-0" do %>
                   <span class="text-sm text-gray-500 tabular-nums shrink-0 w-12">
                     <%= schedule.start_time.present? ? schedule.start_time.strftime("%H:%M") : "—" %>
                   </span>
@@ -150,6 +152,10 @@
               </li>
             <% end %>
           </ul>
+          <% if @today_schedules.size > 4 %>
+            <%= link_to t("dashboard.schedule_more_link", count: @today_schedules.size - 4), schedules_path,
+                  class: "inline-block mt-2 text-sm text-clay-600 hover:underline" %>
+          <% end %>
         <% else %>
           <p class="text-gray-400 text-sm py-2"><%= t("dashboard.schedule_none") %></p>
         <% end %>
@@ -158,7 +164,7 @@
 
     <%# Currently reading %>
     <% if current_user.feature_book %>
-      <div class="bg-white rounded-xl border shadow-sm p-6">
+      <div class="bg-white rounded-xl border shadow-sm p-4 md:p-6">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-700"><%= t("dashboard.reading_card") %></h2>
           <%= ui_link_button t("books.index.title"), books_path, variant: :compact %>
