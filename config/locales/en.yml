@@ -5,6 +5,8 @@ en:
       year_month: "%B %Y"
       month_only: "%B"
       full_date: "%B %d, %Y"
+      year_only: "%Y"
+      month_day: "%b %-d"
     abbr_day_names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 
   # ===== Shared =====
