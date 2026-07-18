@@ -4,7 +4,7 @@
   <%= render "shared/flash" %>
 
   <!-- Account info form -->
-  <div class="bg-white p-6 rounded-xl shadow mb-6">
+  <div class="bg-white p-6 rounded-xl border shadow-sm mb-6">
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
 
       <%
@@ -58,7 +58,7 @@
   </div>
 
   <!-- Account deletion -->
-  <div class="bg-white p-6 rounded-xl shadow border border-red-100">
+  <div class="bg-white p-6 rounded-xl border shadow-sm border border-red-100">
     <h2 class="text-lg font-bold text-red-700 mb-2">アカウントを削除</h2>
     <p class="text-sm text-gray-500 mb-4">アカウントを削除すると、すべてのデータが失われます。この操作は取り消せません。</p>
     <%= button_to "アカウントを削除",

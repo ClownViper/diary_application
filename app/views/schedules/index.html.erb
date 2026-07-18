@@ -3,7 +3,7 @@
   <%= render "shared/page_header", title: t("schedules.index.title"), button_label: t("shared.new_record"), button_path: new_schedule_path %>
 
   <!-- Search form -->
-  <div class="mb-6 bg-white p-4 rounded-xl shadow">
+  <div class="mb-6 bg-white p-4 rounded-xl border shadow-sm">
     <%= form_with url: schedules_path, method: :get, local: true, class: "grid grid-cols-1 md:grid-cols-3 gap-4" do |f| %>
 
       <div>
@@ -28,7 +28,7 @@
   </div>
 
   <!-- Table-style list -->
-  <div class="bg-white rounded-xl shadow overflow-hidden">
+  <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
 
     <div class="hidden md:grid grid-cols-4 bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700">
       <div><%= t("schedules.index.col_date") %></div>
