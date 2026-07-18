@@ -15,6 +15,9 @@ en:
     edit: "Edit"
     delete: "Delete"
     save: "Save"
+    saving: "Saving…"
+    loading: "Loading…"
+    deleting: "Deleting…"
     search: "Search"
     new_record: "New"
     new_add: "Add New"
@@ -51,6 +54,7 @@ en:
   # ===== Layout =====
   layouts:
     logout: "Log out"
+    logging_out: "Signing out…"
 
   # ===== Dashboard =====
   dashboard:
@@ -330,6 +334,7 @@ en:
         title: "Import (Upload)"
         desc: "Select a CSV file to import. Duplicate data will be skipped."
         button: "Import"
+        importing: "Importing…"
     sections:
       diary:
         title: "Diary"
@@ -531,6 +536,7 @@ en:
         title: "Forgot your password?"
         email: "Email"
         submit: "Send reset instructions"
+        sending: "Sending…"
         back_to_login: "Back to sign in"
       edit:
         title: "Set new password"

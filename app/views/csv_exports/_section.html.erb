@@ -31,7 +31,8 @@
         <%= t("csv_exports.section.import.title") %>
       </h3>
       <p class="text-xs text-gray-500 mb-3"><%= t("csv_exports.section.import.desc") %></p>
-      <%= form_with url: import_path, multipart: true, data: { turbo: false } do |f| %>
+      <%= form_with url: import_path, multipart: true,
+            data: { turbo: false, loading_text: t("csv_exports.section.import.importing") } do |f| %>
         <div class="flex items-center gap-2">
           <label class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition text-xs text-gray-700 font-medium">
             <%= t("shared.file_select") %>

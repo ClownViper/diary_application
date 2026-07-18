@@ -8,5 +8,6 @@
   <%= button_to t("shared.delete"), destroy_path,
         method: :delete,
         data: { confirm: confirm_message },
+        form: { data: { loading_text: t("shared.deleting") } },
         class: [ui_button_classes(variant: :danger, size: :sm), "md:px-4 md:py-2"].join(" ") %>
 </div>

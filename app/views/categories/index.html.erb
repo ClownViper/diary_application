@@ -64,7 +64,7 @@
                   method: :delete,
                   data: { confirm: t("shared.delete_confirm") },
                   class: ui_button_classes(variant: :danger, size: :md),
-                  form: { class: "inline" } %>
+                  form: { class: "inline", data: { loading_text: t("shared.deleting") } } %>
           </div>
         </div>
 
@@ -77,7 +77,7 @@
           <%= button_to t("shared.delete"),
                 category_path(category),
                 method: :delete,
-                form: { class: "flex-1" },
+                form: { class: "flex-1", data: { loading_text: t("shared.deleting") } },
                 data: { confirm: t("shared.delete_confirm") },
                 class: [ui_button_classes(variant: :danger, size: :sm), "block w-full text-center"].join(" ") %>
 

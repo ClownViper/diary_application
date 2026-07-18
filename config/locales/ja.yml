@@ -16,6 +16,7 @@ ja:
     delete: "削除"
     save: "保存"
     saving: "保存中…"
+    deleting: "削除中…"
     loading: "読み込み中…"
     search: "検索"
     new_record: "新規作成"
@@ -53,6 +54,7 @@ ja:
   # ===== レイアウト =====
   layouts:
     logout: "ログアウト"
+    logging_out: "ログアウト中…"
 
   # ===== ダッシュボード =====
   dashboard:
@@ -332,6 +334,7 @@ ja:
         title: "インポート（アップロード）"
         desc: "CSVファイルを選択してインポートします。重複データはスキップされます。"
         button: "インポート"
+        importing: "インポート中…"
     sections:
       diary:
         title: "日記"
@@ -533,6 +536,7 @@ ja:
         title: "パスワードをお忘れの方"
         email: "メールアドレス"
         submit: "パスワードリセットの手順を送信"
+        sending: "送信中…"
         back_to_login: "ログインに戻る"
       edit:
         title: "新しいパスワードを設定"

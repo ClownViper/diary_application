@@ -4,7 +4,7 @@
     <%= button_to label, locale_path,
           method: :patch,
           params: { locale: loc },
-          form: { class: "inline" },
+          form: { class: "inline", data: { loading_text: t("shared.loading") } },
           class: [
             "px-4 py-1.5 text-sm rounded-lg border transition font-medium",
             I18n.locale.to_s == loc.to_s \
