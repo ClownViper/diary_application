@@ -77,6 +77,7 @@ Open `http://localhost:3000`.
 | `DATABASE_URL` | PostgreSQL connection string |
 | `RAILS_MASTER_KEY` | Key to decrypt `config/credentials.yml.enc` |
 | `CLOUDINARY_URL` | Cloudinary connection string |
+| `GEMINI_API_KEY` | (Optional) Gemini API key. Reads the printed price from the cover photo when scanning a book barcode; without it the price falls back to OpenBD data |
 | `SOLID_QUEUE_IN_PUMA` | Set to `true` to run SolidQueue inside Puma |
 | `TZ` | Timezone (e.g. `Asia/Tokyo`) |
 
@@ -191,6 +192,7 @@ bin/dev
 | `DATABASE_URL` | PostgreSQLの接続文字列 |
 | `RAILS_MASTER_KEY` | `config/credentials.yml.enc` を復号する鍵 |
 | `CLOUDINARY_URL` | Cloudinaryの接続文字列 |
+| `GEMINI_API_KEY` | （任意）Gemini APIキー。バーコードスキャン時に表紙写真から定価表記を読み取る。未設定時はOpenBDの価格にフォールバック |
 | `SOLID_QUEUE_IN_PUMA` | `true` にするとPuma内でSolidQueueが起動 |
 | `TZ` | タイムゾーン（例: `Asia/Tokyo`） |
 

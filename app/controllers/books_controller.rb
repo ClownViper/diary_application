@@ -47,7 +47,9 @@ class BooksController < ApplicationController
     redirect_to books_path, notice: t("books.flash.deleted")
   end
 
-  # GET /books/search_isbn?isbn=9784xxx
+  # GET  /books/search_isbn?isbn=9784xxx
+  # POST /books/search_isbn (isbn + image: camera frame from the scanner;
+  #                          the printed price in the photo is read by AI)
   def search_isbn
     isbn = params[:isbn].to_s.gsub(/[^0-9X]/i, "")
     return render json: { error: t("books.scanner.invalid_isbn") }, status: :bad_request if isbn.length < 10
@@ -55,6 +57,7 @@ class BooksController < ApplicationController
     result = IsbnLookup.call(isbn)
 
     if result
+      merge_photo_price(result)
       render json: result
     else
       render json: { error: t("books.scanner.not_found") }, status: :not_found
@@ -70,7 +73,22 @@ class BooksController < ApplicationController
     @book = current_user.books.find(params[:id])
   end
 
+  # The price read from the photo matches the physical book, so it takes
+  # precedence over the (often stale) bibliographic API price.
+  def merge_photo_price(result)
+    image = params[:image].to_s.sub(/\Adata:image\/\w+;base64,/, "")
+    photo_price = image.present? ? GeminiPriceReader.new(image).call : nil
+
+    if photo_price
+      result[:price] = photo_price
+      result[:price_source] = "photo"
+    elsif result[:price].present?
+      result[:price_source] = "api"
+    end
+  end
+
   def book_params
-    params.require(:book).permit(:title, :author, :status, :started_on, :finished_on, :memo, :cover)
+    params.require(:book).permit(:title, :author, :isbn, :status, :purchase_price,
+                                 :started_on, :finished_on, :memo, :cover)
   end
 end

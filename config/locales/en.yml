@@ -204,12 +204,15 @@ en:
       api_error: "API error occurred"
       fill_button: "Fill Form"
       retry: "Scan Again"
+      price_from_photo: " (read from cover photo)"
     status_labels:
       unread: "Unread"
       reading: "Reading"
       finished: "Finished"
     form:
       memo_placeholder: "Up to 300 characters"
+      isbn_placeholder: "e.g. 9784798170794"
+      price_placeholder: "e.g. 1760"
     flash:
       created: "Book added."
       updated: "Book updated."
@@ -455,6 +458,8 @@ en:
       book:
         title: Book Title
         author: Author
+        isbn: ISBN
+        purchase_price: Purchase Price
         status: Status
         started_on: Started On
         finished_on: Finished On

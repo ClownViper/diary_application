@@ -33,6 +33,12 @@
           <% if @book.finished_on.present? %>
             <p><%= t("books.show.finished_on", date: format_date(@book.finished_on)) %></p>
           <% end %>
+          <% if @book.purchase_price.present? %>
+            <p><%= Book.human_attribute_name(:purchase_price) %>: ¥<%= number_with_delimiter(@book.purchase_price) %></p>
+          <% end %>
+          <% if @book.isbn.present? %>
+            <p class="text-gray-400">ISBN: <%= @book.isbn %></p>
+          <% end %>
         </div>
       </div>
     </div>

@@ -58,4 +58,40 @@ RSpec.describe "Books", type: :request do
       }.to change(Book, :count).by(-1)
     end
   end
+
+  describe "search_isbn" do
+    before { sign_in user }
+
+    let(:lookup_result) do
+      { title: "Sample Book", author: "Author", isbn: "9784798170794", thumbnail: nil, price: "1650" }
+    end
+
+    it "returns bibliographic data with the API price via GET" do
+      allow(IsbnLookup).to receive(:call).and_return(lookup_result)
+
+      get search_isbn_books_path, params: { isbn: "9784798170794" }
+
+      expect(response).to have_http_status(:ok)
+      body = response.parsed_body
+      expect(body["title"]).to eq("Sample Book")
+      expect(body["price"]).to eq("1650")
+      expect(body["price_source"]).to eq("api")
+    end
+
+    it "prefers the photo price via POST with a camera frame" do
+      allow(IsbnLookup).to receive(:call).and_return(lookup_result)
+      allow(GeminiPriceReader).to receive(:new).and_return(instance_double(GeminiPriceReader, call: 1760))
+
+      post search_isbn_books_path, params: { isbn: "9784798170794", image: "base64data" }, as: :json
+
+      body = response.parsed_body
+      expect(body["price"]).to eq(1760)
+      expect(body["price_source"]).to eq("photo")
+    end
+
+    it "rejects invalid ISBNs" do
+      get search_isbn_books_path, params: { isbn: "123" }
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
 end

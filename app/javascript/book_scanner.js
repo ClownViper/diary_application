@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     searching:   layer.dataset.msgSearching,
     notFound:    layer.dataset.msgNotFound,
     apiError:    layer.dataset.msgApiError,
+    pricePhoto:  layer.dataset.msgPricePhoto,
   };
 
   let _scanner = null;
@@ -31,13 +32,26 @@ document.addEventListener("DOMContentLoaded", () => {
     el.classList.toggle("hidden", !msg);
   }
 
+  // Grab the current camera frame as base64 JPEG (must run before stopCamera).
+  // The frame is sent to the server so AI can read the printed price near the
+  // barcode on the back cover.
+  function captureFrame() {
+    const video = document.querySelector("#bookScannerReader video");
+    if (!video || !video.videoWidth) return null;
+    const canvas = document.createElement("canvas");
+    canvas.width  = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext("2d").drawImage(video, 0, 0);
+    return canvas.toDataURL("image/jpeg", 0.8).split(",")[1];
+  }
+
   function startCamera() {
     setStatus(MSG.scanning);
     _scanner = new Html5Qrcode("bookScannerReader");
     _scanner.start(
       { facingMode: "environment" },
       { fps: 10, qrbox: { width: 240, height: 100 } },
-      (decoded) => { stopCamera(); lookup(decoded); },
+      (decoded) => { const frame = captureFrame(); stopCamera(); lookup(decoded, frame); },
       () => {}
     ).catch(() => {
       _scanner = null;
@@ -53,23 +67,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function lookup(isbn) {
+  async function lookup(isbn, frame = null) {
     isbn = isbn.replace(/[^0-9X]/gi, "");
     if (isbn.length < 10) { setStatus(MSG.notFound); return; }
+    document.getElementById("bookIsbnInput").value = isbn;
     setStatus(MSG.searching);
     document.getElementById("bookScannerResult").classList.add("hidden");
     document.getElementById("bookScannerFillBtn").classList.add("hidden");
     document.getElementById("bookScannerRetryBtn").classList.add("hidden");
     try {
-      const res = await fetch(`${SEARCH_URL}?isbn=${isbn}`, {
-        headers: { "Accept": "application/json", "X-Requested-With": "XMLHttpRequest" }
-      });
+      // With a camera frame, POST it so the server-side AI can read the
+      // printed price from the photo.
+      const res = frame
+        ? await fetch(SEARCH_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+              "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content
+            },
+            body: JSON.stringify({ isbn: isbn, image: frame })
+          })
+        : await fetch(`${SEARCH_URL}?isbn=${isbn}`, {
+            headers: { "Accept": "application/json", "X-Requested-With": "XMLHttpRequest" }
+          });
       const data = await res.json();
       if (res.ok) {
         _lastResult = data;
         setStatus("");
         document.getElementById("bookScannerTitle").textContent  = data.title  || "";
         document.getElementById("bookScannerAuthor").textContent = data.author || "";
+        document.getElementById("bookScannerPrice").textContent  = data.price
+          ? "¥" + Number(data.price).toLocaleString() + (data.price_source === "photo" ? MSG.pricePhoto : "")
+          : "";
         const thumb = document.getElementById("bookScannerThumb");
         if (data.thumbnail) { thumb.src = data.thumbnail; thumb.classList.remove("hidden"); }
         else { thumb.classList.add("hidden"); }
@@ -109,8 +140,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!_lastResult) return;
     const t = document.getElementById("book_title");
     const a = document.getElementById("book_author");
+    const i = document.getElementById("book_isbn");
+    const p = document.getElementById("book_purchase_price");
     if (t) t.value = _lastResult.title  || "";
     if (a) a.value = _lastResult.author || "";
+    if (i) i.value = _lastResult.isbn   || document.getElementById("bookIsbnInput").value;
+    if (p && _lastResult.price && !p.value) p.value = _lastResult.price;
     window.closeBookScanner();
   };
 
@@ -123,6 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.bookScannerSearchManual = function () {
     const isbn = document.getElementById("bookIsbnInput").value.trim();
-    if (isbn) lookup(isbn);
+    if (isbn) lookup(isbn, captureFrame()); // include the live frame when the camera is running
   };
 });

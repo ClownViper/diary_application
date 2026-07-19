@@ -16,6 +16,13 @@
 
     <%= render "shared/form_field", form: f, attr: :author %>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <%= render "shared/form_field", form: f, attr: :isbn,
+            field_options: { inputmode: "numeric", placeholder: t("books.form.isbn_placeholder") } %>
+      <%= render "shared/form_field", form: f, attr: :purchase_price, field_type: :number_field,
+            field_options: { min: 0, inputmode: "numeric", placeholder: t("books.form.price_placeholder") } %>
+    </div>
+
     <!-- Status -->
     <div>
       <%= f.label :status, t("activerecord.attributes.book.status"), class: ApplicationHelper::LABEL_CLASS %>

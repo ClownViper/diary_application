@@ -3,7 +3,8 @@ require "json"
 
 # Looks up book metadata by ISBN. Tries OpenBD first (free, Japanese,
 # no key), then falls back to Google Books (API key optional).
-# Returns { title:, author:, thumbnail: } or nil when not found.
+# Returns { title:, author:, isbn:, thumbnail:, price: } or nil when not found.
+# (Google Books carries no list price, so :price only comes from OpenBD.)
 class IsbnLookup
   OPEN_TIMEOUT = 3
   READ_TIMEOUT = 5
@@ -33,10 +34,14 @@ class IsbnLookup
     summary = data[0]["summary"]
     return nil if summary.blank? || summary["title"].blank?
 
+    price = data[0].dig("onix", "ProductSupply", "SupplyDetail", "Price", 0, "PriceAmount")
+
     {
       title:     summary["title"],
       author:    summary["author"].presence,
-      thumbnail: summary["cover"].presence
+      isbn:      summary["isbn"].presence || @isbn,
+      thumbnail: summary["cover"].presence,
+      price:     price.presence
     }
   end
 
@@ -60,6 +65,7 @@ class IsbnLookup
     {
       title:     info["title"],
       author:    info["authors"]&.join(", "),
+      isbn:      @isbn,
       thumbnail: thumbnail
     }
   end

@@ -191,6 +191,8 @@ ja:
       title: "読書ログを編集"
     form:
       memo_placeholder: "300文字以内"
+      isbn_placeholder: "例: 9784798170794"
+      price_placeholder: "例: 1760"
     scanner:
       button: "バーコードで検索"
       modal_title: "バーコードをスキャン"
@@ -206,6 +208,7 @@ ja:
       api_error: "APIエラーが発生しました"
       fill_button: "フォームに入力"
       retry: "もう一度スキャン"
+      price_from_photo: "（写真の定価表記から読取）"
     status_labels:
       unread: "未読"
       reading: "読書中"
@@ -455,6 +458,8 @@ ja:
       book:
         title: 書籍タイトル
         author: 著者
+        isbn: ISBN
+        purchase_price: 購入価格
         status: ステータス
         started_on: 読み始め日
         finished_on: 読了日

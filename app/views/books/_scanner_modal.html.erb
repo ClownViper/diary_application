@@ -7,7 +7,8 @@
      data-msg-camera-error="<%= t('books.scanner.camera_error') %>"
      data-msg-searching="<%= t('books.scanner.searching') %>"
      data-msg-not-found="<%= t('books.scanner.not_found') %>"
-     data-msg-api-error="<%= t('books.scanner.api_error') %>">
+     data-msg-api-error="<%= t('books.scanner.api_error') %>"
+     data-msg-price-photo="<%= t('books.scanner.price_from_photo') %>">
   <div class="bg-white w-[92%] max-w-md max-h-[85vh] overflow-y-auto p-6 rounded-xl relative">
     <button type="button" onclick="closeBookScanner()"
             class="absolute top-3 right-3 w-10 h-10 flex items-center justify-center
@@ -28,6 +29,7 @@
       <div class="min-w-0">
         <p id="bookScannerTitle" class="font-semibold text-gray-800 text-sm"></p>
         <p id="bookScannerAuthor" class="text-xs text-gray-500 mt-1"></p>
+        <p id="bookScannerPrice" class="text-xs text-gray-700 mt-1 font-semibold"></p>
       </div>
     </div>
 

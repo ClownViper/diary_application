@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :books do
     collection do
       get :search_isbn
+      post :search_isbn
     end
   end
   resources :schedules

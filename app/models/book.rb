@@ -16,6 +16,10 @@ class Book < ApplicationRecord
   validates :title, presence: true
   validates :memo, length: { maximum: 300 }
   validates :status, presence: true
+  validates :isbn, length: { maximum: 20 }, allow_blank: true
+  validates :purchase_price,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 },
+            allow_nil: true
   validate :validate_cover_attachment
 
   def self.status_select_options
